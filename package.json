@@ -1,0 +1,70 @@
+{
+  "name": "constructs",
+  "version": "1.19.0",
+  "description": "A programming model for composable configuration",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awscdk.core",
+        "maven": {
+          "groupId": "software.amazon.awscdk",
+          "artifactId": "core"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.CDK",
+        "packageId": "Amazon.CDK",
+        "signAssembly": true,
+        "assemblyOriginatorKeyFile": "../../key.snk",
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-cdk.core",
+        "module": "aws_cdk.core"
+      }
+    }
+  },
+  "nyc": {
+    "reporter": "html",
+    "check-coverage": true,
+    "lines": 80
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws/constructs.git"
+  },
+  "scripts": {
+    "build": "jsii",
+    "watch": "jsii -w",
+    "lint": "eslint",
+    "test": "nyc nodeunit test/test.*.js",
+    "package": "jsii-pacmak"
+  },
+  "keywords": [
+    "constructs",
+    "cdk",
+    "jsii"
+  ],
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "12.12.2",
+    "@types/nodeunit": "^0.0.30",
+    "jsii": "^0.21.1",
+    "jsii-pacmak": "^0.21.1",
+    "nodeunit": "^0.11.3",
+    "nyc": "^15.0.0"
+  },
+  "homepage": "https://github.com/aws/constructs",
+  "engines": {
+    "node": ">= 10.3.0"
+  },
+  "stability": "stable"
+}

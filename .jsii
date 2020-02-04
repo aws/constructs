@@ -1,0 +1,3019 @@
+{
+  "author": {
+    "name": "Amazon Web Services",
+    "organization": true,
+    "roles": [
+      "author"
+    ],
+    "url": "https://aws.amazon.com"
+  },
+  "description": "A programming model for composable configuration",
+  "docs": {
+    "stability": "stable"
+  },
+  "homepage": "https://github.com/aws/constructs",
+  "jsiiVersion": "0.21.1 (build 9ff44cb)",
+  "keywords": [
+    "constructs",
+    "cdk",
+    "jsii"
+  ],
+  "license": "Apache-2.0",
+  "name": "constructs",
+  "readme": {
+    "markdown": "# Constructs Programming Model\n\n\n\n## License\n\nThis project is licensed under the Apache-2.0 License.\n\n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws/constructs.git"
+  },
+  "schema": "jsii/0.10.0",
+  "targets": {
+    "dotnet": {
+      "assemblyOriginatorKeyFile": "../../key.snk",
+      "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png",
+      "namespace": "Amazon.CDK",
+      "packageId": "Amazon.CDK",
+      "signAssembly": true
+    },
+    "java": {
+      "maven": {
+        "artifactId": "core",
+        "groupId": "software.amazon.awscdk"
+      },
+      "package": "software.amazon.awscdk.core"
+    },
+    "js": {
+      "npm": "constructs"
+    },
+    "python": {
+      "distName": "aws-cdk.core",
+      "module": "aws_cdk.core"
+    }
+  },
+  "types": {
+    "constructs.Construct": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "All constructs besides the root construct must be created within the scope of\nanother construct.",
+        "stability": "stable",
+        "summary": "Represents the building block of the construct graph."
+      },
+      "fqn": "constructs.Construct",
+      "initializer": {
+        "docs": {
+          "stability": "stable",
+          "summary": "Creates a new construct node."
+        },
+        "parameters": [
+          {
+            "docs": {
+              "summary": "The scope in which to define this construct."
+            },
+            "name": "scope",
+            "type": {
+              "fqn": "constructs.Construct"
+            }
+          },
+          {
+            "docs": {
+              "remarks": "Must be unique amongst siblings. If\nthe ID includes a path separator (`/`), then it will be replaced by double\ndash `--`.",
+              "summary": "The scoped construct ID."
+            },
+            "name": "id",
+            "type": {
+              "primitive": "string"
+            }
+          }
+        ]
+      },
+      "interfaces": [
+        "constructs.IConstruct"
+      ],
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 501
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return whether the given object is a Construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 505
+          },
+          "name": "isConstruct",
+          "parameters": [
+            {
+              "name": "x",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "boolean"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "This method can be implemented by derived constructs in order to perform\nfinal changes before synthesis. prepare() will be called after child\nconstructs have been prepared.\n\nThis is an advanced framework feature. Only use this if you\nunderstand the implications.",
+            "stability": "stable",
+            "summary": "Perform final modifications before synthesis."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 562
+          },
+          "name": "prepare",
+          "protected": true
+        },
+        {
+          "docs": {
+            "remarks": "This method is usually implemented by framework-level constructs such as `Stack` and `Asset`\nas they participate in synthesizing the cloud assembly.",
+            "stability": "stable",
+            "summary": "Allows this construct to emit artifacts into the cloud assembly during synthesis."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 574
+          },
+          "name": "synthesize",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The synthesis session."
+              },
+              "name": "session",
+              "type": {
+                "fqn": "constructs.ISynthesisSession"
+              }
+            }
+          ],
+          "protected": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Returns a string representation of this construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 536
+          },
+          "name": "toString",
+          "returns": {
+            "type": {
+              "primitive": "string"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "This method can be implemented by derived constructs in order to perform\nvalidation logic. It is called on all constructs before synthesis.",
+            "returns": "An array of validation error messages, or an empty array if there the construct is valid.",
+            "stability": "stable",
+            "summary": "Validate the current construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 548
+          },
+          "name": "validate",
+          "protected": true,
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "string"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        }
+      ],
+      "name": "Construct",
+      "properties": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Construct tree node which offers APIs for interacting with the construct tree."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 512
+          },
+          "name": "node",
+          "overrides": "constructs.IConstruct",
+          "type": {
+            "fqn": "constructs.ConstructNode"
+          }
+        }
+      ]
+    },
+    "constructs.ConstructMetadata": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable"
+      },
+      "fqn": "constructs.ConstructMetadata",
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/metadata.ts",
+        "line": 8
+      },
+      "name": "ConstructMetadata",
+      "properties": [
+        {
+          "const": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 9
+          },
+          "name": "DISABLE_STACK_TRACE_IN_METADATA",
+          "static": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "const": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 12
+          },
+          "name": "ERROR_METADATA_KEY",
+          "static": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "const": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 10
+          },
+          "name": "INFO_METADATA_KEY",
+          "static": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "const": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 11
+          },
+          "name": "WARNING_METADATA_KEY",
+          "static": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ]
+    },
+    "constructs.ConstructNode": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Represents the construct node in the scope tree."
+      },
+      "fqn": "constructs.ConstructNode",
+      "initializer": {
+        "docs": {
+          "stability": "stable"
+        },
+        "parameters": [
+          {
+            "name": "host",
+            "type": {
+              "fqn": "constructs.Construct"
+            }
+          },
+          {
+            "name": "scope",
+            "type": {
+              "fqn": "constructs.IConstruct"
+            }
+          },
+          {
+            "name": "id",
+            "type": {
+              "primitive": "string"
+            }
+          }
+        ]
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 23
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Invokes \"prepare\" on all constructs (depth-first, post-order) in the tree under `node`."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 65
+          },
+          "name": "prepare",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The root node."
+              },
+              "name": "node",
+              "type": {
+                "fqn": "constructs.ConstructNode"
+              }
+            }
+          ],
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Synthesizes a CloudAssembly from a construct tree."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 34
+          },
+          "name": "synth",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The root of the construct tree."
+              },
+              "name": "root",
+              "type": {
+                "fqn": "constructs.ConstructNode"
+              }
+            },
+            {
+              "docs": {
+                "summary": "Synthesis options."
+              },
+              "name": "options",
+              "type": {
+                "fqn": "constructs.SynthesisOptions"
+              }
+            }
+          ],
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "An empty list indicates that there are no errors.",
+            "stability": "stable",
+            "summary": "Invokes \"validate\" on all constructs in the tree (depth-first, pre-order) and returns the list of all errors."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 87
+          },
+          "name": "validate",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The root node."
+              },
+              "name": "node",
+              "type": {
+                "fqn": "constructs.ConstructNode"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "fqn": "constructs.ValidationError"
+                },
+                "kind": "array"
+              }
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "All constructs in the dependency's scope will be deployed before any\nconstruct in this construct's scope.",
+            "stability": "stable",
+            "summary": "Add an ordering dependency on another Construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 406
+          },
+          "name": "addDependency",
+          "parameters": [
+            {
+              "name": "dependencies",
+              "type": {
+                "fqn": "constructs.Construct"
+              },
+              "variadic": true
+            }
+          ],
+          "variadic": true
+        },
+        {
+          "docs": {
+            "remarks": "The toolkit will fail synthesis when errors are reported.",
+            "stability": "stable",
+            "summary": "Adds an { error: <message> } metadata entry to this construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 346
+          },
+          "name": "addError",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The error message."
+              },
+              "name": "message",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "remarks": "The toolkit will display the info message when apps are synthesized.",
+            "stability": "stable",
+            "summary": "Adds a { \"aws:cdk:info\": <message> } metadata entry to this construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 327
+          },
+          "name": "addInfo",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The info message."
+              },
+              "name": "message",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "remarks": "Entries are arbitrary values and will also include a stack trace to allow tracing back to\nthe code location for when the entry was added. It can be used, for example, to include source\nmapping in CloudFormation templates to improve diagnostics.",
+            "stability": "stable",
+            "summary": "Adds a metadata entry to this construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 313
+          },
+          "name": "addMetadata",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "a string denoting the type of metadata."
+              },
+              "name": "type",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "remarks": "If null/undefined, metadata will not be added.",
+                "summary": "the value of the metadata (can be a Token)."
+              },
+              "name": "data",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "docs": {
+                "summary": "a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata)."
+              },
+              "name": "fromFunction",
+              "optional": true,
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "remarks": "The toolkit will display the warning when an app is synthesized, or fail\nif run in --strict mode.",
+            "stability": "stable",
+            "summary": "Adds a { warning: <message> } metadata entry to this construct."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 337
+          },
+          "name": "addWarning",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The warning message."
+              },
+              "name": "message",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Applies the aspect to this Constructs node."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 353
+          },
+          "name": "applyAspect",
+          "parameters": [
+            {
+              "name": "aspect",
+              "type": {
+                "fqn": "constructs.IAspect"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return this construct and all of its children in the given order."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 237
+          },
+          "name": "findAll",
+          "parameters": [
+            {
+              "name": "order",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.ConstructOrder"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "fqn": "constructs.IConstruct"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Throws an error if the child is not found.",
+            "returns": "Child with the given id.",
+            "stability": "stable",
+            "summary": "Return a direct child by id."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 183
+          },
+          "name": "findChild",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "Identifier of direct child."
+              },
+              "name": "id",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "fqn": "constructs.IConstruct"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Context must be set before any children are added, since children may consult context info during construction.\nIf the key already exists, it will be overridden.",
+            "stability": "stable",
+            "summary": "This can be used to set contextual values."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 264
+          },
+          "name": "setContext",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The context key."
+              },
+              "name": "key",
+              "type": {
+                "primitive": "string"
+              }
+            },
+            {
+              "docs": {
+                "summary": "The context value."
+              },
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "returns": "the child if found, or undefined",
+            "stability": "stable",
+            "summary": "Return a direct child by id, or undefined."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 171
+          },
+          "name": "tryFindChild",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "Identifier of direct child."
+              },
+              "name": "id",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "fqn": "constructs.IConstruct"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Context is usually initialized at the root, but can be overridden at any point in the tree.",
+            "returns": "The context value or `undefined` if there is no context value for thie key.",
+            "stability": "stable",
+            "summary": "Retrieves a value from tree context."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 284
+          },
+          "name": "tryGetContext",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The context key."
+              },
+              "name": "key",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "ConstructNode",
+      "properties": [
+        {
+          "const": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Separator used to delimit construct path components."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 27
+          },
+          "name": "PATH_SEP",
+          "static": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "All direct children of this construct."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 230
+          },
+          "name": "children",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "constructs.IConstruct"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return all dependencies registered on this node or any of its children."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 415
+          },
+          "name": "dependencies",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "constructs.Dependency"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "This is a a scope-unique id. To obtain an app-unique id for this construct, use `uniqueId`.",
+            "stability": "stable",
+            "summary": "The id of this construct within the current scope."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 110
+          },
+          "name": "id",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Returns true if this construct or the scopes in which it is defined are locked."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 388
+          },
+          "name": "locked",
+          "type": {
+            "primitive": "boolean"
+          }
+        },
+        {
+          "docs": {
+            "remarks": "This can be used, for example, to implement support for deprecation notices, source mapping, etc.",
+            "stability": "stable",
+            "summary": "An immutable array of metadata objects associated with this construct."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 299
+          },
+          "name": "metadata",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "constructs.MetadataEntry"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Components are separated by '/'.",
+            "stability": "stable",
+            "summary": "The full, absolute path of this construct in the tree."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 151
+          },
+          "name": "path",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "docs": {
+            "returns": "The root of the construct tree.",
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 380
+          },
+          "name": "root",
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        },
+        {
+          "docs": {
+            "returns": "a list of parent scopes. The last element in the list will always\nbe the current construct and the first element will be the root of the\ntree.",
+            "stability": "stable",
+            "summary": "All parent scopes of this construct."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 365
+          },
+          "name": "scopes",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "constructs.IConstruct"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Includes all components of the tree.",
+            "stability": "stable",
+            "summary": "A tree-global unique alphanumeric identifier for this construct."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 160
+          },
+          "name": "uniqueId",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "docs": {
+            "remarks": "The value is `undefined` at the root of the construct scope tree.",
+            "stability": "stable",
+            "summary": "Returns the scope in which this construct is defined."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 103
+          },
+          "name": "scope",
+          "optional": true,
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        },
+        {
+          "docs": {
+            "custom": {
+              "throws": "if there is more than one child"
+            },
+            "remarks": "This is usually the construct that provides the bulk of the underlying functionality.\nUseful for modifications of the underlying construct that are not available at the higher levels.\nOverride the defaultChild property.\n\nThis should only be used in the cases where the correct\ndefault child is not named 'Resource' or 'Default' as it\nshould be.\n\nIf you set this to undefined, the default behavior of finding\nthe child named 'Resource' or 'Default' will be used.",
+            "returns": "a construct or undefined if there is no default child",
+            "stability": "stable",
+            "summary": "Returns the child construct that has the id `Default` or `Resource\"`."
+          },
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 199
+          },
+          "name": "defaultChild",
+          "optional": true,
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        }
+      ]
+    },
+    "constructs.ConstructOrder": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "In what order to return constructs."
+      },
+      "fqn": "constructs.ConstructOrder",
+      "kind": "enum",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 597
+      },
+      "members": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Depth-first, pre-order."
+          },
+          "name": "PREORDER"
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Depth-first, post-order (leaf nodes first)."
+          },
+          "name": "POSTORDER"
+        }
+      ],
+      "name": "ConstructOrder"
+    },
+    "constructs.DefaultTokenResolver": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "experimental",
+        "summary": "Default resolver implementation."
+      },
+      "fqn": "constructs.DefaultTokenResolver",
+      "initializer": {
+        "docs": {
+          "stability": "experimental"
+        },
+        "parameters": [
+          {
+            "name": "concat",
+            "type": {
+              "fqn": "constructs.IFragmentConcatenator"
+            }
+          }
+        ]
+      },
+      "interfaces": [
+        "constructs.ITokenResolver"
+      ],
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 122
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "experimental",
+            "summary": "Resolve a tokenized list."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 158
+          },
+          "name": "resolveList",
+          "overrides": "constructs.ITokenResolver",
+          "parameters": [
+            {
+              "name": "xs",
+              "type": {
+                "collection": {
+                  "elementtype": {
+                    "primitive": "string"
+                  },
+                  "kind": "array"
+                }
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "experimental",
+            "summary": "Resolve string fragments to Tokens."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 154
+          },
+          "name": "resolveString",
+          "overrides": "constructs.ITokenResolver",
+          "parameters": [
+            {
+              "name": "fragments",
+              "type": {
+                "fqn": "constructs.TokenizedStringFragments"
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "remarks": "Resolve the Token, recurse into whatever it returns,\nthen finally post-process it.",
+            "stability": "experimental",
+            "summary": "Default Token resolution."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 132
+          },
+          "name": "resolveToken",
+          "overrides": "constructs.ITokenResolver",
+          "parameters": [
+            {
+              "name": "t",
+              "type": {
+                "fqn": "constructs.IResolvable"
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            },
+            {
+              "name": "postProcessor",
+              "type": {
+                "fqn": "constructs.IPostProcessor"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "DefaultTokenResolver"
+    },
+    "constructs.Dependency": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "A single dependency."
+      },
+      "fqn": "constructs.Dependency",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 612
+      },
+      "name": "Dependency",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Source the dependency."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 616
+          },
+          "name": "source",
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Target of the dependency."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 621
+          },
+          "name": "target",
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        }
+      ]
+    },
+    "constructs.EncodingOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "Properties to string encodings."
+      },
+      "fqn": "constructs.EncodingOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/token.ts",
+        "line": 182
+      },
+      "name": "EncodingOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "A hint for the Token's purpose when stringifying it."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 186
+          },
+          "name": "displayHint",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ]
+    },
+    "constructs.IAnyProducer": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Interface for lazy untyped value producers."
+      },
+      "fqn": "constructs.IAnyProducer",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 38
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Produce the value."
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 42
+          },
+          "name": "produce",
+          "parameters": [
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "IAnyProducer"
+    },
+    "constructs.IAspect": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Represents an Aspect."
+      },
+      "fqn": "constructs.IAspect",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/aspect.ts",
+        "line": 6
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "All aspects can visit an IConstruct."
+          },
+          "locationInModule": {
+            "filename": "lib/aspect.ts",
+            "line": 10
+          },
+          "name": "visit",
+          "parameters": [
+            {
+              "name": "node",
+              "type": {
+                "fqn": "constructs.IConstruct"
+              }
+            }
+          ]
+        }
+      ],
+      "name": "IAspect"
+    },
+    "constructs.IConstruct": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Represents a construct."
+      },
+      "fqn": "constructs.IConstruct",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 13
+      },
+      "name": "IConstruct",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The construct node in the tree."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 17
+          },
+          "name": "node",
+          "type": {
+            "fqn": "constructs.ConstructNode"
+          }
+        }
+      ]
+    },
+    "constructs.IFragmentConcatenator": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Interface so it could potentially be exposed over jsii.",
+        "stability": "experimental",
+        "summary": "Function used to concatenate symbols in the target document language."
+      },
+      "fqn": "constructs.IFragmentConcatenator",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 97
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "experimental",
+            "summary": "Join the fragment on the left and on the right."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 101
+          },
+          "name": "join",
+          "parameters": [
+            {
+              "name": "left",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "name": "right",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "IFragmentConcatenator"
+    },
+    "constructs.IListProducer": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Interface for lazy list producers."
+      },
+      "fqn": "constructs.IListProducer",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 18
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Produce the list value."
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 22
+          },
+          "name": "produce",
+          "parameters": [
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "string"
+                },
+                "kind": "array"
+              }
+            }
+          }
+        }
+      ],
+      "name": "IListProducer"
+    },
+    "constructs.INumberProducer": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Interface for lazy number producers."
+      },
+      "fqn": "constructs.INumberProducer",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 28
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Produce the number value."
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 32
+          },
+          "name": "produce",
+          "parameters": [
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "primitive": "number"
+            }
+          }
+        }
+      ],
+      "name": "INumberProducer"
+    },
+    "constructs.IPostProcessor": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "A Token that can post-process the complete resolved value, after resolve() has recursed over it."
+      },
+      "fqn": "constructs.IPostProcessor",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 61
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Process the completely resolved value, after full recursion/resolution has happened."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 65
+          },
+          "name": "postProcess",
+          "parameters": [
+            {
+              "name": "input",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "IPostProcessor"
+    },
+    "constructs.IResolvable": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Tokens are special objects that participate in synthesis.",
+        "stability": "stable",
+        "summary": "Interface for values that can be resolvable later."
+      },
+      "fqn": "constructs.IResolvable",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 36
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Produce the Token's value at resolution time."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 48
+          },
+          "name": "resolve",
+          "parameters": [
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "remarks": "Returns a reversible string representation.",
+            "stability": "stable",
+            "summary": "Return a string representation of this resolvable object."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 55
+          },
+          "name": "toString",
+          "returns": {
+            "type": {
+              "primitive": "string"
+            }
+          }
+        }
+      ],
+      "name": "IResolvable",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "remarks": "If this returns an empty array the stack will not be attached.",
+            "stability": "stable",
+            "summary": "The creation stack of this resolvable which will be appended to errors thrown during resolution."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 43
+          },
+          "name": "creationStack",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "primitive": "string"
+              },
+              "kind": "array"
+            }
+          }
+        }
+      ]
+    },
+    "constructs.IResolveContext": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Current resolution context for tokens."
+      },
+      "fqn": "constructs.IResolveContext",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 9
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Use this postprocessor after the entire token structure has been resolved."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 28
+          },
+          "name": "registerPostProcessor",
+          "parameters": [
+            {
+              "name": "postProcessor",
+              "type": {
+                "fqn": "constructs.IPostProcessor"
+              }
+            }
+          ]
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Resolve an inner object."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 23
+          },
+          "name": "resolve",
+          "parameters": [
+            {
+              "name": "x",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "IResolveContext",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "True when we are still preparing, false if we're rendering the final output."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 18
+          },
+          "name": "preparing",
+          "type": {
+            "primitive": "boolean"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The scope from which resolution has been initiated."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 13
+          },
+          "name": "scope",
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        }
+      ]
+    },
+    "constructs.IStringProducer": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Interface for lazy string producers."
+      },
+      "fqn": "constructs.IStringProducer",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 8
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Produce the string value."
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 12
+          },
+          "name": "produce",
+          "parameters": [
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "primitive": "string"
+            }
+          }
+        }
+      ],
+      "name": "IStringProducer"
+    },
+    "constructs.ISynthesisSession": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Passed into `Construct.synthesize()` methods.",
+        "stability": "stable",
+        "summary": "Represents a single session of synthesis."
+      },
+      "fqn": "constructs.ISynthesisSession",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 627
+      },
+      "name": "ISynthesisSession",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The output directory for this synthesis session."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 631
+          },
+          "name": "outdir",
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ]
+    },
+    "constructs.ITokenMapper": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Interface so it can be exported via jsii.",
+        "stability": "stable",
+        "summary": "Interface to apply operation to tokens in a string."
+      },
+      "fqn": "constructs.ITokenMapper",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/string-fragments.ts",
+        "line": 112
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Replace a single token."
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 116
+          },
+          "name": "mapToken",
+          "parameters": [
+            {
+              "name": "t",
+              "type": {
+                "fqn": "constructs.IResolvable"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "ITokenMapper"
+    },
+    "constructs.ITokenResolver": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "How to resolve tokens."
+      },
+      "fqn": "constructs.ITokenResolver",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 71
+      },
+      "methods": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Resolve a tokenized list."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 87
+          },
+          "name": "resolveList",
+          "parameters": [
+            {
+              "name": "l",
+              "type": {
+                "collection": {
+                  "elementtype": {
+                    "primitive": "string"
+                  },
+                  "kind": "array"
+                }
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "remarks": "(May use concatenation)",
+            "stability": "stable",
+            "summary": "Resolve a string with at least one stringified token in it."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 82
+          },
+          "name": "resolveString",
+          "parameters": [
+            {
+              "name": "s",
+              "type": {
+                "fqn": "constructs.TokenizedStringFragments"
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "Resolve a single token."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 75
+          },
+          "name": "resolveToken",
+          "parameters": [
+            {
+              "name": "t",
+              "type": {
+                "fqn": "constructs.IResolvable"
+              }
+            },
+            {
+              "name": "context",
+              "type": {
+                "fqn": "constructs.IResolveContext"
+              }
+            },
+            {
+              "name": "postProcessor",
+              "type": {
+                "fqn": "constructs.IPostProcessor"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "ITokenResolver"
+    },
+    "constructs.Lazy": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Can be used to return a string, list or numeric value whose actual value\nwill only be calculated later, during synthesis.",
+        "stability": "stable",
+        "summary": "Lazily produce a value."
+      },
+      "fqn": "constructs.Lazy",
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 101
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 114
+          },
+          "name": "anyValue",
+          "parameters": [
+            {
+              "name": "producer",
+              "type": {
+                "fqn": "constructs.IAnyProducer"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.LazyAnyValueOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "fqn": "constructs.IResolvable"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 110
+          },
+          "name": "listValue",
+          "parameters": [
+            {
+              "name": "producer",
+              "type": {
+                "fqn": "constructs.IListProducer"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.LazyListValueOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "string"
+                },
+                "kind": "array"
+              }
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 106
+          },
+          "name": "numberValue",
+          "parameters": [
+            {
+              "name": "producer",
+              "type": {
+                "fqn": "constructs.INumberProducer"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "number"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 102
+          },
+          "name": "stringValue",
+          "parameters": [
+            {
+              "name": "producer",
+              "type": {
+                "fqn": "constructs.IStringProducer"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.LazyStringValueOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "string"
+            }
+          },
+          "static": true
+        }
+      ],
+      "name": "Lazy"
+    },
+    "constructs.LazyAnyValueOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "Options for creating lazy untyped tokens."
+      },
+      "fqn": "constructs.LazyAnyValueOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 79
+      },
+      "name": "LazyAnyValueOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "default": "- No hint",
+            "stability": "stable",
+            "summary": "Use the given name as a display hint."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 85
+          },
+          "name": "displayHint",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "default": "false",
+            "stability": "stable",
+            "summary": "If the produced value is an array and it is empty, return 'undefined' instead."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 92
+          },
+          "name": "omitEmptyArray",
+          "optional": true,
+          "type": {
+            "primitive": "boolean"
+          }
+        }
+      ]
+    },
+    "constructs.LazyListValueOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "Options for creating a lazy list token."
+      },
+      "fqn": "constructs.LazyListValueOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 60
+      },
+      "name": "LazyListValueOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "default": "- No hint",
+            "stability": "stable",
+            "summary": "Use the given name as a display hint."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 66
+          },
+          "name": "displayHint",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "default": "false",
+            "stability": "stable",
+            "summary": "If the produced list is empty, return 'undefined' instead."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 73
+          },
+          "name": "omitEmpty",
+          "optional": true,
+          "type": {
+            "primitive": "boolean"
+          }
+        }
+      ]
+    },
+    "constructs.LazyStringValueOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "Options for creating a lazy string token."
+      },
+      "fqn": "constructs.LazyStringValueOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/lazy.ts",
+        "line": 48
+      },
+      "name": "LazyStringValueOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "default": "- No hint",
+            "stability": "stable",
+            "summary": "Use the given name as a display hint."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/lazy.ts",
+            "line": 54
+          },
+          "name": "displayHint",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ]
+    },
+    "constructs.MetadataEntry": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable"
+      },
+      "fqn": "constructs.MetadataEntry",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/metadata.ts",
+        "line": 2
+      },
+      "name": "MetadataEntry",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 4
+          },
+          "name": "data",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 3
+          },
+          "name": "type",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/metadata.ts",
+            "line": 5
+          },
+          "name": "trace",
+          "optional": true,
+          "type": {
+            "collection": {
+              "elementtype": {
+                "primitive": "string"
+              },
+              "kind": "array"
+            }
+          }
+        }
+      ]
+    },
+    "constructs.ResolveOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "remarks": "NOT the same as the ResolveContext; ResolveContext is exposed to Token\nimplementors and resolution hooks, whereas this struct is just to bundle\na number of things that would otherwise be arguments to resolve() in a\nreadable way.",
+        "stability": "stable",
+        "summary": "Options to the resolve() operation."
+      },
+      "fqn": "constructs.ResolveOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/token.ts",
+        "line": 161
+      },
+      "name": "ResolveOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The resolver to apply to any resolvable tokens found."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 170
+          },
+          "name": "resolver",
+          "type": {
+            "fqn": "constructs.ITokenResolver"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The scope from which resolution is performed."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 165
+          },
+          "name": "scope",
+          "type": {
+            "fqn": "constructs.IConstruct"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "default": "false",
+            "stability": "stable",
+            "summary": "Whether the resolution is being executed during the prepare phase or not."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 176
+          },
+          "name": "preparing",
+          "optional": true,
+          "type": {
+            "primitive": "boolean"
+          }
+        }
+      ]
+    },
+    "constructs.StringConcat": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Drops 'undefined's.",
+        "stability": "stable",
+        "summary": "Converts all fragments to strings and concats those."
+      },
+      "fqn": "constructs.StringConcat",
+      "initializer": {},
+      "interfaces": [
+        "constructs.IFragmentConcatenator"
+      ],
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/resolvable.ts",
+        "line": 109
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Join the fragment on the left and on the right."
+          },
+          "locationInModule": {
+            "filename": "lib/resolvable.ts",
+            "line": 110
+          },
+          "name": "join",
+          "overrides": "constructs.IFragmentConcatenator",
+          "parameters": [
+            {
+              "name": "left",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "name": "right",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        }
+      ],
+      "name": "StringConcat"
+    },
+    "constructs.SynthesisOptions": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "Options for synthesis."
+      },
+      "fqn": "constructs.SynthesisOptions",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 637
+      },
+      "name": "SynthesisOptions",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "default": "- creates a temporary directory",
+            "stability": "stable",
+            "summary": "The output directory into which to synthesize the cloud assembly."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 642
+          },
+          "name": "outdir",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "default": "false",
+            "stability": "stable",
+            "summary": "Whether synthesis should skip the validation phase."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 648
+          },
+          "name": "skipValidation",
+          "optional": true,
+          "type": {
+            "primitive": "boolean"
+          }
+        }
+      ]
+    },
+    "constructs.Token": {
+      "assembly": "constructs",
+      "docs": {
+        "remarks": "Can be used to delay evaluation of a certain value in case, for example,\nthat it requires some context or late-bound data. Can also be used to\nmark values that need special processing at document rendering time.\n\nTokens can be embedded into strings while retaining their original\nsemantics.",
+        "stability": "stable",
+        "summary": "Represents a special or lazily-evaluated value."
+      },
+      "fqn": "constructs.Token",
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/token.ts",
+        "line": 20
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return a resolvable representation of the given value."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 74
+          },
+          "name": "asAny",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "fqn": "constructs.IResolvable"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return a reversible list representation of this token."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 66
+          },
+          "name": "asList",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.EncodingOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "collection": {
+                "elementtype": {
+                  "primitive": "string"
+                },
+                "kind": "array"
+              }
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return a reversible number representation of this token."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 58
+          },
+          "name": "asNumber",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "number"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "If the Token is initialized with a literal, the stringified value of the\nliteral is returned. Otherwise, a special quoted string representation\nof the Token is returned that can be embedded into other strings.\n\nStrings with quoted Tokens in them can be restored back into\ncomplex values with the Tokens restored by calling `resolve()`\non the string.",
+            "stability": "stable",
+            "summary": "Return a reversible string representation of this token."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 50
+          },
+          "name": "asString",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "name": "options",
+              "optional": true,
+              "type": {
+                "fqn": "constructs.EncodingOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "string"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "One of these must be true:\n\n- `obj` is an IResolvable\n- `obj` is a string containing at least one encoded `IResolvable`\n- `obj` is either an encoded number or list\n\nThis does NOT recurse into lists or objects to see if they\ncontaining resolvables.",
+            "stability": "stable",
+            "summary": "Returns true if obj represents an unresolved value."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 35
+          },
+          "name": "isUnresolved",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The object to test."
+              },
+              "name": "obj",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "boolean"
+            }
+          },
+          "static": true
+        }
+      ],
+      "name": "Token"
+    },
+    "constructs.Tokenization": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Less oft-needed functions to manipulate Tokens."
+      },
+      "fqn": "constructs.Tokenization",
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/token.ts",
+        "line": 85
+      },
+      "methods": [
+        {
+          "docs": {
+            "remarks": "This is different from Token.isUnresolved() which will also check for\nencoded Tokens, whereas this method will only do a type check on the given\nobject.",
+            "stability": "stable",
+            "summary": "Return whether the given object is an IResolvable object."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 129
+          },
+          "name": "isResolvable",
+          "parameters": [
+            {
+              "name": "obj",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "boolean"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "Values can only be primitives, arrays or tokens. Other objects (i.e. with methods) will be rejected.",
+            "stability": "stable",
+            "summary": "Resolves an object by evaluating all tokens and removing any undefined or empty objects or arrays."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 114
+          },
+          "name": "resolve",
+          "parameters": [
+            {
+              "docs": {
+                "summary": "The object to resolve."
+              },
+              "name": "obj",
+              "type": {
+                "primitive": "any"
+              }
+            },
+            {
+              "docs": {
+                "summary": "Prefix key path components for diagnostics."
+              },
+              "name": "options",
+              "type": {
+                "fqn": "constructs.ResolveOptions"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Un-encode a Tokenized value from a list."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 103
+          },
+          "name": "reverseList",
+          "parameters": [
+            {
+              "name": "l",
+              "type": {
+                "collection": {
+                  "elementtype": {
+                    "primitive": "string"
+                  },
+                  "kind": "array"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "fqn": "constructs.IResolvable"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Un-encode a Tokenized value from a number."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 96
+          },
+          "name": "reverseNumber",
+          "parameters": [
+            {
+              "name": "n",
+              "type": {
+                "primitive": "number"
+              }
+            }
+          ],
+          "returns": {
+            "optional": true,
+            "type": {
+              "fqn": "constructs.IResolvable"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Un-encode a string potentially containing encoded tokens."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 89
+          },
+          "name": "reverseString",
+          "parameters": [
+            {
+              "name": "s",
+              "type": {
+                "primitive": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "fqn": "constructs.TokenizedStringFragments"
+            }
+          },
+          "static": true
+        },
+        {
+          "docs": {
+            "remarks": "If it is an object (i.e., { Ref: 'SomeLogicalId' }), return it as-is.",
+            "stability": "stable",
+            "summary": "Stringify a number directly or lazily if it's a Token."
+          },
+          "locationInModule": {
+            "filename": "lib/token.ts",
+            "line": 136
+          },
+          "name": "stringifyNumber",
+          "parameters": [
+            {
+              "name": "x",
+              "type": {
+                "primitive": "number"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "string"
+            }
+          },
+          "static": true
+        }
+      ],
+      "name": "Tokenization"
+    },
+    "constructs.TokenizedStringFragments": {
+      "assembly": "constructs",
+      "docs": {
+        "stability": "stable",
+        "summary": "Fragments of a concatenated string containing stringified Tokens."
+      },
+      "fqn": "constructs.TokenizedStringFragments",
+      "initializer": {},
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/string-fragments.ts",
+        "line": 17
+      },
+      "methods": [
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 42
+          },
+          "name": "addIntrinsic",
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 34
+          },
+          "name": "addLiteral",
+          "parameters": [
+            {
+              "name": "lit",
+              "type": {
+                "primitive": "any"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 38
+          },
+          "name": "addToken",
+          "parameters": [
+            {
+              "name": "token",
+              "type": {
+                "fqn": "constructs.IResolvable"
+              }
+            }
+          ]
+        },
+        {
+          "docs": {
+            "remarks": "If there are any",
+            "stability": "stable",
+            "summary": "Combine the string fragments using the given joiner."
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 92
+          },
+          "name": "join",
+          "parameters": [
+            {
+              "name": "concat",
+              "type": {
+                "fqn": "constructs.IFragmentConcatenator"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "primitive": "any"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Apply a transformation function to all tokens in the string."
+          },
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 62
+          },
+          "name": "mapTokens",
+          "parameters": [
+            {
+              "name": "mapper",
+              "type": {
+                "fqn": "constructs.ITokenMapper"
+              }
+            }
+          ],
+          "returns": {
+            "type": {
+              "fqn": "constructs.TokenizedStringFragments"
+            }
+          }
+        }
+      ],
+      "name": "TokenizedStringFragments",
+      "properties": [
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 26
+          },
+          "name": "firstValue",
+          "type": {
+            "primitive": "any"
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 30
+          },
+          "name": "length",
+          "type": {
+            "primitive": "number"
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable",
+            "summary": "Return all Tokens from this string."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 49
+          },
+          "name": "tokens",
+          "type": {
+            "collection": {
+              "elementtype": {
+                "fqn": "constructs.IResolvable"
+              },
+              "kind": "array"
+            }
+          }
+        },
+        {
+          "docs": {
+            "stability": "stable"
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/string-fragments.ts",
+            "line": 20
+          },
+          "name": "firstToken",
+          "optional": true,
+          "type": {
+            "fqn": "constructs.IResolvable"
+          }
+        }
+      ]
+    },
+    "constructs.ValidationError": {
+      "assembly": "constructs",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "An error returned during the validation phase."
+      },
+      "fqn": "constructs.ValidationError",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/construct.ts",
+        "line": 582
+      },
+      "name": "ValidationError",
+      "properties": [
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The error message."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 591
+          },
+          "name": "message",
+          "type": {
+            "primitive": "string"
+          }
+        },
+        {
+          "abstract": true,
+          "docs": {
+            "stability": "stable",
+            "summary": "The construct which emitted the error."
+          },
+          "immutable": true,
+          "locationInModule": {
+            "filename": "lib/construct.ts",
+            "line": 586
+          },
+          "name": "source",
+          "type": {
+            "fqn": "constructs.Construct"
+          }
+        }
+      ]
+    }
+  },
+  "version": "1.19.0",
+  "fingerprint": "+9JEjkhKg0uoeAEF8MnNPOI61TXg40rHY/cxEe556Gk="
+}
