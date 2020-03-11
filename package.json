@@ -42,7 +42,8 @@
     "package": "jsii-pacmak",
     "build": "yarn compile && yarn test && yarn run package",
     "compat": "scripts/compat.sh",
-    "lint": "eslint . --ext .ts && yarn compat"
+    "lint": "eslint . --ext .ts && yarn compat",
+    "release": "scripts/release.sh"
   },
   "keywords": [
     "aws",
