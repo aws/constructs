@@ -1,6 +1,6 @@
 {
   "name": "constructs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A programming model for composable configuration",
   "stability": "stable",
   "main": "lib/index.js",
