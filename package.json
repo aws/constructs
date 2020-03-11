@@ -43,6 +43,7 @@
     "build": "yarn compile && yarn test && yarn run package",
     "compat": "scripts/compat.sh",
     "lint": "eslint . --ext .ts && yarn compat",
+    "bump": "standard-version",
     "release": "jsii-release"
   },
   "keywords": [
@@ -68,7 +69,8 @@
     "jsii-pacmak": "^0.22.0",
     "jsii-release": "^0.1.5",
     "nodeunit": "^0.11.3",
-    "nyc": "^15.0.0"
+    "nyc": "^15.0.0",
+    "standard-version": "^7.1.0"
   },
   "homepage": "https://github.com/aws/aws-cdk",
   "engines": {
