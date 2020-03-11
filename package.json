@@ -8,13 +8,6 @@
   "jsii": {
     "outdir": "dist",
     "targets": {
-      "java": {
-        "package": "io.constructs",
-        "maven": {
-          "groupId": "io.constructs",
-          "artifactId": "constructs"
-        }
-      },
       "dotnet": {
         "namespace": "Constructs",
         "packageId": "Constructs"
