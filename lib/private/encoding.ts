@@ -1,6 +1,6 @@
 import { IFragmentConcatenator, IResolvable } from "../resolvable";
 import { TokenizedStringFragments } from "../string-fragments";
-import { isResolvableObject } from "../token";
+import { Tokenization } from "../token";
 
 // Details for encoding and decoding Tokens into native types; should not be exported
 
@@ -111,7 +111,7 @@ export function unresolved(obj: any): boolean {
   } else if (Array.isArray(obj) && obj.length === 1) {
     return typeof(obj[0]) === 'string' && TokenString.forListToken(obj[0]).test();
   } else {
-    return isResolvableObject(obj);
+    return Tokenization.isResolvable(obj);
   }
 }
 

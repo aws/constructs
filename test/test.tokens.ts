@@ -1,8 +1,8 @@
 import { Test } from 'nodeunit';
-import { isResolvableObject, Lazy, Token, Tokenization } from '../lib';
+import { Lazy, Token, Tokenization } from '../lib';
 import { createTokenDouble, extractTokenDouble } from '../lib/private/encoding';
 import { Intrinsic } from '../lib/private/intrinsic';
-import { findTokens, resolve as coreResolve } from '../lib/private/resolve';
+import { findTokens } from '../lib/private/resolve';
 import { DefaultTokenResolver, IResolvable } from '../lib/resolvable';
 import { evaluateCFN } from './evaluate-cfn';
 import { App } from './util';
@@ -128,9 +128,9 @@ export = {
   },
 
   'isToken(obj) can be used to determine if an object is a token'(test: Test) {
-    test.ok(isResolvableObject({ resolve: () => 123 }));
-    test.ok(isResolvableObject({ a: 1, b: 2, resolve: () => 'hello' }));
-    test.ok(!isResolvableObject({ a: 1, b: 2, resolve: 3 }));
+    test.ok(Tokenization.isResolvable({ resolve: () => 123 }));
+    test.ok(Tokenization.isResolvable({ a: 1, b: 2, resolve: () => 'hello' }));
+    test.ok(!Tokenization.isResolvable({ a: 1, b: 2, resolve: 3 }));
     test.done();
   },
 
@@ -388,7 +388,7 @@ export = {
 
       // THEN
       const encoded = Token.asNumber(x);
-      test.equal(false, isResolvableObject(encoded), 'encoded number does not test as token');
+      test.equal(false, Tokenization.isResolvable(encoded), 'encoded number does not test as token');
       test.equal(true, Token.isUnresolved(encoded), 'encoded number does not test as token');
 
       // THEN
@@ -626,7 +626,7 @@ function tokensThatResolveTo(value: any): Token[] {
  */
 function resolve(x: any) {
   const scope = new App();
-  return coreResolve(x, {
+  return Tokenization.resolve(x, {
     scope,
     resolver: new DefaultTokenResolver({
       join: (left, right) => left + right

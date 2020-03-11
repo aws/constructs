@@ -1,44 +1,66 @@
 import { IFragmentConcatenator, IResolvable } from "./resolvable";
-import { isResolvableObject } from "./token";
+import { Tokenization } from "./token";
 
 /**
  * Result of the split of a string with Tokens
  *
  * Either a literal part of the string, or an unresolved Token.
  */
-type LiteralFragment = { type: 'literal'; lit: any; };
-type TokenFragment = { type: 'token'; token: IResolvable; };
-type IntrinsicFragment = { type: 'intrinsic'; value: any; };
+type LiteralFragment = { type: 'literal'; lit: any };
+type TokenFragment = { type: 'token'; token: IResolvable };
+type IntrinsicFragment = { type: 'intrinsic'; value: any };
 type Fragment =  LiteralFragment | TokenFragment | IntrinsicFragment;
 
 /**
  * Fragments of a concatenated string containing stringified Tokens
+ * @experimental
  */
 export class TokenizedStringFragments {
   private readonly fragments = new Array<Fragment>();
 
+  /**
+   * Returns the first token.
+   */
   public get firstToken(): IResolvable | undefined {
     const first = this.fragments[0];
     if (first.type === 'token') { return first.token; }
     return undefined;
   }
 
+  /**
+   * Returns the first value.
+   */
   public get firstValue(): any {
     return fragmentValue(this.fragments[0]);
   }
 
+  /**
+   * Returns the number of fragments.
+   */
   public get length() {
     return this.fragments.length;
   }
 
+  /**
+   * Adds a literal fragment
+   * @param lit the literal to add
+   */
   public addLiteral(lit: any) {
     this.fragments.push({ type: 'literal', lit });
   }
 
+  /**
+   * Adds a token fragment
+   * @param token the token to add
+   */
   public addToken(token: IResolvable) {
     this.fragments.push({ type: 'token', token });
   }
 
+  /**
+   * Adds an intrinsic fragment
+   * @param value the intrinsic value to add
+   */
   public addIntrinsic(value: any) {
     this.fragments.push({ type: 'intrinsic', value });
   }
@@ -69,7 +91,7 @@ export class TokenizedStringFragments {
           break;
         case 'token':
           const mapped = mapper.mapToken(f.token);
-          if (isResolvableObject(mapped)) {
+          if (Tokenization.isResolvable(mapped)) {
             ret.addToken(mapped);
           } else {
             ret.addIntrinsic(mapped);

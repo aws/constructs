@@ -1,21 +1,16 @@
 import { IAspect } from './aspect';
 import { ConstructMetadata, MetadataEntry } from './metadata';
 import { DependableTrait } from './private/dependency';
+import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
-import { captureStackTrace } from './stack-trace';
 import { Token } from './token';
 
-const CONSTRUCT_SYMBOL = Symbol.for('@aws-cdk/core.Construct');
+const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
 /**
  * Represents a construct.
  */
-export interface IConstruct {
-  /**
-   * The construct node in the tree.
-   */
-  readonly node: ConstructNode;
-}
+export interface IConstruct { }
 
 /**
  * Represents the construct node in the scope tree.
@@ -27,33 +22,51 @@ export class ConstructNode {
   public static readonly PATH_SEP = '/';
 
   /**
+   * Returns the node associated with a construct.
+   * @param construct the construct
+   */
+  public static of(construct: IConstruct): ConstructNode {
+    const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as ConstructNode;
+    if (!node) {
+      throw new Error(`construct does not have an associated ConstructNode`);
+    }
+
+    return node;
+  }
+
+  /**
    * Synthesizes a CloudAssembly from a construct tree.
    * @param root The root of the construct tree.
    * @param options Synthesis options.
    */
-  public static synth(root: ConstructNode, options: SynthesisOptions): void {
+  public static synthesizeNode(root: ConstructNode, options: SynthesisOptions): void {
     // the three holy phases of synthesis: prepare, validate and synthesize
 
     // prepare
-    this.prepare(root);
+    this.prepareNode(root);
 
     // validate
     const validate = options.skipValidation === undefined ? true : !options.skipValidation;
     if (validate) {
-      const errors = this.validate(root);
+      const errors = this.validateNode(root);
       if (errors.length > 0) {
-        const errorList = errors.map(e => `[${e.source.node.path}] ${e.message}`).join('\n  ');
+        const errorList = errors.map(e => `[${ConstructNode.of(e.source).path}] ${e.message}`).join('\n  ');
         throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
       }
     }
 
     // synthesize (leaves first)
     for (const construct of root.findAll(ConstructOrder.POSTORDER)) {
+      const node = this.of(construct);
       try {
-        construct.node._lock();
-        (construct as any).synthesize({ outdir: options.outdir }); // "as any" is needed because we want to keep "synthesize" protected
+        node._lock();
+        const ctx = {
+          ...options.sessionContext,
+          outdir: options.outdir
+        };
+        (construct as any).synthesizeConstruct(ctx); // "as any" is needed because we want to keep "synthesize" protected
       } finally {
-        construct.node._unlock();
+        node._unlock();
       }
     }
   }
@@ -62,18 +75,18 @@ export class ConstructNode {
    * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
    * @param node The root node
    */
-  public static prepare(node: ConstructNode) {
+  public static prepareNode(node: ConstructNode) {
     const constructs = node.findAll(ConstructOrder.PREORDER);
 
     // Aspects are applied root to leaf
     for (const construct of constructs) {
-      construct.node.invokeAspects();
+      ConstructNode.of(construct).invokeAspects();
     }
 
     // Use .reverse() to achieve post-order traversal
     for (const construct of constructs.reverse()) {
-      if (Construct.isConstruct(construct)) {
-        (construct as any).prepare(); // "as any" is needed because we want to keep "prepare" protected
+      if (construct instanceof Construct) {
+        (construct as any).prepareConstruct(); // "as any" is needed because we want to keep "prepare" protected
       }
     }
   }
@@ -84,14 +97,14 @@ export class ConstructNode {
    *
    * @param node The root node
    */
-  public static validate(node: ConstructNode) {
+  public static validateNode(node: ConstructNode) {
     let errors = new Array<ValidationError>();
 
     for (const child of node.children) {
-      errors = errors.concat(this.validate(child.node));
+      errors = errors.concat(this.validateNode(ConstructNode.of(child)));
     }
 
-    const localErrors: string[] = (node.host as any).validate(); // "as any" is needed because we want to keep "validate" protected
+    const localErrors: string[] = (node.host as any).validateConstruct(); // "as any" is needed because we want to keep "validate" protected
     return errors.concat(localErrors.map(msg => ({ source: node.host, message: msg })));
   }
 
@@ -114,7 +127,7 @@ export class ConstructNode {
   private readonly _children: { [id: string]: IConstruct } = { };
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
-  private readonly _dependencies = new Set<Construct>();
+  private readonly _dependencies = new Set<IConstruct>();
   private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
 
@@ -132,7 +145,7 @@ export class ConstructNode {
       }
 
       // Has side effect so must be very last thing in constructor
-      scope.node.addChild(host, this.id);
+      ConstructNode.of(scope).addChild(host, this.id);
     } else {
       // This is a root construct.
       this.id = id;
@@ -149,7 +162,7 @@ export class ConstructNode {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.slice(1).map(c => c.node.id);
+    const components = this.scopes.slice(1).map(c => ConstructNode.of(c).id);
     return components.join(ConstructNode.PATH_SEP);
   }
 
@@ -158,7 +171,7 @@ export class ConstructNode {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => c.node.id);
+    const components = this.scopes.slice(1).map(c => ConstructNode.of(c).id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -239,17 +252,17 @@ export class ConstructNode {
     visit(this.host);
     return ret;
 
-    function visit(node: IConstruct) {
+    function visit(c: IConstruct) {
       if (order === ConstructOrder.PREORDER) {
-        ret.push(node);
+        ret.push(c);
       }
 
-      for (const child of node.node.children) {
+      for (const child of ConstructNode.of(c).children) {
         visit(child);
       }
 
       if (order === ConstructOrder.POSTORDER) {
-        ret.push(node);
+        ret.push(c);
       }
     }
   }
@@ -267,7 +280,7 @@ export class ConstructNode {
     }
 
     if (this.children.length > 0) {
-      const names = this.children.map(c => c.node.id);
+      const names = this.children.map(c => ConstructNode.of(c).id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
     }
     this._context[key] = value;
@@ -289,7 +302,7 @@ export class ConstructNode {
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
-    return this.scope && this.scope.node.tryGetContext(key);
+    return this.scope && ConstructNode.of(this.scope).tryGetContext(key);
   }
 
   /**
@@ -315,12 +328,15 @@ export class ConstructNode {
       return;
     }
 
-    const trace = this.tryGetContext(ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA) ? undefined : captureStackTrace(fromFunction || this.addMetadata);
+    const trace = this.tryGetContext(ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA)
+      ? undefined
+      : captureStackTrace(fromFunction || this.addMetadata);
+
     this._metadata.push({ type, data, trace });
   }
 
   /**
-   * Adds a { "aws:cdk:info": <message> } metadata entry to this construct.
+   * Adds a { "info": <message> } metadata entry to this construct.
    * The toolkit will display the info message when apps are synthesized.
    * @param message The info message.
    */
@@ -329,7 +345,7 @@ export class ConstructNode {
   }
 
   /**
-   * Adds a { warning: <message> } metadata entry to this construct.
+   * Adds a { "warning": <message> } metadata entry to this construct.
    * The toolkit will display the warning when an app is synthesized, or fail
    * if run in --strict mode.
    * @param message The warning message.
@@ -339,7 +355,7 @@ export class ConstructNode {
   }
 
   /**
-   * Adds an { error: <message> } metadata entry to this construct.
+   * Adds an { "error": <message> } metadata entry to this construct.
    * The toolkit will fail synthesis when errors are reported.
    * @param message The error message.
    */
@@ -368,13 +384,14 @@ export class ConstructNode {
     let curr: IConstruct | undefined = this.host;
     while (curr) {
       ret.unshift(curr);
-      curr = curr.node && curr.node.scope;
+      curr = ConstructNode.of(curr).scope;
     }
 
     return ret;
   }
 
   /**
+   * Returns the root of the construct tree.
    * @returns The root of the construct tree.
    */
   public get root() {
@@ -390,7 +407,7 @@ export class ConstructNode {
       return true;
     }
 
-    if (this.scope && this.scope.node.locked) {
+    if (this.scope && ConstructNode.of(this.scope).locked) {
       return true;
     }
 
@@ -403,7 +420,7 @@ export class ConstructNode {
    * All constructs in the dependency's scope will be deployed before any
    * construct in this construct's scope.
    */
-  public addDependency(...dependencies: Construct[]) {
+  public addDependency(...dependencies: IConstruct[]) {
     for (const dependency of dependencies) {
       this._dependencies.add(dependency);
     }
@@ -417,7 +434,7 @@ export class ConstructNode {
     const ret = new Array<Dependency>();
 
     for (const source of this.findAll()) {
-      for (const dependable of source.node._dependencies) {
+      for (const dependable of ConstructNode.of(source)._dependencies) {
         for (const target of DependableTrait.get(dependable).dependencyRoots) {
           let foundTargets = found.get(source);
           if (!foundTargets) { found.set(source, foundTargets = new Set()); }
@@ -431,6 +448,18 @@ export class ConstructNode {
     }
 
     return ret;
+  }
+
+  /**
+   * Remove the child with the given name, if present.
+   *
+   * @returns Whether a child with the given name was deleted.
+   * @experimental
+   */
+  public tryRemoveChild(childName: string): boolean {
+    if (!(childName in this._children)) { return false; }
+    delete this._children[childName];
+    return true;
   }
 
   /**
@@ -486,7 +515,7 @@ export class ConstructNode {
       if (this.invokedAspects.includes(aspect)) {
         continue;
       }
-      descendants.forEach( member => aspect.visit(member));
+      descendants.forEach(member => aspect.visit(member));
       this.invokedAspects.push(aspect);
     }
   }
@@ -500,18 +529,6 @@ export class ConstructNode {
  */
 export class Construct implements IConstruct {
   /**
-   * Return whether the given object is a Construct
-   */
-  public static isConstruct(x: any): x is Construct {
-    return typeof x === 'object' && x !== null && CONSTRUCT_SYMBOL in x;
-  }
-
-  /**
-   * Construct tree node which offers APIs for interacting with the construct tree.
-   */
-  public readonly node: ConstructNode;
-
-  /**
    * Creates a new construct node.
    *
    * @param scope The scope in which to define this construct
@@ -519,10 +536,14 @@ export class Construct implements IConstruct {
    * the ID includes a path separator (`/`), then it will be replaced by double
    * dash `--`.
    */
-  constructor(scope: Construct, id: string) {
-    Object.defineProperty(this, CONSTRUCT_SYMBOL, { value: true });
+  constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
+    const nodeFactory = options.nodeFactory || new DefaultNodeFactory();
 
-    this.node = new ConstructNode(this, scope, id);
+    Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
+      value: nodeFactory.createNode(this, scope, id),
+      enumerable: false,
+      configurable: false
+    });
 
     // implement IDependable privately
     DependableTrait.implement(this, {
@@ -534,7 +555,7 @@ export class Construct implements IConstruct {
    * Returns a string representation of this construct.
    */
   public toString() {
-    return this.node.path || '<root>';
+    return ConstructNode.of(this).path || '<root>';
   }
 
   /**
@@ -545,7 +566,7 @@ export class Construct implements IConstruct {
    *
    * @returns An array of validation error messages, or an empty array if there the construct is valid.
    */
-  protected validate(): string[] {
+  protected validateConstruct(): string[] {
     return [];
   }
 
@@ -559,7 +580,7 @@ export class Construct implements IConstruct {
    * This is an advanced framework feature. Only use this if you
    * understand the implications.
    */
-  protected prepare(): void {
+  protected prepareConstruct(): void {
     return;
   }
 
@@ -571,7 +592,7 @@ export class Construct implements IConstruct {
    *
    * @param session The synthesis session.
    */
-  protected synthesize(session: ISynthesisSession): void {
+  protected synthesizeConstruct(session: ISynthesisSession): void {
     ignore(session);
   }
 }
@@ -622,13 +643,18 @@ export interface Dependency {
 }
 
 /**
- * Represents a single session of synthesis. Passed into `Construct.synthesize()` methods.
+ * Represents a single session of synthesis. Passed into `construct.synthesizeConstruct()` methods.
  */
 export interface ISynthesisSession {
   /**
    * The output directory for this synthesis session.
    */
   readonly outdir: string;
+
+  /**
+   * Additional context passed to synthesizeNode through `sessionContext`.
+   */
+  [key: string]: any;
 }
 
 /**
@@ -646,6 +672,12 @@ export interface SynthesisOptions {
    * @default false
    */
   readonly skipValidation?: boolean;
+
+  /**
+   * Additional context passed into the synthesis session object when `construct.synth` is called.
+   * @default - no additional context is passed to `synthesizeConstruct`
+   */
+  readonly sessionContext?: { [key: string]: any };
 }
 
 function ignore(_x: any) {
@@ -661,4 +693,34 @@ const PATH_SEP_REGEX = new RegExp(`${ConstructNode.PATH_SEP}`, 'g');
 function sanitizeId(id: string) {
   // Escape path seps as double dashes
   return id.replace(PATH_SEP_REGEX, '--');
+}
+
+/**
+ * Options for creating constructs.
+ */
+export interface ConstructOptions {
+  /**
+   * A factory for attaching `ConstructNode`s to the construct.
+   * @default - the default `ConstructNode` is associated
+   */
+  readonly nodeFactory?: INodeFactory;
+}
+
+/**
+ * A factory for attaching `ConstructNode`s to the construct.
+ */
+export interface INodeFactory {
+  /**
+   * Returns a new `ConstructNode` associated with `host`.
+   * @param host the associated construct
+   * @param scope the construct's scope (parent)
+   * @param id the construct id
+   */
+  createNode(host: Construct, scope: IConstruct, id: string): ConstructNode;
+}
+
+class DefaultNodeFactory implements INodeFactory {
+  public createNode(host: Construct, scope: IConstruct, id: string) {
+    return new ConstructNode(host, scope, id);
+  }
 }

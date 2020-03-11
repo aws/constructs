@@ -1,49 +1,51 @@
 {
   "name": "constructs",
-  "version": "1.19.0",
+  "version": "0.0.0",
   "description": "A programming model for composable configuration",
+  "stability": "stable",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "jsii": {
     "outdir": "dist",
     "targets": {
       "java": {
-        "package": "software.amazon.awscdk.core",
+        "package": "io.constructs",
         "maven": {
-          "groupId": "software.amazon.awscdk",
-          "artifactId": "core"
+          "groupId": "io.constructs",
+          "artifactId": "constructs"
         }
       },
       "dotnet": {
-        "namespace": "Amazon.CDK",
-        "packageId": "Amazon.CDK",
-        "signAssembly": true,
-        "assemblyOriginatorKeyFile": "../../key.snk",
-        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+        "namespace": "Constructs",
+        "packageId": "Constructs"
       },
       "python": {
-        "distName": "aws-cdk.core",
-        "module": "aws_cdk.core"
+        "distName": "constructs",
+        "module": "constructs"
       }
     }
   },
   "nyc": {
     "reporter": "html",
     "check-coverage": true,
-    "lines": 80
+    "lines": 80,
+    "statements": 78
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/aws/constructs.git"
   },
   "scripts": {
-    "build": "jsii",
+    "compile": "jsii",
     "watch": "jsii -w",
-    "lint": "eslint",
-    "test": "nyc nodeunit test/test.*.js",
-    "package": "jsii-pacmak"
+    "test": "nodeunit test/test.*.js && yarn lint",
+    "package": "jsii-pacmak",
+    "build": "yarn compile && yarn test && yarn run package",
+    "compat": "scripts/compat.sh",
+    "lint": "eslint . --ext .ts && yarn compat"
   },
   "keywords": [
+    "aws",
     "constructs",
     "cdk",
     "jsii"
@@ -55,16 +57,17 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "12.12.2",
+    "@types/node": "^10.17.17",
     "@types/nodeunit": "^0.0.30",
-    "jsii": "^0.21.1",
-    "jsii-pacmak": "^0.21.1",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "eslint": "^6.8.0",
+    "jsii-diff": "^1.1.0",
     "nodeunit": "^0.11.3",
     "nyc": "^15.0.0"
   },
-  "homepage": "https://github.com/aws/constructs",
+  "homepage": "https://github.com/aws/aws-cdk",
   "engines": {
     "node": ">= 10.3.0"
-  },
-  "stability": "stable"
+  }
 }

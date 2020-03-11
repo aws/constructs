@@ -21,10 +21,11 @@ export = {
   'Aspects are invoked only once'(test: Test) {
     const app = new App();
     const root = new MyConstruct(app, 'MyConstruct');
-    root.node.applyAspect(new VisitOnce());
-    ConstructNode.prepare(root.node);
+    const node = ConstructNode.of(root);
+    node.applyAspect(new VisitOnce());
+    ConstructNode.prepareNode(node);
     test.deepEqual(root.visitCounter, 1);
-    ConstructNode.prepare(root.node);
+    ConstructNode.prepareNode(node);
     test.deepEqual(root.visitCounter, 1);
     test.done();
   },
