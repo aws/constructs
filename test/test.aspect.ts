@@ -1,6 +1,6 @@
 import { Test } from 'nodeunit';
 import { IAspect } from '../lib/aspect';
-import { Construct, ConstructNode, IConstruct } from '../lib/construct';
+import { Construct, Node, IConstruct } from '../lib/construct';
 import { App } from './util';
 
 class MyConstruct extends Construct {
@@ -21,11 +21,11 @@ export = {
   'Aspects are invoked only once'(test: Test) {
     const app = new App();
     const root = new MyConstruct(app, 'MyConstruct');
-    const node = ConstructNode.of(root);
+    const node = Node.of(root);
     node.applyAspect(new VisitOnce());
-    ConstructNode.prepareNode(node);
+    node.prepare();
     test.deepEqual(root.visitCounter, 1);
-    ConstructNode.prepareNode(node);
+    node.prepare();
     test.deepEqual(root.visitCounter, 1);
     test.done();
   },

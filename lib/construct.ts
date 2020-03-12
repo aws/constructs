@@ -15,7 +15,7 @@ export interface IConstruct { }
 /**
  * Represents the construct node in the scope tree.
  */
-export class ConstructNode {
+export class Node {
   /**
    * Separator used to delimit construct path components.
    */
@@ -25,87 +25,13 @@ export class ConstructNode {
    * Returns the node associated with a construct.
    * @param construct the construct
    */
-  public static of(construct: IConstruct): ConstructNode {
-    const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as ConstructNode;
+  public static of(construct: IConstruct): Node {
+    const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as Node;
     if (!node) {
-      throw new Error(`construct does not have an associated ConstructNode`);
+      throw new Error(`construct does not have an associated node`);
     }
 
     return node;
-  }
-
-  /**
-   * Synthesizes a CloudAssembly from a construct tree.
-   * @param root The root of the construct tree.
-   * @param options Synthesis options.
-   */
-  public static synthesizeNode(root: ConstructNode, options: SynthesisOptions): void {
-    // the three holy phases of synthesis: prepare, validate and synthesize
-
-    // prepare
-    this.prepareNode(root);
-
-    // validate
-    const validate = options.skipValidation === undefined ? true : !options.skipValidation;
-    if (validate) {
-      const errors = this.validateNode(root);
-      if (errors.length > 0) {
-        const errorList = errors.map(e => `[${ConstructNode.of(e.source).path}] ${e.message}`).join('\n  ');
-        throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
-      }
-    }
-
-    // synthesize (leaves first)
-    for (const construct of root.findAll(ConstructOrder.POSTORDER)) {
-      const node = this.of(construct);
-      try {
-        node._lock();
-        const ctx = {
-          ...options.sessionContext,
-          outdir: options.outdir
-        };
-        (construct as any).synthesizeConstruct(ctx); // "as any" is needed because we want to keep "synthesize" protected
-      } finally {
-        node._unlock();
-      }
-    }
-  }
-
-  /**
-   * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
-   * @param node The root node
-   */
-  public static prepareNode(node: ConstructNode) {
-    const constructs = node.findAll(ConstructOrder.PREORDER);
-
-    // Aspects are applied root to leaf
-    for (const construct of constructs) {
-      ConstructNode.of(construct).invokeAspects();
-    }
-
-    // Use .reverse() to achieve post-order traversal
-    for (const construct of constructs.reverse()) {
-      if (construct instanceof Construct) {
-        (construct as any).prepareConstruct(); // "as any" is needed because we want to keep "prepare" protected
-      }
-    }
-  }
-
-  /**
-   * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
-   * the list of all errors. An empty list indicates that there are no errors.
-   *
-   * @param node The root node
-   */
-  public static validateNode(node: ConstructNode) {
-    let errors = new Array<ValidationError>();
-
-    for (const child of node.children) {
-      errors = errors.concat(this.validateNode(ConstructNode.of(child)));
-    }
-
-    const localErrors: string[] = (node.host as any).validateConstruct(); // "as any" is needed because we want to keep "validate" protected
-    return errors.concat(localErrors.map(msg => ({ source: node.host, message: msg })));
   }
 
   /**
@@ -145,7 +71,7 @@ export class ConstructNode {
       }
 
       // Has side effect so must be very last thing in constructor
-      ConstructNode.of(scope).addChild(host, this.id);
+      Node.of(scope).addChild(host, this.id);
     } else {
       // This is a root construct.
       this.id = id;
@@ -162,8 +88,8 @@ export class ConstructNode {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.slice(1).map(c => ConstructNode.of(c).id);
-    return components.join(ConstructNode.PATH_SEP);
+    const components = this.scopes.slice(1).map(c => Node.of(c).id);
+    return components.join(Node.PATH_SEP);
   }
 
   /**
@@ -171,7 +97,7 @@ export class ConstructNode {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => ConstructNode.of(c).id);
+    const components = this.scopes.slice(1).map(c => Node.of(c).id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -257,7 +183,7 @@ export class ConstructNode {
         ret.push(c);
       }
 
-      for (const child of ConstructNode.of(c).children) {
+      for (const child of Node.of(c).children) {
         visit(child);
       }
 
@@ -280,7 +206,7 @@ export class ConstructNode {
     }
 
     if (this.children.length > 0) {
-      const names = this.children.map(c => ConstructNode.of(c).id);
+      const names = this.children.map(c => Node.of(c).id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
     }
     this._context[key] = value;
@@ -302,7 +228,7 @@ export class ConstructNode {
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
-    return this.scope && ConstructNode.of(this.scope).tryGetContext(key);
+    return this.scope && Node.of(this.scope).tryGetContext(key);
   }
 
   /**
@@ -384,7 +310,7 @@ export class ConstructNode {
     let curr: IConstruct | undefined = this.host;
     while (curr) {
       ret.unshift(curr);
-      curr = ConstructNode.of(curr).scope;
+      curr = Node.of(curr).scope;
     }
 
     return ret;
@@ -407,7 +333,7 @@ export class ConstructNode {
       return true;
     }
 
-    if (this.scope && ConstructNode.of(this.scope).locked) {
+    if (this.scope && Node.of(this.scope).locked) {
       return true;
     }
 
@@ -434,7 +360,7 @@ export class ConstructNode {
     const ret = new Array<Dependency>();
 
     for (const source of this.findAll()) {
-      for (const dependable of ConstructNode.of(source)._dependencies) {
+      for (const dependable of Node.of(source)._dependencies) {
         for (const target of DependableTrait.get(dependable).dependencyRoots) {
           let foundTargets = found.get(source);
           if (!foundTargets) { found.set(source, foundTargets = new Set()); }
@@ -460,6 +386,76 @@ export class ConstructNode {
     if (!(childName in this._children)) { return false; }
     delete this._children[childName];
     return true;
+  }
+
+    /**
+   * Synthesizes a CloudAssembly from a construct tree.
+   * @param options Synthesis options.
+   */
+  public synthesize(options: SynthesisOptions): void {
+    // the three holy phases of synthesis: prepare, validate and synthesize
+
+    // prepare
+    this.prepare();
+
+    // validate
+    const validate = options.skipValidation === undefined ? true : !options.skipValidation;
+    if (validate) {
+      const errors = this.validate();
+      if (errors.length > 0) {
+        const errorList = errors.map(e => `[${Node.of(e.source).path}] ${e.message}`).join('\n  ');
+        throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
+      }
+    }
+
+    // synthesize (leaves first)
+    for (const construct of this.findAll(ConstructOrder.POSTORDER)) {
+      const node = Node.of(construct);
+      try {
+        node._lock();
+        const ctx = {
+          ...options.sessionContext,
+          outdir: options.outdir
+        };
+        (construct as any).onSynthesize(ctx); // "as any" is needed because we want to keep "synthesize" protected
+      } finally {
+        node._unlock();
+      }
+    }
+  }
+
+  /**
+   * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
+   */
+  public prepare() {
+    const constructs = this.findAll(ConstructOrder.PREORDER);
+
+    // Aspects are applied root to leaf
+    for (const construct of constructs) {
+      Node.of(construct).invokeAspects();
+    }
+
+    // Use .reverse() to achieve post-order traversal
+    for (const construct of constructs.reverse()) {
+      if (construct instanceof Construct) {
+        (construct as any).onPrepare(); // "as any" is needed because we want to keep "prepare" protected
+      }
+    }
+  }
+
+  /**
+   * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
+   * the list of all errors. An empty list indicates that there are no errors.
+   */
+  public validate() {
+    let errors = new Array<ValidationError>();
+
+    for (const child of this.children) {
+      errors = errors.concat(Node.of(child).validate());
+    }
+
+    const localErrors: string[] = (this.host as any).onValidate(); // "as any" is needed because we want to keep "validate" protected
+    return errors.concat(localErrors.map(msg => ({ source: this.host, message: msg })));
   }
 
   /**
@@ -535,10 +531,12 @@ export class Construct implements IConstruct {
    * @param id The scoped construct ID. Must be unique amongst siblings. If
    * the ID includes a path separator (`/`), then it will be replaced by double
    * dash `--`.
+   * @param options Options
    */
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
-    const nodeFactory = options.nodeFactory || new DefaultNodeFactory();
 
+    // attach the construct to the construct tree by creating a node
+    const nodeFactory = options.nodeFactory ?? { createNode: () => new Node(this, scope, id) };
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
       value: nodeFactory.createNode(this, scope, id),
       enumerable: false,
@@ -555,7 +553,7 @@ export class Construct implements IConstruct {
    * Returns a string representation of this construct.
    */
   public toString() {
-    return ConstructNode.of(this).path || '<root>';
+    return Node.of(this).path || '<root>';
   }
 
   /**
@@ -566,7 +564,7 @@ export class Construct implements IConstruct {
    *
    * @returns An array of validation error messages, or an empty array if there the construct is valid.
    */
-  protected validateConstruct(): string[] {
+  protected onValidate(): string[] {
     return [];
   }
 
@@ -580,7 +578,7 @@ export class Construct implements IConstruct {
    * This is an advanced framework feature. Only use this if you
    * understand the implications.
    */
-  protected prepareConstruct(): void {
+  protected onPrepare(): void {
     return;
   }
 
@@ -592,7 +590,7 @@ export class Construct implements IConstruct {
    *
    * @param session The synthesis session.
    */
-  protected synthesizeConstruct(session: ISynthesisSession): void {
+  protected onSynthesize(session: ISynthesisSession): void {
     ignore(session);
   }
 }
@@ -643,7 +641,7 @@ export interface Dependency {
 }
 
 /**
- * Represents a single session of synthesis. Passed into `construct.synthesizeConstruct()` methods.
+ * Represents a single session of synthesis. Passed into `construct.onSynthesize()` methods.
  */
 export interface ISynthesisSession {
   /**
@@ -675,7 +673,7 @@ export interface SynthesisOptions {
 
   /**
    * Additional context passed into the synthesis session object when `construct.synth` is called.
-   * @default - no additional context is passed to `synthesizeConstruct`
+   * @default - no additional context is passed to `onSynthesize`
    */
   readonly sessionContext?: { [key: string]: any };
 }
@@ -685,7 +683,7 @@ function ignore(_x: any) {
 }
 
 // Import this _after_ everything else to help node work the classes out in the correct order...
-const PATH_SEP_REGEX = new RegExp(`${ConstructNode.PATH_SEP}`, 'g');
+const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
 
 /**
  * Return a sanitized version of an arbitrary string, so it can be used as an ID
@@ -700,27 +698,21 @@ function sanitizeId(id: string) {
  */
 export interface ConstructOptions {
   /**
-   * A factory for attaching `ConstructNode`s to the construct.
-   * @default - the default `ConstructNode` is associated
+   * A factory for attaching `Node`s to the construct.
+   * @default - the default `Node` is associated
    */
   readonly nodeFactory?: INodeFactory;
 }
 
 /**
- * A factory for attaching `ConstructNode`s to the construct.
+ * A factory for attaching `Node`s to the construct.
  */
 export interface INodeFactory {
   /**
-   * Returns a new `ConstructNode` associated with `host`.
+   * Returns a new `Node` associated with `host`.
    * @param host the associated construct
    * @param scope the construct's scope (parent)
    * @param id the construct id
    */
-  createNode(host: Construct, scope: IConstruct, id: string): ConstructNode;
-}
-
-class DefaultNodeFactory implements INodeFactory {
-  public createNode(host: Construct, scope: IConstruct, id: string) {
-    return new ConstructNode(host, scope, id);
-  }
+  createNode(host: Construct, scope: IConstruct, id: string): Node;
 }

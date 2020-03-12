@@ -1,5 +1,5 @@
 import { Test } from 'nodeunit';
-import { Construct, ConstructMetadata, ConstructNode, ConstructOrder, Lazy, ValidationError } from '../lib';
+import { Construct, ConstructMetadata, Node, ConstructOrder, Lazy, ValidationError } from '../lib';
 import { App as Root } from './util';
 
 // tslint:disable:variable-name
@@ -8,7 +8,7 @@ import { App as Root } from './util';
 export = {
   'the "Root" construct is a special construct which can be used as the root of the tree'(test: Test) {
     const root = new Root();
-    const node = ConstructNode.of(root);
+    const node = Node.of(root);
     test.equal(node.id, '', 'if not specified, name of a root construct is an empty string');
     test.ok(!node.scope, 'no parent');
     test.equal(node.children.length, 0);
@@ -24,12 +24,12 @@ export = {
   'construct.name returns the name of the construct'(test: Test) {
     const t = createTree();
 
-    test.equal(ConstructNode.of(t.child1).id, 'Child1');
-    test.equal(ConstructNode.of(t.child2).id, 'Child2');
-    test.equal(ConstructNode.of(t.child1_1).id, 'Child11');
-    test.equal(ConstructNode.of(t.child1_2).id, 'Child12');
-    test.equal(ConstructNode.of(t.child1_1_1).id, 'Child111');
-    test.equal(ConstructNode.of(t.child2_1).id, 'Child21');
+    test.equal(Node.of(t.child1).id, 'Child1');
+    test.equal(Node.of(t.child2).id, 'Child2');
+    test.equal(Node.of(t.child1_1).id, 'Child11');
+    test.equal(Node.of(t.child1_2).id, 'Child12');
+    test.equal(Node.of(t.child1_1_1).id, 'Child111');
+    test.equal(Node.of(t.child2_1).id, 'Child21');
 
     test.done();
   },
@@ -54,13 +54,13 @@ export = {
   'if construct id contains path seperators, they will be replaced by double-dash'(test: Test) {
     const root = new Root();
     const c = new Construct(root, 'Boom/Boom/Bam');
-    test.deepEqual(ConstructNode.of(c).id, 'Boom--Boom--Bam');
+    test.deepEqual(Node.of(c).id, 'Boom--Boom--Bam');
     test.done();
   },
 
   'if "undefined" is forcefully used as an "id", it will be treated as an empty string'(test: Test) {
     const c = new Construct(undefined as any, undefined as any);
-    test.deepEqual(ConstructNode.of(c).id, '');
+    test.deepEqual(Node.of(c).id, '');
     test.done();
   },
 
@@ -82,17 +82,17 @@ export = {
     const c1 = new Construct(child2, 'My construct');
     const c2 = new Construct(child1, 'My construct');
 
-    test.deepEqual(ConstructNode.of(c1).path, 'This is the first child/Second level/My construct');
-    test.deepEqual(ConstructNode.of(c2).path, 'This is the first child/My construct');
-    test.deepEqual(ConstructNode.of(c1).uniqueId, 'ThisisthefirstchildSecondlevelMyconstruct202131E0');
-    test.deepEqual(ConstructNode.of(c2).uniqueId, 'ThisisthefirstchildMyconstruct8C288DF9');
+    test.deepEqual(Node.of(c1).path, 'This is the first child/Second level/My construct');
+    test.deepEqual(Node.of(c2).path, 'This is the first child/My construct');
+    test.deepEqual(Node.of(c1).uniqueId, 'ThisisthefirstchildSecondlevelMyconstruct202131E0');
+    test.deepEqual(Node.of(c2).uniqueId, 'ThisisthefirstchildMyconstruct8C288DF9');
     test.done();
   },
 
   'cannot calculate uniqueId if the construct path is ["Default"]'(test: Test) {
     const root = new Root();
     const c = new Construct(root, 'Default');
-    test.throws(() => ConstructNode.of(c).uniqueId, /Unable to calculate a unique id for an empty set of components/);
+    test.throws(() => Node.of(c).uniqueId, /Unable to calculate a unique id for an empty set of components/);
     test.done();
   },
 
@@ -100,25 +100,25 @@ export = {
     const root = new Root();
     const child = new Construct(root, 'Child1');
     new Construct(root, 'Child2');
-    test.equal(ConstructNode.of(child).children.length, 0, 'no children');
-    test.equal(ConstructNode.of(root).children.length, 2, 'two children are expected');
+    test.equal(Node.of(child).children.length, 0, 'no children');
+    test.equal(Node.of(root).children.length, 2, 'two children are expected');
     test.done();
   },
 
   'construct.findChild(name) can be used to retrieve a child from a parent'(test: Test) {
     const root = new Root();
     const child = new Construct(root, 'Contruct');
-    test.strictEqual(ConstructNode.of(root).tryFindChild(ConstructNode.of(child).id), child, 'findChild(name) can be used to retrieve the child from a parent');
-    test.ok(!ConstructNode.of(root).tryFindChild('NotFound'), 'findChild(name) returns undefined if the child is not found');
+    test.strictEqual(Node.of(root).tryFindChild(Node.of(child).id), child, 'findChild(name) can be used to retrieve the child from a parent');
+    test.ok(!Node.of(root).tryFindChild('NotFound'), 'findChild(name) returns undefined if the child is not found');
     test.done();
   },
 
   'construct.getChild(name) can be used to retrieve a child from a parent'(test: Test) {
     const root = new Root();
     const child = new Construct(root, 'Contruct');
-    test.strictEqual(ConstructNode.of(root).findChild(ConstructNode.of(child).id), child, 'getChild(name) can be used to retrieve the child from a parent');
+    test.strictEqual(Node.of(root).findChild(Node.of(child).id), child, 'getChild(name) can be used to retrieve the child from a parent');
     test.throws(() => {
-      ConstructNode.of(root).findChild('NotFound');
+      Node.of(root).findChild('NotFound');
     }, '', 'getChild(name) returns undefined if the child is not found');
     test.done();
   },
@@ -130,8 +130,8 @@ export = {
     };
 
     const t = createTree(context);
-    test.equal(ConstructNode.of(t.child1_2).tryGetContext('ctx1'), 12);
-    test.equal(ConstructNode.of(t.child1_1_1).tryGetContext('ctx2'), 'hello');
+    test.equal(Node.of(t.child1_2).tryGetContext('ctx1'), 12);
+    test.equal(Node.of(t.child1_1_1).tryGetContext('ctx2'), 'hello');
     test.done();
   },
 
@@ -139,34 +139,34 @@ export = {
   'construct.setContext(k,v) sets context at some level and construct.getContext(key) will return the lowermost value defined in the stack'(test: Test) {
     const root = new Root();
     const highChild = new Construct(root, 'highChild');
-    ConstructNode.of(highChild).setContext('c1', 'root');
-    ConstructNode.of(highChild).setContext('c2', 'root');
+    Node.of(highChild).setContext('c1', 'root');
+    Node.of(highChild).setContext('c2', 'root');
 
     const child1 = new Construct(highChild, 'child1');
-    ConstructNode.of(child1).setContext('c2', 'child1');
-    ConstructNode.of(child1).setContext('c3', 'child1');
+    Node.of(child1).setContext('c2', 'child1');
+    Node.of(child1).setContext('c3', 'child1');
 
     const child2 = new Construct(highChild, 'child2');
     const child3 = new Construct(child1, 'child1child1');
-    ConstructNode.of(child3).setContext('c1', 'child3');
-    ConstructNode.of(child3).setContext('c4', 'child3');
+    Node.of(child3).setContext('c1', 'child3');
+    Node.of(child3).setContext('c4', 'child3');
 
-    test.equal(ConstructNode.of(highChild).tryGetContext('c1'), 'root');
-    test.equal(ConstructNode.of(highChild).tryGetContext('c2'), 'root');
-    test.equal(ConstructNode.of(highChild).tryGetContext('c3'), undefined);
+    test.equal(Node.of(highChild).tryGetContext('c1'), 'root');
+    test.equal(Node.of(highChild).tryGetContext('c2'), 'root');
+    test.equal(Node.of(highChild).tryGetContext('c3'), undefined);
 
-    test.equal(ConstructNode.of(child1).tryGetContext('c1'), 'root');
-    test.equal(ConstructNode.of(child1).tryGetContext('c2'), 'child1');
-    test.equal(ConstructNode.of(child1).tryGetContext('c3'), 'child1');
+    test.equal(Node.of(child1).tryGetContext('c1'), 'root');
+    test.equal(Node.of(child1).tryGetContext('c2'), 'child1');
+    test.equal(Node.of(child1).tryGetContext('c3'), 'child1');
 
-    test.equal(ConstructNode.of(child2).tryGetContext('c1'), 'root');
-    test.equal(ConstructNode.of(child2).tryGetContext('c2'), 'root');
-    test.equal(ConstructNode.of(child2).tryGetContext('c3'), undefined);
+    test.equal(Node.of(child2).tryGetContext('c1'), 'root');
+    test.equal(Node.of(child2).tryGetContext('c2'), 'root');
+    test.equal(Node.of(child2).tryGetContext('c3'), undefined);
 
-    test.equal(ConstructNode.of(child3).tryGetContext('c1'), 'child3');
-    test.equal(ConstructNode.of(child3).tryGetContext('c2'), 'child1');
-    test.equal(ConstructNode.of(child3).tryGetContext('c3'), 'child1');
-    test.equal(ConstructNode.of(child3).tryGetContext('c4'), 'child3');
+    test.equal(Node.of(child3).tryGetContext('c1'), 'child3');
+    test.equal(Node.of(child3).tryGetContext('c2'), 'child1');
+    test.equal(Node.of(child3).tryGetContext('c3'), 'child1');
+    test.equal(Node.of(child3).tryGetContext('c4'), 'child3');
 
     test.done();
   },
@@ -174,30 +174,30 @@ export = {
   'construct.setContext(key, value) can only be called before adding any children'(test: Test) {
     const root = new Root();
     new Construct(root, 'child1');
-    test.throws(() => ConstructNode.of(root).setContext('k', 'v'));
+    test.throws(() => Node.of(root).setContext('k', 'v'));
     test.done();
   },
 
   'fails if context key contains unresolved tokens'(test: Test) {
     const root = new Root();
     const token = Lazy.stringValue({ produce: () => 'foo' });
-    test.throws(() => ConstructNode.of(root).setContext(`my-${token}`, 'foo'), /Invalid context key/);
-    test.throws(() => ConstructNode.of(root).tryGetContext(token), /Invalid context key/);
+    test.throws(() => Node.of(root).setContext(`my-${token}`, 'foo'), /Invalid context key/);
+    test.throws(() => Node.of(root).tryGetContext(token), /Invalid context key/);
     test.done();
   },
 
   'construct.pathParts returns an array of strings of all names from root to node'(test: Test) {
     const tree = createTree();
-    test.deepEqual(ConstructNode.of(tree.root).path, '');
-    test.deepEqual(ConstructNode.of(tree.child1_1_1).path, 'HighChild/Child1/Child11/Child111');
-    test.deepEqual(ConstructNode.of(tree.child2).path, 'HighChild/Child2');
+    test.deepEqual(Node.of(tree.root).path, '');
+    test.deepEqual(Node.of(tree.child1_1_1).path, 'HighChild/Child1/Child11/Child111');
+    test.deepEqual(Node.of(tree.child2).path, 'HighChild/Child2');
     test.done();
   },
 
   'if a root construct has a name, it should be included in the path'(test: Test) {
     const tree = createTree({});
-    test.deepEqual(ConstructNode.of(tree.root).path, '');
-    test.deepEqual(ConstructNode.of(tree.child1_1_1).path, 'HighChild/Child1/Child11/Child111');
+    test.deepEqual(Node.of(tree.root).path, '');
+    test.deepEqual(Node.of(tree.child1_1_1).path, 'HighChild/Child1/Child11/Child111');
     test.done();
   },
 
@@ -227,9 +227,9 @@ export = {
   'addMetadata(type, data) can be used to attach metadata to constructs FIND_ME'(test: Test) {
     const root = new Root();
     const con = new Construct(root, 'MyConstruct');
-    test.deepEqual(ConstructNode.of(con).metadata, [], 'starts empty');
+    test.deepEqual(Node.of(con).metadata, [], 'starts empty');
 
-    const node = ConstructNode.of(con);
+    const node = Node.of(con);
     node.addMetadata('key', 'value');
     node.addMetadata('number', 103);
     node.addMetadata('array', [ 123, 456 ]);
@@ -246,7 +246,7 @@ export = {
   'addMetadata(type, undefined/null) is ignored'(test: Test) {
     const root = new Root();
     const con = new Construct(root, 'Foo');
-    const node = ConstructNode.of(con);
+    const node = Node.of(con);
     node.addMetadata('Null', null);
     node.addMetadata('Undefined', undefined);
     node.addMetadata('True', true);
@@ -266,7 +266,7 @@ export = {
   'addWarning(message) can be used to add a "WARNING" message entry to the construct'(test: Test) {
     const root = new Root();
     const con = new Construct(root, 'MyConstruct');
-    const node = ConstructNode.of(con);
+    const node = Node.of(con);
     node.addWarning('This construct is deprecated, use the other one instead');
     test.deepEqual(node.metadata[0].type, ConstructMetadata.WARNING_METADATA_KEY);
     test.deepEqual(node.metadata[0].data, 'This construct is deprecated, use the other one instead');
@@ -277,7 +277,7 @@ export = {
   'addError(message) can be used to add a "ERROR" message entry to the construct'(test: Test) {
     const root = new Root();
     const con = new Construct(root, 'MyConstruct');
-    const node = ConstructNode.of(con);
+    const node = Node.of(con);
     node.addError('Stop!');
     test.deepEqual(node.metadata[0].type, ConstructMetadata.ERROR_METADATA_KEY);
     test.deepEqual(node.metadata[0].data, 'Stop!');
@@ -288,7 +288,7 @@ export = {
   'addInfo(message) can be used to add an "INFO" message entry to the construct'(test: Test) {
     const root = new Root();
     const con = new Construct(root, 'MyConstruct');
-    const node = ConstructNode.of(con);
+    const node = Node.of(con);
     node.addInfo('Hey there, how do you do?');
     test.deepEqual(node.metadata[0].type, ConstructMetadata.INFO_METADATA_KEY);
     test.deepEqual(node.metadata[0].data, 'Hey there, how do you do?');
@@ -302,21 +302,21 @@ export = {
     new MyBeautifulConstruct(root, 'mbc2');
     new MyBeautifulConstruct(root, 'mbc3');
     new MyBeautifulConstruct(root, 'mbc4');
-    test.ok(ConstructNode.of(root).children.length >= 4);
+    test.ok(Node.of(root).children.length >= 4);
     test.done();
   },
 
   // tslint:disable-next-line:max-line-length
-  'construct.validateConstruct() can be implemented to perform validation, ConstructNode.validateNode(construct.node) will return all errors from the subtree (DFS)'(test: Test) {
+  'construct.onValidate() can be implemented to perform validation, node.validate() will return all errors from the subtree (DFS)'(test: Test) {
 
     class MyConstruct extends Construct {
-      protected validateConstruct() {
+      protected onValidate() {
         return [ 'my-error1', 'my-error2' ];
       }
     }
 
     class YourConstruct extends Construct {
-      protected validateConstruct() {
+      protected onValidate() {
         return [ 'your-error1' ];
       }
     }
@@ -328,7 +328,7 @@ export = {
         new YourConstruct(this, 'YourConstruct');
       }
 
-      protected validateConstruct() {
+      protected onValidate() {
         return [ 'their-error' ];
       }
     }
@@ -341,15 +341,15 @@ export = {
         new TheirConstruct(this, 'TheirConstruct');
       }
 
-      protected validateConstruct() {
+      protected onValidate() {
         return  [ 'stack-error' ];
       }
     }
 
     const stack = new TestStack();
 
-    const errors = ConstructNode.validateNode(ConstructNode.of(stack))
-      .map((v: ValidationError) => ({ path: ConstructNode.of(v.source).path, message: v.message }));
+    const errors = Node.of(stack).validate()
+      .map((v: ValidationError) => ({ path: Node.of(v.source).path, message: v.message }));
 
     // validate DFS
     test.deepEqual(errors, [
@@ -367,11 +367,11 @@ export = {
 
     class LockableConstruct extends Construct {
       public lockMe() {
-        (ConstructNode.of(this) as any)._lock();
+        (Node.of(this) as any)._lock();
       }
 
       public unlockMe() {
-        (ConstructNode.of(this) as any)._unlock();
+        (Node.of(this) as any)._unlock();
       }
     }
 
@@ -409,24 +409,24 @@ export = {
     new Construct(c2, '5');
 
     // THEN
-    const node = ConstructNode.of(c1);
-    test.deepEqual(node.findAll().map(x => ConstructNode.of(x).id), ConstructNode.of(c1).findAll(ConstructOrder.PREORDER).map(x => ConstructNode.of(x).id)); // default is PreOrder
-    test.deepEqual(node.findAll(ConstructOrder.PREORDER).map(x => ConstructNode.of(x).id), [ '1', '2', '4', '5', '3' ]);
-    test.deepEqual(node.findAll(ConstructOrder.POSTORDER).map(x => ConstructNode.of(x).id), [ '4', '5', '2', '3', '1' ]);
+    const node = Node.of(c1);
+    test.deepEqual(node.findAll().map(x => Node.of(x).id), Node.of(c1).findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)); // default is PreOrder
+    test.deepEqual(node.findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id), [ '1', '2', '4', '5', '3' ]);
+    test.deepEqual(node.findAll(ConstructOrder.POSTORDER).map(x => Node.of(x).id), [ '4', '5', '2', '3', '1' ]);
     test.done();
   },
 
   'ancestors returns a list of parents up to root'(test: Test) {
     const { child1_1_1 } = createTree();
-    test.deepEqual(ConstructNode.of(child1_1_1).scopes.map(x => ConstructNode.of(x).id), [ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
+    test.deepEqual(Node.of(child1_1_1).scopes.map(x => Node.of(x).id), [ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
     test.done();
   },
 
   '"root" returns the root construct'(test: Test) {
     const { child1, child2, child1_1_1, root } = createTree();
-    test.ok(ConstructNode.of(child1).root === root);
-    test.ok(ConstructNode.of(child2).root === root);
-    test.ok(ConstructNode.of(child1_1_1).root === root);
+    test.ok(Node.of(child1).root === root);
+    test.ok(Node.of(child2).root === root);
+    test.ok(Node.of(child1_1_1).root === root);
     test.done();
   },
 
@@ -437,7 +437,7 @@ export = {
       const defaultChild = new Construct(root, 'Resource');
       new Construct(root, 'child2');
 
-      test.same(ConstructNode.of(root).defaultChild, defaultChild);
+      test.same(Node.of(root).defaultChild, defaultChild);
       test.done();
     },
     'returns the child with id "Default"'(test: Test) {
@@ -446,16 +446,16 @@ export = {
       const defaultChild = new Construct(root, 'Default');
       new Construct(root, 'child2');
 
-      test.same(ConstructNode.of(root).defaultChild, defaultChild);
+      test.same(Node.of(root).defaultChild, defaultChild);
       test.done();
     },
     'can override defaultChild'(test: Test) {
       const root = new Root();
       new Construct(root, 'Resource');
       const defaultChild = new Construct(root, 'OtherResource');
-      ConstructNode.of(root).defaultChild = defaultChild;
+      Node.of(root).defaultChild = defaultChild;
 
-      test.same(ConstructNode.of(root).defaultChild, defaultChild);
+      test.same(Node.of(root).defaultChild, defaultChild);
       test.done();
     },
     'returns "undefined" if there is no default'(test: Test) {
@@ -463,7 +463,7 @@ export = {
       new Construct(root, 'child1');
       new Construct(root, 'child2');
 
-      test.equal(ConstructNode.of(root).defaultChild, undefined);
+      test.equal(Node.of(root).defaultChild, undefined);
       test.done();
     },
     'fails if there are both "Resource" and "Default"'(test: Test) {
@@ -473,7 +473,7 @@ export = {
       new Construct(root, 'child2');
       new Construct(root, 'Resource');
 
-      test.throws(() => ConstructNode.of(root).defaultChild,
+      test.throws(() => Node.of(root).defaultChild,
         /Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
       test.done();
 
@@ -485,7 +485,7 @@ function createTree(context?: any) {
   const root = new Root();
   const highChild = new Construct(root, 'HighChild');
   if (context) {
-    Object.keys(context).forEach(key => ConstructNode.of(highChild).setContext(key, context[key]));
+    Object.keys(context).forEach(key => Node.of(highChild).setContext(key, context[key]));
   }
 
   const child1 = new Construct(highChild, 'Child1');
