@@ -8,6 +8,13 @@
   "jsii": {
     "outdir": "dist",
     "targets": {
+      "java": {
+        "package": "software.constructs",
+        "maven": {
+          "groupId": "software.constructs",
+          "artifactId": "constructs"
+        }
+      },
       "dotnet": {
         "namespace": "Constructs",
         "packageId": "Constructs"
@@ -65,7 +72,7 @@
     "nyc": "^15.0.0",
     "standard-version": "^7.1.0"
   },
-  "homepage": "https://github.com/aws/aws-cdk",
+  "homepage": "https://github.com/aws/constructs",
   "engines": {
     "node": ">= 10.3.0"
   }
