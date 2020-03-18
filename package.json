@@ -65,7 +65,7 @@
     "@typescript-eslint/parser": "^2.23.0",
     "eslint": "^6.8.0",
     "jsii": "^0.22.0",
-    "jsii-diff": "^0.22.0",
+    "jsii-diff": "^1.1.0",
     "jsii-pacmak": "^0.22.0",
     "jsii-release": "^0.1.5",
     "nodeunit": "^0.11.3",
