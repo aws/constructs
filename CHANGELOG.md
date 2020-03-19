@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/aws/constructs/compare/v1.1.4...v2.0.0) (2020-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrading jsii runtime version in constructs requires
+modules to update to the same jsii version to prevent version conflicts
+in all non typescript/javascript language targets.
+
+* upgrade jsii to v1.1.0 ([#14](https://github.com/aws/constructs/issues/14)) ([e4157f1](https://github.com/aws/constructs/commit/e4157f109c3e1d05fe5d24c4bd9ce100b5c56b51))
+
 ### [1.1.5](https://github.com/aws/constructs/compare/v1.1.4...v1.1.5) (2020-03-19)
 
 This patch release reverts the dependency on jsii 1.x introduced in 1.1.4, which was a breaking change.
