@@ -28,7 +28,7 @@ export class Node {
   public static of(construct: IConstruct): Node {
     const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as Node;
     if (!node) {
-      throw new Error(`construct does not have an associated node`);
+      throw new Error(`construct does not have an associated node. All constructs must extend the "Construct" base class`);
     }
 
     return node;
