@@ -428,16 +428,14 @@ export class Node {
    * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
    */
   public prepare() {
-    let constructs = this.findAll(ConstructOrder.PREORDER);
-
     // Aspects are applied root to leaf
-    for (const construct of constructs) {
+    for (const construct of this.findAll(ConstructOrder.PREORDER)) {
       Node.of(construct).invokeAspects();
     }
 
-    // Since constrcuts can be added to the tree when invoking an Aspect, recreate the constructs list
-    constructs = this.findAll(ConstructOrder.POSTORDER);
-    for (const construct of constructs) {
+    // since constrcuts can be added to the tree when invoking an Aspect, call findAll() to recreate the list
+    // prepare is called leaves to root, PREORDER.reverse() for backward compatability
+    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
       if (construct instanceof Construct) {
         (construct as any).onPrepare(); // "as any" is needed because we want to keep "prepare" protected
       }

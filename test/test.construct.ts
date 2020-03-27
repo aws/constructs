@@ -481,13 +481,13 @@ export = {
     },
     'constructs created in an Aspect are prepared'(test: Test) {
       const root = new Root();
-      const construct = new MyBeautifulConstruct(root, 'BeautifulConstruct');
+      const construct = new Construct(root, 'Resource');
       Node.of(construct).applyAspect(new MyBeautifulAspect(construct));
       Node.of(root).prepare();
       // THEN
       const addedConstruct = Node.of(root).findAll(ConstructOrder.PREORDER)
-      .find(child => Node.of(child).id === `Almost-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
-      test.deepEqual(addedConstruct.status, 'Beautiful');
+      .find(child => Node.of(child).id === `AspectAdded-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
+      test.deepEqual(addedConstruct.status, 'Prepared');
       test.done();
     },
   }
@@ -519,14 +519,14 @@ class MyBeautifulConstruct extends Construct {
 }
 
 class MyAlmostBeautifulConstruct extends Construct {
-  public status: string = 'almostBeautiful'; 
+  public status: string = 'PrePrepared'; 
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
   }
 
   protected onPrepare() {
-    this.status = 'Beautiful'
+    this.status = 'Prepared'
   }
 }
 
@@ -534,6 +534,6 @@ class MyBeautifulAspect implements IAspect {
   constructor(private readonly scope: Construct) {}
   
   visit(node: IConstruct): void {
-    new MyAlmostBeautifulConstruct(this.scope, `Almost-${Node.of(node).id}`);
+    new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${Node.of(node).id}`);
   }
 }
