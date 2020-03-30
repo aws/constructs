@@ -433,8 +433,8 @@ export class Node {
       Node.of(construct).invokeAspects();
     }
 
-    // since constrcuts can be added to the tree when invoking an Aspect, call findAll() to recreate the list
-    // prepare is called leaves to root, PREORDER.reverse() for backward compatability
+    // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
+    // use PREORDER.reverse() for backward compatability
     for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
       if (construct instanceof Construct) {
         (construct as any).onPrepare(); // "as any" is needed because we want to keep "prepare" protected

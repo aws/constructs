@@ -482,7 +482,7 @@ export = {
     'constructs created in an Aspect are prepared'(test: Test) {
       const root = new Root();
       const construct = new Construct(root, 'Resource');
-      Node.of(construct).applyAspect(new MyBeautifulAspect(construct));
+      Node.of(construct).applyAspect(new AddConstructAspect(construct));
       Node.of(root).prepare();
       // THEN
       const addedConstruct = Node.of(root).findAll(ConstructOrder.PREORDER)
@@ -530,7 +530,7 @@ class MyAlmostBeautifulConstruct extends Construct {
   }
 }
 
-class MyBeautifulAspect implements IAspect {
+class AddConstructAspect implements IAspect {
   constructor(private readonly scope: Construct) {}
   
   visit(node: IConstruct): void {
