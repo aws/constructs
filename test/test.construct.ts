@@ -1,6 +1,7 @@
 import { Test } from 'nodeunit';
-import { Construct, ConstructMetadata, Node, ConstructOrder, Lazy, ValidationError } from '../lib';
+import { Construct, ConstructMetadata, Node, ConstructOrder, Lazy, ValidationError, IConstruct } from '../lib';
 import { App as Root } from './util';
+import { IAspect } from '../lib/aspect';
 
 // tslint:disable:variable-name
 // tslint:disable:max-line-length
@@ -477,7 +478,18 @@ export = {
         /Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
       test.done();
 
-    }
+    },
+    'constructs created in an Aspect are prepared'(test: Test) {
+      const root = new Root();
+      const construct = new Construct(root, 'Resource');
+      Node.of(construct).applyAspect(new AddConstructAspect(construct));
+      Node.of(root).prepare();
+      // THEN
+      const addedConstruct = Node.of(root).findAll(ConstructOrder.PREORDER)
+      .find(child => Node.of(child).id === `AspectAdded-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
+      test.deepEqual(addedConstruct.status, 'Prepared');
+      test.done();
+    },
   }
 };
 
@@ -503,5 +515,25 @@ function createTree(context?: any) {
 class MyBeautifulConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
+  }
+}
+
+class MyAlmostBeautifulConstruct extends Construct {
+  public status: string = 'PrePrepared'; 
+
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+  }
+
+  protected onPrepare() {
+    this.status = 'Prepared'
+  }
+}
+
+class AddConstructAspect implements IAspect {
+  constructor(private readonly scope: Construct) {}
+  
+  visit(node: IConstruct): void {
+    new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${Node.of(node).id}`);
   }
 }
