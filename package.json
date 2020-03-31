@@ -59,7 +59,7 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "^13.9.4",
+    "@types/node": "^13.9.8",
     "@types/nodeunit": "^0.0.30",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
