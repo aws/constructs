@@ -1,5 +1,5 @@
 import { Test } from 'nodeunit';
-import { Construct, ConstructMetadata, Node, ConstructOrder, ValidationError, IConstruct } from '../lib';
+import { Construct, ConstructMetadata, Node, ConstructOrder, ValidationError, IConstruct, DefaultNodeFactory, IConstructIdValidator } from '../lib';
 import { App as Root } from './util';
 import { IAspect } from '../lib/aspect';
 
@@ -33,6 +33,51 @@ export = {
     test.equal(Node.of(t.child2_1).id, 'Child21');
 
     test.done();
+  },
+
+  'construct id validator': {
+    'is correctly inherited and used'(test: Test) {
+      // GIVEN
+      const errorMessage = 'Please you stop shouting!';
+      const testValidator: IConstructIdValidator = {
+        validateConstructId(id) {
+          if (id && id == id.toUpperCase()) {
+            throw new Error(errorMessage);
+          }
+        }
+      };
+
+      // WHEN
+      const root = new Root({ nodeFactory: new DefaultNodeFactory(testValidator) });
+      const step = new Construct(root, 'good');
+
+      // THEN
+      test.throws(() => new Construct(step, 'BAD'), errorMessage);
+
+      test.done();
+    },
+
+    'can be overridden in the tree'(test: Test) {
+      // GIVEN
+      const errorMessage = 'Please you stop shouting!';
+      const testValidator: IConstructIdValidator = {
+        validateConstructId(id) {
+          if (id && id == id.toUpperCase()) {
+            throw new Error(errorMessage);
+          }
+        }
+      };
+
+      // WHEN
+      const root = new Root({ nodeFactory: new DefaultNodeFactory(testValidator) });
+      const notValidating: IConstructIdValidator = { validateConstructId: id => null };
+      const step = new Construct(root, 'good', { nodeFactory: new DefaultNodeFactory(notValidating) });
+
+      // THEN
+      test.doesNotThrow(() => new Construct(step, 'BAD'));
+
+      test.done();
+    },
   },
 
   'construct id can use any character except the path separator'(test: Test) {

@@ -53,14 +53,18 @@ export class Node {
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
   private readonly _dependencies = new Set<IConstruct>();
+  private readonly _idValidator?: IConstructIdValidator;
   private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
 
-  constructor(private readonly host: Construct, scope: IConstruct, id: string) {
+  constructor(private readonly host: Construct, scope: IConstruct, id: string, idValidator?: IConstructIdValidator) {
     id = id || ''; // if undefined, convert to empty string
 
     this.id = sanitizeId(id);
     this.scope = scope;
+
+    this._idValidator = idValidator ?? (scope && Node.of(scope)?._idValidator);
+    this._idValidator?.validateConstructId(this.id);
 
     // We say that scope is required, but root scopes will bypass the type
     // checks and actually pass in 'undefined'.
@@ -522,7 +526,7 @@ export class Construct implements IConstruct {
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
 
     // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? { createNode: () => new Node(this, scope, id) };
+    const nodeFactory = options.nodeFactory ?? new DefaultNodeFactory();
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
       value: nodeFactory.createNode(this, scope, id),
       enumerable: false,
@@ -701,4 +705,34 @@ export interface INodeFactory {
    * @param id the construct id
    */
   createNode(host: Construct, scope: IConstruct, id: string): Node;
+}
+
+/**
+ * A utility for validating `Node` IDs.
+ */
+export interface IConstructIdValidator {
+  /**
+   * Validates whether `id` is an appropriate value for a construct id.
+   * @param id the construct id (__after__ sanitization).
+   * @throws if `id` is not a valid construct ID.
+   */
+  validateConstructId(id: string): void;
+}
+
+/**
+ * The default implementation of `INodeFactory`.
+ */
+export class DefaultNodeFactory implements INodeFactory {
+  /**
+   * Creates a new `DefaultNodeFactory.
+   *
+   * @param idValidator an optional construct id validator. If `undefined`, the
+   *                    validator from the parent node will be used (if one was
+   *                    provided).
+   */
+  public constructor(private readonly idValidator?: IConstructIdValidator) {}
+
+  public createNode(host: Construct, scope: IConstruct, id: string): Node {
+    return new Node(host, scope, id, this.idValidator);
+  }
 }
