@@ -1,4 +1,3 @@
-import { Test } from 'nodeunit';
 import { IAspect } from '../lib/aspect';
 import { Construct, Node, IConstruct } from '../lib/construct';
 import { App } from './util';
@@ -17,16 +16,13 @@ class VisitOnce implements IAspect {
     }
   }
 }
-export = {
-  'Aspects are invoked only once'(test: Test) {
-    const app = new App();
-    const root = new MyConstruct(app, 'MyConstruct');
-    const node = Node.of(root);
-    node.applyAspect(new VisitOnce());
-    node.prepare();
-    test.deepEqual(root.visitCounter, 1);
-    node.prepare();
-    test.deepEqual(root.visitCounter, 1);
-    test.done();
-  },
-};
+test('Aspects are invoked only once', () => {
+  const app = new App();
+  const root = new MyConstruct(app, 'MyConstruct');
+  const node = Node.of(root);
+  node.applyAspect(new VisitOnce());
+  node.prepare();
+  expect(root.visitCounter).toBe(1);
+  node.prepare();
+  expect(root.visitCounter).toBe(1);
+});
