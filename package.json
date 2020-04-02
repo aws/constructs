@@ -27,6 +27,11 @@
   },
   "jest": {
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!**/*.d.ts",
+      "!test/**"
+    ],
     "coverageReporters": [
       "html",
       "lcov",
@@ -34,7 +39,7 @@
     ],
     "coverageThreshold": {
       "global": {
-        "lines": 80,
+        "lines": 78,
         "statements": 78
       }
     },
