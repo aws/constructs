@@ -1,5 +1,5 @@
 import { Test } from 'nodeunit';
-import { Construct, ConstructMetadata, Node, ConstructOrder, Lazy, ValidationError, IConstruct } from '../lib';
+import { Construct, ConstructMetadata, Node, ConstructOrder, ValidationError, IConstruct } from '../lib';
 import { App as Root } from './util';
 import { IAspect } from '../lib/aspect';
 
@@ -62,16 +62,6 @@ export = {
   'if "undefined" is forcefully used as an "id", it will be treated as an empty string'(test: Test) {
     const c = new Construct(undefined as any, undefined as any);
     test.deepEqual(Node.of(c).id, '');
-    test.done();
-  },
-
-  "dont allow unresolved tokens to be used in construct IDs"(test: Test) {
-    // GIVEN
-    const root = new Root();
-    const token = Lazy.stringValue({ produce: () => 'lazy' });
-
-    // WHEN + THEN
-    test.throws(() => new Construct(root, `MyID: ${token}`), /Cannot use tokens in construct ID: MyID: \${Token/);
     test.done();
   },
 
@@ -176,14 +166,6 @@ export = {
     const root = new Root();
     new Construct(root, 'child1');
     test.throws(() => Node.of(root).setContext('k', 'v'));
-    test.done();
-  },
-
-  'fails if context key contains unresolved tokens'(test: Test) {
-    const root = new Root();
-    const token = Lazy.stringValue({ produce: () => 'foo' });
-    test.throws(() => Node.of(root).setContext(`my-${token}`, 'foo'), /Invalid context key/);
-    test.throws(() => Node.of(root).tryGetContext(token), /Invalid context key/);
     test.done();
   },
 
@@ -519,7 +501,7 @@ class MyBeautifulConstruct extends Construct {
 }
 
 class MyAlmostBeautifulConstruct extends Construct {
-  public status: string = 'PrePrepared'; 
+  public status: string = 'PrePrepared';
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -532,7 +514,7 @@ class MyAlmostBeautifulConstruct extends Construct {
 
 class AddConstructAspect implements IAspect {
   constructor(private readonly scope: Construct) {}
-  
+
   visit(node: IConstruct): void {
     new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${Node.of(node).id}`);
   }
