@@ -25,11 +25,36 @@
       }
     }
   },
-  "nyc": {
-    "reporter": "html",
-    "check-coverage": true,
-    "lines": 80,
-    "statements": 78
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.ts",
+      "!**/*.d.ts",
+      "!test/**"
+    ],
+    "coverageReporters": [
+      "html",
+      "lcov",
+      "text"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 78,
+        "statements": 78
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "transform": {
+      "\\.tsx?$": "ts-jest"
+    }
   },
   "repository": {
     "type": "git",
@@ -38,7 +63,7 @@
   "scripts": {
     "compile": "jsii",
     "watch": "jsii -w",
-    "test": "nodeunit test/test.*.js && yarn lint",
+    "test": "jest && yarn lint",
     "package": "jsii-pacmak",
     "build": "yarn compile && yarn test && yarn run package",
     "compat": "scripts/compat.sh",
@@ -59,18 +84,18 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "^13.9.4",
-    "@types/nodeunit": "^0.0.30",
-    "@typescript-eslint/eslint-plugin": "^2.23.0",
-    "@typescript-eslint/parser": "^2.23.0",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^10.17.18",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
     "eslint": "^6.8.0",
+    "jest": "^25.2.6",
     "jsii": "^1.1.0",
     "jsii-diff": "^1.1.0",
     "jsii-pacmak": "^1.1.0",
     "jsii-release": "^0.1.5",
-    "nodeunit": "^0.11.3",
-    "nyc": "^15.0.0",
-    "standard-version": "^7.1.0"
+    "standard-version": "^7.1.0",
+    "ts-jest": "^25.3.0"
   },
   "homepage": "https://github.com/aws/constructs",
   "engines": {
