@@ -4,6 +4,7 @@ import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
+const CONSTRUCT_ID_VALIDATOR_SYMBOL = Symbol.for('constructs.Construct.idValidator');
 const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
 /**
@@ -53,18 +54,14 @@ export class Node {
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
   private readonly _dependencies = new Set<IConstruct>();
-  private readonly _idValidator?: IConstructIdValidator;
   private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
 
-  constructor(private readonly host: Construct, scope: IConstruct, id: string, idValidator?: IConstructIdValidator) {
+  constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id || ''; // if undefined, convert to empty string
 
     this.id = sanitizeId(id);
     this.scope = scope;
-
-    this._idValidator = idValidator ?? (scope && Node.of(scope)?._idValidator);
-    this._idValidator?.validateConstructId(this.id);
 
     // We say that scope is required, but root scopes will bypass the type
     // checks and actually pass in 'undefined'.
@@ -524,13 +521,21 @@ export class Construct implements IConstruct {
    * @param options Options
    */
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
+    // validate the construct ID
+    const validator = options.constructIdValidator ?? (scope as any)?.[CONSTRUCT_ID_VALIDATOR_SYMBOL];
+    validator?.validateConstructId?.(id);
+    Object.defineProperty(this, CONSTRUCT_ID_VALIDATOR_SYMBOL, {
+      value: validator,
+      enumerable: false,
+      configurable: false,
+    });
 
     // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? new DefaultNodeFactory();
+    const nodeFactory = options.nodeFactory ?? { createNode: (host, scope, id) => new Node(host, scope, id) };
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
       value: nodeFactory.createNode(this, scope, id),
       enumerable: false,
-      configurable: false
+      configurable: false,
     });
 
     // implement IDependable privately
@@ -692,6 +697,12 @@ export interface ConstructOptions {
    * @default - the default `Node` is associated
    */
   readonly nodeFactory?: INodeFactory;
+
+  /**
+   * A validator for validating construct IDs.
+   * @default - the new Construct's parent validator will be used if there was one.
+   */
+  readonly constructIdValidator?: IConstructIdValidator;
 }
 
 /**
@@ -713,26 +724,8 @@ export interface INodeFactory {
 export interface IConstructIdValidator {
   /**
    * Validates whether `id` is an appropriate value for a construct id.
-   * @param id the construct id (__after__ sanitization).
+   * @param id the construct id (__before__ sanitization).
    * @throws if `id` is not a valid construct ID.
    */
   validateConstructId(id: string): void;
-}
-
-/**
- * The default implementation of `INodeFactory`.
- */
-export class DefaultNodeFactory implements INodeFactory {
-  /**
-   * Creates a new `DefaultNodeFactory.
-   *
-   * @param idValidator an optional construct id validator. If `undefined`, the
-   *                    validator from the parent node will be used (if one was
-   *                    provided).
-   */
-  public constructor(private readonly idValidator?: IConstructIdValidator) {}
-
-  public createNode(host: Construct, scope: IConstruct, id: string): Node {
-    return new Node(host, scope, id, this.idValidator);
-  }
 }

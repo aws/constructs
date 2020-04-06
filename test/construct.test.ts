@@ -1,4 +1,4 @@
-import { Construct, ConstructMetadata, DefaultNodeFactory, IConstruct, IConstructIdValidator, Node, ConstructOrder, ValidationError } from '../lib';
+import { Construct, ConstructMetadata, IConstruct, IConstructIdValidator, Node, ConstructOrder, ValidationError } from '../lib';
 import { App as Root } from './util';
 import { IAspect } from '../lib/aspect';
 
@@ -43,7 +43,7 @@ describe('construct id validator', () => {
     };
 
     // WHEN
-    const root = new Root({ nodeFactory: new DefaultNodeFactory(testValidator) });
+    const root = new Root({ constructIdValidator: testValidator });
     const step = new Construct(root, 'good');
 
     // THEN
@@ -62,9 +62,9 @@ describe('construct id validator', () => {
     };
 
     // WHEN
-    const root = new Root({ nodeFactory: new DefaultNodeFactory(testValidator) });
+    const root = new Root({ constructIdValidator: testValidator });
     const notValidating: IConstructIdValidator = { validateConstructId: () => null };
-    const step = new Construct(root, 'good', { nodeFactory: new DefaultNodeFactory(notValidating) });
+    const step = new Construct(root, 'good', { constructIdValidator: notValidating });
 
     // THEN
     expect(() => new Construct(step, 'BAD')).not.toThrow();
