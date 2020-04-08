@@ -27,6 +27,23 @@ You can also use these more granular scripts:
 - `yarn compat`: check that APIs do not introduce breaking changes
 - `yarn lint`: run eslint and API compatibility
 
+### Using a local version of this library in a dependency
+
+If you're doing changes to this library,
+you often want to test them being used in a real dependency
+(for example, the [AWS CDK](https://github.com/aws/aws-cdk))
+to verify the changes work like expected.
+To make that easier,
+this repository includes a script in the `scripts`
+directory that overwrites the version of `constructs`
+in a dependency's `node_modules`
+with a symbolic link to the local version of `constructs`:
+
+```shell script
+cd my/project/that/uses/constructs/library
+/path/to/source/of/constructs/scripts/link.sh
+```
+
 ## Reporting Bugs/Feature Requests
 
 We welcome you to use the GitHub issue tracker to report bugs or suggest
