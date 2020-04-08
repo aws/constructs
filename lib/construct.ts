@@ -435,9 +435,11 @@ export class Node {
 
     // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
     // use PREORDER.reverse() for backward compatability
-    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
-      if (construct instanceof Construct) {
-        (construct as any).onPrepare(); // "as any" is needed because we want to keep "prepare" protected
+    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {      
+      const cn = construct as any;
+      if ('onPrepare' in cn) {
+        if (typeof(cn.onPrepare) !== 'function') { throw new Error(`expecting "onPrepare" to be a function`); }
+        cn.onPrepare();
       }
     }
   }
