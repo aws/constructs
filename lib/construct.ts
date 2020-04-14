@@ -3,7 +3,6 @@ import { ConstructMetadata, MetadataEntry } from './metadata';
 import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
-import { Token } from './token';
 
 const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
@@ -75,10 +74,6 @@ export class Node {
     } else {
       // This is a root construct.
       this.id = id;
-    }
-
-    if (Token.isUnresolved(id)) {
-      throw new Error(`Cannot use tokens in construct ID: ${id}`);
     }
   }
 
@@ -201,10 +196,6 @@ export class Node {
    * @param value The context value
    */
   public setContext(key: string, value: any) {
-    if (Token.isUnresolved(key)) {
-      throw new Error(`Invalid context key "${key}". It contains unresolved tokens`);
-    }
-
     if (this.children.length > 0) {
       const names = this.children.map(c => Node.of(c).id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
@@ -221,10 +212,6 @@ export class Node {
    * @returns The context value or `undefined` if there is no context value for thie key.
    */
   public tryGetContext(key: string): any {
-    if (Token.isUnresolved(key)) {
-      throw new Error(`Invalid context key "${key}". It contains unresolved tokens`);
-    }
-
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
@@ -535,13 +522,12 @@ export class Construct implements IConstruct {
    * @param options Options
    */
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
-
     // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? { createNode: () => new Node(this, scope, id) };
+    const nodeFactory = options.nodeFactory ?? { createNode: (host, scope, id) => new Node(host, scope, id) };
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
       value: nodeFactory.createNode(this, scope, id),
       enumerable: false,
-      configurable: false
+      configurable: false,
     });
 
     // implement IDependable privately

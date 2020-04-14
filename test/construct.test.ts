@@ -1,4 +1,4 @@
-import { Construct, ConstructMetadata, Node, ConstructOrder, Lazy, ValidationError, IConstruct } from '../lib';
+import { Construct, ConstructMetadata, IConstruct, Node, ConstructOrder, ValidationError } from '../lib';
 import { App as Root } from './util';
 import { IAspect } from '../lib/aspect';
 
@@ -55,15 +55,6 @@ test('if construct id contains path seperators, they will be replaced by double-
 test('if "undefined" is forcefully used as an "id", it will be treated as an empty string', () => {
   const c = new Construct(undefined as any, undefined as any);
   expect(Node.of(c).id).toBe('');
-});
-
-test("dont allow unresolved tokens to be used in construct IDs", () => {
-  // GIVEN
-  const root = new Root();
-  const token = Lazy.stringValue({ produce: () => 'lazy' });
-
-  // WHEN + THEN
-  expect(() => new Construct(root, `MyID: ${token}`)).toThrow(/Cannot use tokens in construct ID: MyID: \${Token/);
 });
 
 test('construct.uniqueId returns a tree-unique alphanumeric id of this construct', () => {
@@ -158,13 +149,6 @@ test('construct.setContext(key, value) can only be called before adding any chil
   const root = new Root();
   new Construct(root, 'child1');
   expect(() => Node.of(root).setContext('k', 'v')).toThrow(/Cannot set context after children have been added: child1/);
-});
-
-test('fails if context key contains unresolved tokens', () => {
-  const root = new Root();
-  const token = Lazy.stringValue({ produce: () => 'foo' });
-  expect(() => Node.of(root).setContext(`my-${token}`, 'foo')).toThrow(/Invalid context key/);
-  expect(() => Node.of(root).tryGetContext(token)).toThrow(/Invalid context key/);
 });
 
 test('construct.pathParts returns an array of strings of all names from root to node', () => {

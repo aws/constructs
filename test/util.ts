@@ -1,7 +1,7 @@
-import { Construct } from '../lib';
+import { Construct, ConstructOptions } from '../lib';
 
 export class App extends Construct {
-  constructor() {
-    super(undefined as any, '');
+  constructor(options?: ConstructOptions) {
+    super(undefined as any, '', options);
   }
 }
