@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/aws/constructs/compare/v1.1.4...v3.0.1) (2020-04-14)
+
+### ⚠ BREAKING CHANGES
+
+* The `Token` class as well as all related elements (`IResolvable`, etc...) were removed from this release. The feature may be re-introduced in the future, but was pulled due to causing conflicts with overlapping implementations in some consumers.
+
+### Features
+
+* remove Token/IResolvable API ([#34](https://github.com/aws/constructs/issues/34)) ([8f2b556](https://github.com/aws/constructs/commit/8f2b556db79f2823542afe210ee40bea57f29bea))
+* upgrade jsii to v1.1.0 ([#14](https://github.com/aws/constructs/issues/14)) ([e4157f1](https://github.com/aws/constructs/commit/e4157f109c3e1d05fe5d24c4bd9ce100b5c56b51))
+
+### Bug Fixes
+
+* constructs will not be prepared due to instanceof issue [#32](https://github.com/aws/constructs/issues/32) ([#33](https://github.com/aws/constructs/issues/33)) ([166ba7e](https://github.com/aws/constructs/commit/166ba7ef9e88fd9ffbedd6fa2e6d096ace370ca4))
+
+
 ## [2.0.1](https://github.com/aws/constructs/compare/v1.1.4...v2.0.1) (2020-04-01)
 
 ### Bug Fixes
