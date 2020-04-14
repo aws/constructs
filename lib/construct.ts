@@ -4,7 +4,6 @@ import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
-const CONSTRUCT_ID_VALIDATOR_SYMBOL = Symbol.for('constructs.Construct.idValidator');
 const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
 /**
@@ -521,15 +520,6 @@ export class Construct implements IConstruct {
    * @param options Options
    */
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
-    // validate the construct ID
-    const validator = options.constructIdValidator ?? (scope as any)?.[CONSTRUCT_ID_VALIDATOR_SYMBOL];
-    validator?.validateConstructId?.(id);
-    Object.defineProperty(this, CONSTRUCT_ID_VALIDATOR_SYMBOL, {
-      value: validator,
-      enumerable: false,
-      configurable: false,
-    });
-
     // attach the construct to the construct tree by creating a node
     const nodeFactory = options.nodeFactory ?? { createNode: (host, scope, id) => new Node(host, scope, id) };
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
@@ -697,12 +687,6 @@ export interface ConstructOptions {
    * @default - the default `Node` is associated
    */
   readonly nodeFactory?: INodeFactory;
-
-  /**
-   * A validator for validating construct IDs.
-   * @default - the new Construct's parent validator will be used if there was one.
-   */
-  readonly constructIdValidator?: IConstructIdValidator;
 }
 
 /**
@@ -716,16 +700,4 @@ export interface INodeFactory {
    * @param id the construct id
    */
   createNode(host: Construct, scope: IConstruct, id: string): Node;
-}
-
-/**
- * A utility for validating `Node` IDs.
- */
-export interface IConstructIdValidator {
-  /**
-   * Validates whether `id` is an appropriate value for a construct id.
-   * @param id the construct id (__before__ sanitization).
-   * @throws if `id` is not a valid construct ID.
-   */
-  validateConstructId(id: string): void;
 }
