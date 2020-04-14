@@ -66,7 +66,7 @@
     "test": "jest && yarn lint",
     "package": "jsii-pacmak",
     "build": "yarn compile && yarn test && yarn run package",
-    "compat": "echo 'temporary disable since to allow major version bump: scripts/compat.sh'",
+    "compat": "scripts/compat.sh",
     "lint": "eslint . --ext .ts && yarn compat",
     "bump": "standard-version",
     "release": "jsii-release"
