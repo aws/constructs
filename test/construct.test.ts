@@ -432,6 +432,43 @@ test('fails if there are both "Resource" and "Default"', () => {
   });
 });
 
+describe('construct prepare', () => {
+
+  it('created constructs are prepared', () => {
+    const root = new Root();
+    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
+    const construct02 = new MyAlmostBeautifulConstruct(root, 'Resource02');
+    
+    Node.of(root).prepare();
+    // THEN
+    expect(construct01.status).toEqual('Prepared');
+    expect(construct02.status).toEqual('Prepared');    
+  });
+
+  it('only constructs with onPrepare function are prepared', () => {
+    const root = new Root();
+    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
+    const construct02 = new MyMissingPrepareConstruct(root, 'Resource02');
+    
+    Node.of(root).prepare();
+    // THEN
+    expect(construct01.status).toEqual('Prepared');
+    expect(construct02.status).not.toEqual('Prepared'); 
+  })
+
+  it('only constructs with onPrepare function are prepared', () => {
+    const root = new Root();
+    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01') as any;
+
+    // we try to force the error
+    construct01.onPrepare = undefined;
+
+    expect(() => Node.of(root).prepare())
+      .toThrow(/expecting "onPrepare" to be a function/);
+  });
+
+});
+
 function createTree(context?: any) {
   const root = new Root();
   const highChild = new Construct(root, 'HighChild');
@@ -449,6 +486,14 @@ function createTree(context?: any) {
   return {
     root, child1, child2, child1_1, child1_2, child1_1_1, child2_1
   };
+}
+
+class MyMissingPrepareConstruct extends Construct {
+  public status: string = 'PrePrepared'; 
+
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
+  }
 }
 
 class MyBeautifulConstruct extends Construct {
