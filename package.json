@@ -92,7 +92,7 @@
     "jest": "^25.5.4",
     "jsii": "^1.4.1",
     "jsii-diff": "^1.4.1",
-    "jsii-pacmak": "^1.4.1",
+    "jsii-pacmak": "^1.5.0",
     "jsii-release": "^0.1.5",
     "standard-version": "^7.1.0",
     "ts-jest": "^25.4.0"
