@@ -27,6 +27,14 @@ You can also use these more granular scripts:
 - `yarn compat`: check that APIs do not introduce breaking changes
 - `yarn lint`: run eslint and API compatibility
 
+### Docker Build
+
+If you want to use docker to build, test and package your work use the following:
+
+```shell script
+docker build -t constructs .
+```
+
 ### Using a local version of this library in a dependency
 
 If you're doing changes to this library,
