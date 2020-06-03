@@ -472,10 +472,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@jsii/spec@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.4.1.tgz#35893433c7144bc56efcf3528bc9e21c638ea405"
-  integrity sha512-iARdSgmuq2+9BCS9fd2RD+KN7FCPwXCW8pIJkAaTWDJolS9cmVaNp7WWZKLhdo7UkPDUpYzLUW3nCc5dimo3iw==
+"@jsii/spec@^1.4.1", "@jsii/spec@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.6.0.tgz#a93fa8eb22684a2263f70c1ae2b7143e43548149"
+  integrity sha512-6S863f3YQCLG00236OOT29EOqZZRFQEQcfACZ5f3Ph1PApRRndeZLsELm23MS6cCktdgdptRzaYR0HCupajBHQ==
   dependencies:
     jsonschema "^1.2.6"
 
@@ -1543,7 +1543,7 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
-deep-equal@^2.0.2:
+deep-equal@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-2.0.3.tgz#cad1c15277ad78a5c01c49c2dee0f54de8a6a7b0"
   integrity sha512-Spqdl4H+ky45I9ByyJtXteOm9CaIrPmnIPmOhrkKGNYWeDgCvJ8jNYVCTjChxW4FqGuZnLHADc8EKRMX6+CgvA==
@@ -3317,17 +3317,17 @@ jsii-rosetta@^1.4.1:
     xmldom "^0.3.0"
     yargs "^15.3.1"
 
-jsii@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.4.1.tgz#eaa166829fc90dfe6f207139170e6608a63221be"
-  integrity sha512-EMBPeLs52JgCujAuPuZb0MQX5Wa3h/XskyzJNKgP5NqSLrntKtXb9379g4W0RBF2+df4lJyXDfa6dr59jefi2g==
+jsii@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.6.0.tgz#35a60fed491bb3e4fa2c35965f9f2bb8593f2165"
+  integrity sha512-g9L2xBnKCrzfMPkaioYSz8lYATYGt8SWimycq9HxfszaI0/QjKv+68E5pgTimy6EZil+2O/KguiYqlK9jNQE7A==
   dependencies:
-    "@jsii/spec" "^1.4.1"
+    "@jsii/spec" "^1.6.0"
     case "^1.6.3"
     colors "^1.4.0"
-    deep-equal "^2.0.2"
+    deep-equal "^2.0.3"
     fs-extra "^9.0.0"
-    log4js "^6.2.1"
+    log4js "^6.3.0"
     semver "^7.3.2"
     semver-intersect "^1.4.0"
     sort-json "^2.0.0"
@@ -3534,10 +3534,10 @@ lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
-log4js@^6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/log4js/-/log4js-6.2.1.tgz#fc23a3bf287f40f5b48259958e5e0ed30d558eeb"
-  integrity sha512-7n+Oqxxz7VcQJhIlqhcYZBTpbcQ7XsR0MUIfJkx/n3VUjkAS4iUr+4UJlhxf28RvP9PMGQXbgTUhLApnu0XXgA==
+log4js@^6.2.1, log4js@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/log4js/-/log4js-6.3.0.tgz#10dfafbb434351a3e30277a00b9879446f715bcb"
+  integrity sha512-Mc8jNuSFImQUIateBFwdOQcmC6Q5maU0VVvdC2R6XMb66/VnT+7WS4D/0EeNMZu1YODmJe5NIn2XftCzEocUgw==
   dependencies:
     date-format "^3.0.0"
     debug "^4.1.1"
