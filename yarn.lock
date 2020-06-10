@@ -462,7 +462,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@jsii/spec@^1.4.1", "@jsii/spec@^1.6.0":
+"@jsii/spec@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.6.0.tgz#a93fa8eb22684a2263f70c1ae2b7143e43548149"
   integrity sha512-6S863f3YQCLG00236OOT29EOqZZRFQEQcfACZ5f3Ph1PApRRndeZLsELm23MS6cCktdgdptRzaYR0HCupajBHQ==
@@ -3239,15 +3239,15 @@ jsesc@^2.5.1:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==
 
-jsii-diff@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/jsii-diff/-/jsii-diff-1.4.1.tgz#a4111869323940a693ce7a9a7c6559ade51dc6ee"
-  integrity sha512-7dtYd24w1UNDki0Uc7CJiv7oKoYAnKem1fSRDiEUVcAL1/9iNvYVGPMjUMMNx8RoRYln/oK3988AYB/h6VDxYw==
+jsii-diff@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/jsii-diff/-/jsii-diff-1.6.0.tgz#a8b2cd56fd1fd77de37061c38a6434c70c235a41"
+  integrity sha512-m/xS549AtR/dK6crArmJeYHaJACwv+tj/koLsn2cKmPqfK2z6FcSgKjOnQH+Q2PlgsJWVUlyaVvhQlnj+W78kw==
   dependencies:
-    "@jsii/spec" "^1.4.1"
+    "@jsii/spec" "^1.6.0"
     fs-extra "^9.0.0"
-    jsii-reflect "^1.4.1"
-    log4js "^6.2.1"
+    jsii-reflect "^1.6.0"
+    log4js "^6.3.0"
     typescript "~3.8.3"
     yargs "^15.3.1"
 
@@ -3269,7 +3269,7 @@ jsii-pacmak@^1.6.0:
     xmlbuilder "^15.1.1"
     yargs "^15.3.1"
 
-jsii-reflect@^1.4.1, jsii-reflect@^1.6.0:
+jsii-reflect@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.6.0.tgz#dae9ea3aa04bc95a1c244051a4c4adf691849c01"
   integrity sha512-JsVGJCcezNdnR4OukLNs7p6T6f3rKbGWNByE8Omvi7GfDf9c/YiVG4LggxEQaWyIZiYYqeEtBw6JtIKj3Qme5w==
@@ -3514,7 +3514,7 @@ lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
-log4js@^6.2.1, log4js@^6.3.0:
+log4js@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/log4js/-/log4js-6.3.0.tgz#10dfafbb434351a3e30277a00b9879446f715bcb"
   integrity sha512-Mc8jNuSFImQUIateBFwdOQcmC6Q5maU0VVvdC2R6XMb66/VnT+7WS4D/0EeNMZu1YODmJe5NIn2XftCzEocUgw==
