@@ -462,10 +462,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@jsii/spec@^1.4.1", "@jsii/spec@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.6.0.tgz#a93fa8eb22684a2263f70c1ae2b7143e43548149"
-  integrity sha512-6S863f3YQCLG00236OOT29EOqZZRFQEQcfACZ5f3Ph1PApRRndeZLsELm23MS6cCktdgdptRzaYR0HCupajBHQ==
+"@jsii/spec@^1.4.1", "@jsii/spec@^1.6.0", "@jsii/spec@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.7.0.tgz#2a70ee5753aab1711a5e65161a1988845eb91043"
+  integrity sha512-gvj0vEvKWSo89ywclzb0OfFDSOqwTpvk0VQp2F3UEHewvR+hjJMgLjo7+ycpQF2bTLLni99KLmapMg/huxfshA==
   dependencies:
     jsonschema "^1.2.6"
 
@@ -2130,10 +2130,10 @@ fs-extra@^8.1.0:
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
-fs-extra@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.0.0.tgz#b6afc31036e247b2466dc99c29ae797d5d4580a3"
-  integrity sha512-pmEYSk3vYsG/bF651KPUXZ+hvjpgWYw/Gc7W9NFUe3ZVLczKKWIij3IKpOrQcdw4TILtibFslZ0UmR8Vvzig4g==
+fs-extra@^9.0.0, fs-extra@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.0.1.tgz#910da0062437ba4c39fedd863f1675ccfefcb9fc"
+  integrity sha512-h2iAoN838FqAFJY2/qVpzFXy+EBxfVE220PalAqQLDVsFOHLJrZvut5puAbCdNv6WJk+B8ihI+k0c7JK5erwqQ==
   dependencies:
     at-least-node "^1.0.0"
     graceful-fs "^4.2.0"
@@ -3297,22 +3297,22 @@ jsii-rosetta@^1.6.0:
     xmldom "^0.3.0"
     yargs "^15.3.1"
 
-jsii@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.6.0.tgz#35a60fed491bb3e4fa2c35965f9f2bb8593f2165"
-  integrity sha512-g9L2xBnKCrzfMPkaioYSz8lYATYGt8SWimycq9HxfszaI0/QjKv+68E5pgTimy6EZil+2O/KguiYqlK9jNQE7A==
+jsii@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.7.0.tgz#a9e8267fcb7f964f60ed400851a78d47543eee5e"
+  integrity sha512-isvI0v39OGzPYK3TYA0tg6H8FOKoq7GS+bYYWrhI3YWXNrVl9ZZNQW0hz6sUWN1cla3W9KqMT7HFcRf3ttt0Sg==
   dependencies:
-    "@jsii/spec" "^1.6.0"
+    "@jsii/spec" "^1.7.0"
     case "^1.6.3"
     colors "^1.4.0"
     deep-equal "^2.0.3"
-    fs-extra "^9.0.0"
+    fs-extra "^9.0.1"
     log4js "^6.3.0"
     semver "^7.3.2"
     semver-intersect "^1.4.0"
     sort-json "^2.0.0"
     spdx-license-list "^6.2.0"
-    typescript "~3.8.3"
+    typescript "~3.9.5"
     yargs "^15.3.1"
 
 json-parse-better-errors@^1.0.1:
@@ -5260,6 +5260,11 @@ typescript@~3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
+
+typescript@~3.9.5:
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
+  integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
 
 uglify-js@^3.1.4:
   version "3.8.1"
