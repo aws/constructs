@@ -93,7 +93,7 @@
     "jsii": "^1.6.0",
     "jsii-diff": "^1.4.1",
     "jsii-pacmak": "^1.6.0",
-    "jsii-release": "^0.1.5",
+    "jsii-release": "^0.1.8",
     "standard-version": "^7.1.0",
     "ts-jest": "^25.4.0"
   },
