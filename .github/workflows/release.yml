@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10.17.0
-      - run: npx projen@0.2.3
+      - run: npx projen@0.2.5
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - name: Anti-tamper check
@@ -39,6 +39,7 @@ jobs:
         run: npx -p jsii-release jsii-release-npm
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_DIST_TAG: latest
   release_maven:
     name: Release to Maven
     needs: build

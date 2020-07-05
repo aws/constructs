@@ -4,9 +4,15 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for composable configuration',
   repository: 'https://github.com/aws/constructs.git',
+
+  // author
   authorName: 'Amazon Web Services',
-  authorEmail: 'benisrae@amazon.com',
+  authorUrl: 'https://aws.amazon.com',
+  authorOrganization: true,
   homepage: 'https://github.com/aws/constructs',
+
+  copyrightPeriod: `2018-${new Date().getFullYear()}`,
+  copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
 
   keywords: [
     "aws",
@@ -34,15 +40,6 @@ const project = new JsiiProject({
   stability: 'stable',
 
   minNodeVersion: '10.17.0',
-
 });
-
-// check API compatibility against latest published major version
-project.addCompileCommand('yarn compat');
-project.manifest.author = {
-  name: 'Amazon Web Services',
-  url: 'https://aws.amazon.com',
-  organization: true
-};
 
 project.synth();
