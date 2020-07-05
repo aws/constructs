@@ -33,7 +33,7 @@ const project = new JsiiProject({
 
   stability: 'stable',
 
-  minNodeVersion: '10.3.0',
+  minNodeVersion: '10.17.0',
 
 });
 
