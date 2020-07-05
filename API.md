@@ -13,7 +13,6 @@ Name|Description
 
 Name|Description
 ----|-----------
-[ConstructOptions](#constructs-constructoptions)|Options for creating constructs.
 [Dependency](#constructs-dependency)|A single dependency.
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
 [SynthesisOptions](#constructs-synthesisoptions)|Options for synthesis.
@@ -26,7 +25,6 @@ Name|Description
 ----|-----------
 [IAspect](#constructs-iaspect)|Represents an Aspect.
 [IConstruct](#constructs-iconstruct)|Represents a construct.
-[INodeFactory](#constructs-inodefactory)|A factory for attaching `Node`s to the construct.
 [ISynthesisSession](#constructs-isynthesissession)|Represents a single session of synthesis.
 
 
@@ -53,14 +51,20 @@ __Implements__: [IConstruct](#constructs-iconstruct)
 Creates a new construct node.
 
 ```ts
-new Construct(scope: Construct, id: string, options?: ConstructOptions)
+new Construct(scope: Construct, id: string)
 ```
 
 * **scope** (<code>[Construct](#constructs-construct)</code>)  The scope in which to define this construct.
 * **id** (<code>string</code>)  The scoped construct ID.
-* **options** (<code>[ConstructOptions](#constructs-constructoptions)</code>)  Options.
-  * **nodeFactory** (<code>[INodeFactory](#constructs-inodefactory)</code>)  A factory for attaching `Node`s to the construct. __*Default*__: the default `Node` is associated
 
+
+
+### Properties
+
+
+Name | Type | Description 
+-----|------|-------------
+**node** | <code>[Node](#constructs-node)</code> | The tree node.
 
 ### Methods
 
@@ -410,32 +414,6 @@ validate(): Array<ValidationError>
 __Returns__:
 * <code>Array<[ValidationError](#constructs-validationerror)></code>
 
-#### *static* of(construct) <a id="constructs-node-of"></a>
-
-Returns the node associated with a construct.
-
-```ts
-static of(construct: IConstruct): Node
-```
-
-* **construct** (<code>[IConstruct](#constructs-iconstruct)</code>)  the construct.
-
-__Returns__:
-* <code>[Node](#constructs-node)</code>
-
-
-
-## struct ConstructOptions  <a id="constructs-constructoptions"></a>
-
-
-Options for creating constructs.
-
-
-
-Name | Type | Description 
------|------|-------------
-**nodeFactory**? | <code>[INodeFactory](#constructs-inodefactory)</code> | A factory for attaching `Node`s to the construct.<br/>__*Default*__: the default `Node` is associated
-
 
 
 ## struct Dependency  <a id="constructs-dependency"></a>
@@ -481,28 +459,12 @@ __Obtainable from__: [Node](#constructs-node).[findChild](#constructs-node#const
 
 Represents a construct.
 
-
-## interface INodeFactory  <a id="constructs-inodefactory"></a>
-
-
-A factory for attaching `Node`s to the construct.
-### Methods
+### Properties
 
 
-#### createNode(host, scope, id) <a id="constructs-inodefactory-createnode"></a>
-
-Returns a new `Node` associated with `host`.
-
-```ts
-createNode(host: Construct, scope: IConstruct, id: string): Node
-```
-
-* **host** (<code>[Construct](#constructs-construct)</code>)  the associated construct.
-* **scope** (<code>[IConstruct](#constructs-iconstruct)</code>)  the construct's scope (parent).
-* **id** (<code>string</code>)  the construct id.
-
-__Returns__:
-* <code>[Node](#constructs-node)</code>
+Name | Type | Description 
+-----|------|-------------
+**node** | <code>[Node](#constructs-node)</code> | The tree node.
 
 
 

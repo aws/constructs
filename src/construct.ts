@@ -4,12 +4,15 @@ import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
-const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
-
 /**
  * Represents a construct.
  */
-export interface IConstruct { }
+export interface IConstruct {
+  /**
+   * The tree node.
+   */
+  readonly node: Node;
+}
 
 /**
  * Represents the construct node in the scope tree.
@@ -19,19 +22,6 @@ export class Node {
    * Separator used to delimit construct path components.
    */
   public static readonly PATH_SEP = '/';
-
-  /**
-   * Returns the node associated with a construct.
-   * @param construct the construct
-   */
-  public static of(construct: IConstruct): Node {
-    const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as Node;
-    if (!node) {
-      throw new Error('construct does not have an associated node. All constructs must extend the "Construct" base class');
-    }
-
-    return node;
-  }
 
   /**
    * Returns the scope in which this construct is defined.
@@ -70,7 +60,7 @@ export class Node {
       }
 
       // Has side effect so must be very last thing in constructor
-      Node.of(scope).addChild(host, this.id);
+      scope.node.addChild(host, this.id);
     } else {
       // This is a root construct.
       this.id = id;
@@ -83,7 +73,7 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.slice(1).map(c => Node.of(c).id);
+    const components = this.scopes.slice(1).map(c => c.node.id);
     return components.join(Node.PATH_SEP);
   }
 
@@ -92,7 +82,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => Node.of(c).id);
+    const components = this.scopes.slice(1).map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -178,7 +168,7 @@ export class Node {
         ret.push(c);
       }
 
-      for (const child of Node.of(c).children) {
+      for (const child of c.node.children) {
         visit(child);
       }
 
@@ -197,7 +187,7 @@ export class Node {
    */
   public setContext(key: string, value: any) {
     if (this.children.length > 0) {
-      const names = this.children.map(c => Node.of(c).id);
+      const names = this.children.map(c => c.node.id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
     }
     this._context[key] = value;
@@ -215,7 +205,7 @@ export class Node {
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
-    return this.scope && Node.of(this.scope).tryGetContext(key);
+    return this.scope && this.scope.node.tryGetContext(key);
   }
 
   /**
@@ -297,7 +287,7 @@ export class Node {
     let curr: IConstruct | undefined = this.host;
     while (curr) {
       ret.unshift(curr);
-      curr = Node.of(curr).scope;
+      curr = curr.node.scope;
     }
 
     return ret;
@@ -320,7 +310,7 @@ export class Node {
       return true;
     }
 
-    if (this.scope && Node.of(this.scope).locked) {
+    if (this.scope && this.scope.node.locked) {
       return true;
     }
 
@@ -347,7 +337,7 @@ export class Node {
     const ret = new Array<Dependency>();
 
     for (const source of this.findAll()) {
-      for (const dependable of Node.of(source)._dependencies) {
+      for (const dependable of source.node._dependencies) {
         for (const target of DependableTrait.get(dependable).dependencyRoots) {
           let foundTargets = found.get(source);
           if (!foundTargets) { found.set(source, foundTargets = new Set()); }
@@ -390,14 +380,14 @@ export class Node {
     if (validate) {
       const errors = this.validate();
       if (errors.length > 0) {
-        const errorList = errors.map(e => `[${Node.of(e.source).path}] ${e.message}`).join('\n  ');
+        const errorList = errors.map(e => `[${e.source.node.path}] ${e.message}`).join('\n  ');
         throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
       }
     }
 
     // synthesize (leaves first)
     for (const construct of this.findAll(ConstructOrder.POSTORDER)) {
-      const node = Node.of(construct);
+      const node = construct.node;
       try {
         node._lock();
         const ctx = {
@@ -417,7 +407,7 @@ export class Node {
   public prepare() {
     // Aspects are applied root to leaf
     for (const construct of this.findAll(ConstructOrder.PREORDER)) {
-      Node.of(construct).invokeAspects();
+      construct.node.invokeAspects();
     }
 
     // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
@@ -439,7 +429,7 @@ export class Node {
     let errors = new Array<ValidationError>();
 
     for (const child of this.children) {
-      errors = errors.concat(Node.of(child).validate());
+      errors = errors.concat(child.node.validate());
     }
 
     const localErrors: string[] = (this.host as any).onValidate(); // "as any" is needed because we want to keep "validate" protected
@@ -513,6 +503,11 @@ export class Node {
  */
 export class Construct implements IConstruct {
   /**
+   * The tree node.
+   */
+  public readonly node: Node;
+
+  /**
    * Creates a new construct node.
    *
    * @param scope The scope in which to define this construct
@@ -521,14 +516,8 @@ export class Construct implements IConstruct {
    * dash `--`.
    * @param options Options
    */
-  constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
-    // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? { createNode: (host, scope, id) => new Node(host, scope, id) };
-    Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
-      value: nodeFactory.createNode(this, scope, id),
-      enumerable: false,
-      configurable: false,
-    });
+  constructor(scope: Construct, id: string) {
+    this.node = new Node(this, scope, id);
 
     // implement IDependable privately
     DependableTrait.implement(this, {
@@ -540,7 +529,7 @@ export class Construct implements IConstruct {
    * Returns a string representation of this construct.
    */
   public toString() {
-    return Node.of(this).path || '<root>';
+    return this.node.path || '<root>';
   }
 
   /**
@@ -678,28 +667,4 @@ const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
 function sanitizeId(id: string) {
   // Escape path seps as double dashes
   return id.replace(PATH_SEP_REGEX, '--');
-}
-
-/**
- * Options for creating constructs.
- */
-export interface ConstructOptions {
-  /**
-   * A factory for attaching `Node`s to the construct.
-   * @default - the default `Node` is associated
-   */
-  readonly nodeFactory?: INodeFactory;
-}
-
-/**
- * A factory for attaching `Node`s to the construct.
- */
-export interface INodeFactory {
-  /**
-   * Returns a new `Node` associated with `host`.
-   * @param host the associated construct
-   * @param scope the construct's scope (parent)
-   * @param id the construct id
-   */
-  createNode(host: Construct, scope: IConstruct, id: string): Node;
 }

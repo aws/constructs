@@ -1,5 +1,5 @@
 import { IAspect } from '../src/aspect';
-import { Construct, Node, IConstruct } from '../src/construct';
+import { Construct, IConstruct } from '../src/construct';
 import { App } from './util';
 
 class MyConstruct extends Construct {
@@ -19,7 +19,7 @@ class VisitOnce implements IAspect {
 test('Aspects are invoked only once', () => {
   const app = new App();
   const root = new MyConstruct(app, 'MyConstruct');
-  const node = Node.of(root);
+  const node = root.node;
   node.applyAspect(new VisitOnce());
   node.prepare();
   expect(root.visitCounter).toBe(1);

@@ -37,6 +37,10 @@ const project = new JsiiProject({
 
 });
 
+project.addScripts({
+  compat: `npx jsii-diff npm:$(node -p "require(\'./package.json\').name") -k --ignore-file .compatignore || (echo "\nUNEXPECTED BREAKING CHANGES\nAdd keys (e.g. 'removed:constructs.Node.of') to .compatignore in order to skip\n" && exit 1)`
+});
+
 // check API compatibility against latest published major version
 project.addCompileCommand('yarn compat');
 project.manifest.author = {

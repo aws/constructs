@@ -1,4 +1,4 @@
-import { Construct, ConstructMetadata, IConstruct, Node, ConstructOrder, ValidationError } from '../src';
+import { Construct, ConstructMetadata, IConstruct, ConstructOrder, ValidationError } from '../src';
 import { App as Root } from './util';
 import { IAspect } from '../src/aspect';
 
@@ -7,7 +7,7 @@ import { IAspect } from '../src/aspect';
 
 test('the "Root" construct is a special construct which can be used as the root of the tree', () => {
   const root = new Root();
-  const node = Node.of(root);
+  const node = root.node;
   expect(node.id).toBe('');
   expect(node.scope).toBeUndefined();
   expect(node.children.length).toBe(0);
@@ -21,12 +21,12 @@ test('constructs cannot be created with an empty name unless they are root', () 
 test('construct.name returns the name of the construct', () => {
   const t = createTree();
 
-  expect(Node.of(t.child1).id).toBe('Child1');
-  expect(Node.of(t.child2).id).toBe('Child2');
-  expect(Node.of(t.child1_1).id).toBe('Child11');
-  expect(Node.of(t.child1_2).id).toBe('Child12');
-  expect(Node.of(t.child1_1_1).id).toBe('Child111');
-  expect(Node.of(t.child2_1).id).toBe('Child21');
+  expect(t.child1.node.id).toBe('Child1');
+  expect(t.child2.node.id).toBe('Child2');
+  expect(t.child1_1.node.id).toBe('Child11');
+  expect(t.child1_2.node.id).toBe('Child12');
+  expect(t.child1_1_1.node.id).toBe('Child111');
+  expect(t.child2_1.node.id).toBe('Child21');
 
 });
 
@@ -49,12 +49,12 @@ test('construct id can use any character except the path separator', () => {
 test('if construct id contains path seperators, they will be replaced by double-dash', () => {
   const root = new Root();
   const c = new Construct(root, 'Boom/Boom/Bam');
-  expect(Node.of(c).id).toBe('Boom--Boom--Bam');
+  expect(c.node.id).toBe('Boom--Boom--Bam');
 });
 
 test('if "undefined" is forcefully used as an "id", it will be treated as an empty string', () => {
   const c = new Construct(undefined as any, undefined as any);
-  expect(Node.of(c).id).toBe('');
+  expect(c.node.id).toBe('');
 });
 
 test('construct.uniqueId returns a tree-unique alphanumeric id of this construct', () => {
@@ -65,38 +65,38 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
   const c1 = new Construct(child2, 'My construct');
   const c2 = new Construct(child1, 'My construct');
 
-  expect(Node.of(c1).path).toBe('This is the first child/Second level/My construct');
-  expect(Node.of(c2).path).toBe('This is the first child/My construct');
-  expect(Node.of(c1).uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
-  expect(Node.of(c2).uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
+  expect(c1.node.path).toBe('This is the first child/Second level/My construct');
+  expect(c2.node.path).toBe('This is the first child/My construct');
+  expect(c1.node.uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
+  expect(c2.node.uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
 });
 
 test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
   const root = new Root();
   const c = new Construct(root, 'Default');
-  expect(() => Node.of(c).uniqueId).toThrow(/Unable to calculate a unique id for an empty set of components/);
+  expect(() => c.node.uniqueId).toThrow(/Unable to calculate a unique id for an empty set of components/);
 });
 
 test('construct.getChildren() returns an array of all children', () => {
   const root = new Root();
   const child = new Construct(root, 'Child1');
   new Construct(root, 'Child2');
-  expect(Node.of(child).children.length).toBe(0);
-  expect(Node.of(root).children.length).toBe(2);
+  expect(child.node.children.length).toBe(0);
+  expect(root.node.children.length).toBe(2);
 });
 
 test('construct.findChild(name) can be used to retrieve a child from a parent', () => {
   const root = new Root();
   const child = new Construct(root, 'Contruct');
-  expect(Node.of(root).tryFindChild(Node.of(child).id)).toBe(child);
-  expect(Node.of(root).tryFindChild('NotFound')).toBeUndefined();
+  expect(root.node.tryFindChild(child.node.id)).toBe(child);
+  expect(root.node.tryFindChild('NotFound')).toBeUndefined();
 });
 
 test('construct.getChild(name) can be used to retrieve a child from a parent', () => {
   const root = new Root();
   const child = new Construct(root, 'Contruct');
-  expect(Node.of(root).findChild(Node.of(child).id)).toBe(child);
-  expect(() => Node.of(root).findChild('NotFound')).toThrow(/No child with id: 'NotFound'/);
+  expect(root.node.findChild(child.node.id)).toBe(child);
+  expect(() => root.node.findChild('NotFound')).toThrow(/No child with id: 'NotFound'/);
 });
 
 test('construct.getContext(key) can be used to read a value from context defined at the root level', () => {
@@ -106,62 +106,62 @@ test('construct.getContext(key) can be used to read a value from context defined
   };
 
   const t = createTree(context);
-  expect(Node.of(t.child1_2).tryGetContext('ctx1')).toBe(12);
-  expect(Node.of(t.child1_1_1).tryGetContext('ctx2')).toBe('hello');
+  expect(t.child1_2.node.tryGetContext('ctx1')).toBe(12);
+  expect(t.child1_1_1.node.tryGetContext('ctx2')).toBe('hello');
 });
 
 // tslint:disable-next-line:max-line-length
 test('construct.setContext(k,v) sets context at some level and construct.getContext(key) will return the lowermost value defined in the stack', () => {
   const root = new Root();
   const highChild = new Construct(root, 'highChild');
-  Node.of(highChild).setContext('c1', 'root');
-  Node.of(highChild).setContext('c2', 'root');
+  highChild.node.setContext('c1', 'root');
+  highChild.node.setContext('c2', 'root');
 
   const child1 = new Construct(highChild, 'child1');
-  Node.of(child1).setContext('c2', 'child1');
-  Node.of(child1).setContext('c3', 'child1');
+  child1.node.setContext('c2', 'child1');
+  child1.node.setContext('c3', 'child1');
 
   const child2 = new Construct(highChild, 'child2');
   const child3 = new Construct(child1, 'child1child1');
-  Node.of(child3).setContext('c1', 'child3');
-  Node.of(child3).setContext('c4', 'child3');
+  child3.node.setContext('c1', 'child3');
+  child3.node.setContext('c4', 'child3');
 
-  expect(Node.of(highChild).tryGetContext('c1')).toBe('root');
-  expect(Node.of(highChild).tryGetContext('c2')).toBe('root');
-  expect(Node.of(highChild).tryGetContext('c3')).toBeUndefined();
+  expect(highChild.node.tryGetContext('c1')).toBe('root');
+  expect(highChild.node.tryGetContext('c2')).toBe('root');
+  expect(highChild.node.tryGetContext('c3')).toBeUndefined();
 
-  expect(Node.of(child1).tryGetContext('c1')).toBe('root');
-  expect(Node.of(child1).tryGetContext('c2')).toBe('child1');
-  expect(Node.of(child1).tryGetContext('c3')).toBe('child1');
+  expect(child1.node.tryGetContext('c1')).toBe('root');
+  expect(child1.node.tryGetContext('c2')).toBe('child1');
+  expect(child1.node.tryGetContext('c3')).toBe('child1');
 
-  expect(Node.of(child2).tryGetContext('c1')).toBe('root');
-  expect(Node.of(child2).tryGetContext('c2')).toBe('root');
-  expect(Node.of(child2).tryGetContext('c3')).toBeUndefined();
+  expect(child2.node.tryGetContext('c1')).toBe('root');
+  expect(child2.node.tryGetContext('c2')).toBe('root');
+  expect(child2.node.tryGetContext('c3')).toBeUndefined();
 
-  expect(Node.of(child3).tryGetContext('c1')).toBe('child3');
-  expect(Node.of(child3).tryGetContext('c2')).toBe('child1');
-  expect(Node.of(child3).tryGetContext('c3')).toBe('child1');
-  expect(Node.of(child3).tryGetContext('c4')).toBe('child3');
+  expect(child3.node.tryGetContext('c1')).toBe('child3');
+  expect(child3.node.tryGetContext('c2')).toBe('child1');
+  expect(child3.node.tryGetContext('c3')).toBe('child1');
+  expect(child3.node.tryGetContext('c4')).toBe('child3');
 
 });
 
 test('construct.setContext(key, value) can only be called before adding any children', () => {
   const root = new Root();
   new Construct(root, 'child1');
-  expect(() => Node.of(root).setContext('k', 'v')).toThrow(/Cannot set context after children have been added: child1/);
+  expect(() => root.node.setContext('k', 'v')).toThrow(/Cannot set context after children have been added: child1/);
 });
 
 test('construct.pathParts returns an array of strings of all names from root to node', () => {
   const tree = createTree();
-  expect(Node.of(tree.root).path).toBe('');
-  expect(Node.of(tree.child1_1_1).path).toBe('HighChild/Child1/Child11/Child111');
-  expect(Node.of(tree.child2).path).toBe('HighChild/Child2');
+  expect(tree.root.node.path).toBe('');
+  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
+  expect(tree.child2.node.path).toBe('HighChild/Child2');
 });
 
 test('if a root construct has a name, it should be included in the path', () => {
   const tree = createTree({});
-  expect(Node.of(tree.root).path).toBe('');
-  expect(Node.of(tree.child1_1_1).path).toBe('HighChild/Child1/Child11/Child111');
+  expect(tree.root.node.path).toBe('');
+  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
 });
 
 test('construct can not be created with the name of a sibling', () => {
@@ -184,9 +184,9 @@ test('construct can not be created with the name of a sibling', () => {
 test('addMetadata(type, data) can be used to attach metadata to constructs', () => {
   const root = new Root();
   const con = new Construct(root, 'MyConstruct');
-  expect(Node.of(con).metadata).toEqual([]);
+  expect(con.node.metadata).toEqual([]);
 
-  const node = Node.of(con);
+  const node = con.node;
   (function FIND_ME() { // <-- Creates a stack trace marker we'll be able to look for
     node.addMetadata('key', 'value');
     node.addMetadata('number', 103);
@@ -204,7 +204,7 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
 test('addMetadata(type, undefined/null) is ignored', () => {
   const root = new Root();
   const con = new Construct(root, 'Foo');
-  const node = Node.of(con);
+  const node = con.node;
   node.addMetadata('Null', null);
   node.addMetadata('Undefined', undefined);
   node.addMetadata('True', true);
@@ -223,7 +223,7 @@ test('addMetadata(type, undefined/null) is ignored', () => {
 test('addWarning(message) can be used to add a "WARNING" message entry to the construct', () => {
   const root = new Root();
   const con = new Construct(root, 'MyConstruct');
-  const node = Node.of(con);
+  const node = con.node;
   node.addWarning('This construct is deprecated, use the other one instead');
   expect(node.metadata[0].type).toBe(ConstructMetadata.WARNING_METADATA_KEY);
   expect(node.metadata[0].data).toBe('This construct is deprecated, use the other one instead');
@@ -233,7 +233,7 @@ test('addWarning(message) can be used to add a "WARNING" message entry to the co
 test('addError(message) can be used to add a "ERROR" message entry to the construct', () => {
   const root = new Root();
   const con = new Construct(root, 'MyConstruct');
-  const node = Node.of(con);
+  const node = con.node;
   node.addError('Stop!');
   expect(node.metadata[0].type).toBe(ConstructMetadata.ERROR_METADATA_KEY);
   expect(node.metadata[0].data).toBe('Stop!');
@@ -243,7 +243,7 @@ test('addError(message) can be used to add a "ERROR" message entry to the constr
 test('addInfo(message) can be used to add an "INFO" message entry to the construct', () => {
   const root = new Root();
   const con = new Construct(root, 'MyConstruct');
-  const node = Node.of(con);
+  const node = con.node;
   node.addInfo('Hey there, how do you do?');
   expect(node.metadata[0].type).toBe(ConstructMetadata.INFO_METADATA_KEY);
   expect(node.metadata[0].data).toBe('Hey there, how do you do?');
@@ -256,7 +256,7 @@ test('multiple children of the same type, with explicit names are welcome', () =
   new MyBeautifulConstruct(root, 'mbc2');
   new MyBeautifulConstruct(root, 'mbc3');
   new MyBeautifulConstruct(root, 'mbc4');
-  expect(Node.of(root).children.length).toBeGreaterThanOrEqual(4);
+  expect(root.node.children.length).toBeGreaterThanOrEqual(4);
 });
 
 // tslint:disable-next-line:max-line-length
@@ -301,8 +301,8 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
 
   const stack = new TestStack();
 
-  const errors = Node.of(stack).validate()
-    .map((v: ValidationError) => ({ path: Node.of(v.source).path, message: v.message }));
+  const errors = stack.node.validate()
+    .map((v: ValidationError) => ({ path: v.source.node.path, message: v.message }));
 
   // validate DFS
   expect(errors).toEqual([
@@ -319,11 +319,11 @@ test('construct.lock() protects against adding children anywhere under this cons
 
   class LockableConstruct extends Construct {
     public lockMe() {
-      (Node.of(this) as any)._lock();
+      (this.node as any)._lock();
     }
 
     public unlockMe() {
-      (Node.of(this) as any)._unlock();
+      (this.node as any)._unlock();
     }
   }
 
@@ -360,22 +360,22 @@ test('findAll returns a list of all children in either DFS or BFS', () => {
   new Construct(c2, '5');
 
   // THEN
-  const node = Node.of(c1);
-  expect(node.findAll().map(x => Node.of(x).id)).toEqual(Node.of(c1).findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)); // default is PreOrder
-  expect(node.findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)).toEqual([ '1', '2', '4', '5', '3' ]);
-  expect(node.findAll(ConstructOrder.POSTORDER).map(x => Node.of(x).id)).toEqual([ '4', '5', '2', '3', '1' ]);
+  const node = c1.node;
+  expect(node.findAll().map(x => x.node.id)).toEqual(c1.node.findAll(ConstructOrder.PREORDER).map(x => x.node.id)); // default is PreOrder
+  expect(node.findAll(ConstructOrder.PREORDER).map(x => x.node.id)).toEqual([ '1', '2', '4', '5', '3' ]);
+  expect(node.findAll(ConstructOrder.POSTORDER).map(x => x.node.id)).toEqual([ '4', '5', '2', '3', '1' ]);
 });
 
 test('ancestors returns a list of parents up to root', () => {
   const { child1_1_1 } = createTree();
-  expect(Node.of(child1_1_1).scopes.map(x => Node.of(x).id)).toEqual([ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
+  expect(child1_1_1.node.scopes.map(x => x.node.id)).toEqual([ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
 });
 
 test('"root" returns the root construct', () => {
   const { child1, child2, child1_1_1, root } = createTree();
-  expect(Node.of(child1).root).toBe(root);
-  expect(Node.of(child2).root).toBe(root);
-  expect(Node.of(child1_1_1).root).toBe(root);
+  expect(child1.node.root).toBe(root);
+  expect(child2.node.root).toBe(root);
+  expect(child1_1_1.node.root).toBe(root);
 });
 
 describe('defaultChild', () => {
@@ -385,7 +385,7 @@ describe('defaultChild', () => {
     const defaultChild = new Construct(root, 'Resource');
     new Construct(root, 'child2');
 
-    expect(Node.of(root).defaultChild).toBe(defaultChild);
+    expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('returns the child with id "Default"', () => {
     const root = new Root();
@@ -393,22 +393,22 @@ describe('defaultChild', () => {
     const defaultChild = new Construct(root, 'Default');
     new Construct(root, 'child2');
 
-    expect(Node.of(root).defaultChild).toBe(defaultChild);
+    expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('can override defaultChild', () => {
     const root = new Root();
     new Construct(root, 'Resource');
     const defaultChild = new Construct(root, 'OtherResource');
-    Node.of(root).defaultChild = defaultChild;
+    root.node.defaultChild = defaultChild;
 
-    expect(Node.of(root).defaultChild).toBe(defaultChild);
+    expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('returns "undefined" if there is no default', () => {
     const root = new Root();
     new Construct(root, 'child1');
     new Construct(root, 'child2');
 
-    expect(Node.of(root).defaultChild).toBeUndefined();
+    expect(root.node.defaultChild).toBeUndefined();
   });
   test('fails if there are both "Resource" and "Default"', () => {
     const root = new Root();
@@ -417,17 +417,17 @@ describe('defaultChild', () => {
     new Construct(root, 'child2');
     new Construct(root, 'Resource');
 
-    expect(() => Node.of(root).defaultChild)
+    expect(() => root.node.defaultChild)
       .toThrow(/Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
   });
   test('constructs created in an Aspect are prepared', () => {
     const root = new Root();
     const construct = new Construct(root, 'Resource');
-    Node.of(construct).applyAspect(new AddConstructAspect(construct));
-    Node.of(root).prepare();
+    construct.node.applyAspect(new AddConstructAspect(construct));
+    root.node.prepare();
     // THEN
-    const addedConstruct = Node.of(root).findAll(ConstructOrder.PREORDER)
-      .find(child => Node.of(child).id === `AspectAdded-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
+    const addedConstruct = root.node.findAll(ConstructOrder.PREORDER)
+      .find(child => child.node.id === `AspectAdded-${construct.node.id}`) as MyAlmostBeautifulConstruct;
     expect(addedConstruct.status).toBe('Prepared');
   });
 });
@@ -439,7 +439,7 @@ describe('construct prepare', () => {
     const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
     const construct02 = new MyAlmostBeautifulConstruct(root, 'Resource02');
     
-    Node.of(root).prepare();
+    root.node.prepare();
     // THEN
     expect(construct01.status).toEqual('Prepared');
     expect(construct02.status).toEqual('Prepared');    
@@ -450,7 +450,7 @@ describe('construct prepare', () => {
     const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
     const construct02 = new MyMissingPrepareConstruct(root, 'Resource02');
     
-    Node.of(root).prepare();
+    root.node.prepare();
     // THEN
     expect(construct01.status).toEqual('Prepared');
     expect(construct02.status).not.toEqual('Prepared'); 
@@ -463,7 +463,7 @@ describe('construct prepare', () => {
     // we try to force the error
     construct01.onPrepare = undefined;
 
-    expect(() => Node.of(root).prepare())
+    expect(() => root.node.prepare())
       .toThrow(/expecting "onPrepare" to be a function/);
   });
 
@@ -473,7 +473,7 @@ function createTree(context?: any) {
   const root = new Root();
   const highChild = new Construct(root, 'HighChild');
   if (context) {
-    Object.keys(context).forEach(key => Node.of(highChild).setContext(key, context[key]));
+    Object.keys(context).forEach(key => highChild.node.setContext(key, context[key]));
   }
 
   const child1 = new Construct(highChild, 'Child1');
@@ -518,6 +518,6 @@ class AddConstructAspect implements IAspect {
   constructor(private readonly scope: Construct) {}
 
   visit(node: IConstruct): void {
-    new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${Node.of(node).id}`);
+    new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${node.node.id}`);
   }
 }
