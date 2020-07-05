@@ -1,4 +1,4 @@
-import { Construct, ConstructOptions } from '../lib';
+import { Construct, ConstructOptions } from '../src';
 
 export class App extends Construct {
   constructor(options?: ConstructOptions) {
