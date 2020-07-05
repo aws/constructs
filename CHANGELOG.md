@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/aws/constructs/compare/v3.0.4...v4.0.0) (2020-07-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* `Node.of(construct)` was replaced with `construct.node`.
+
+### Features
+
+* construct.node ([6e4b278](https://github.com/aws/constructs/commit/6e4b2783764ec4155f858b22751804ffe7587f5a))
+
 ### [3.0.4](https://github.com/aws/constructs/compare/v3.0.3...v3.0.4) (2020-06-24)
 
 ### [3.0.3](https://github.com/aws/constructs/compare/v1.1.4...v3.0.3) (2020-05-04)
