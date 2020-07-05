@@ -4,9 +4,15 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for composable configuration',
   repository: 'https://github.com/aws/constructs.git',
+
+  // author
   authorName: 'Amazon Web Services',
-  authorEmail: 'benisrae@amazon.com',
+  authorUrl: 'https://aws.amazon.com',
+  authorOrganization: true,
   homepage: 'https://github.com/aws/constructs',
+
+  copyrightPeriod: `2018-${new Date().getFullYear()}`,
+  copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
 
   keywords: [
     "aws",
@@ -17,6 +23,8 @@ const project = new JsiiProject({
 
   stability: 'stable',
   minNodeVersion: '10.3.0',
+
+  releaseBranches: [ 'master', '2.x', '4.x' ],
 
   //----------------------------------------------------
   // pre-release 4.x: publish "next" dist-tag and do not publish non-npm languages
@@ -39,17 +47,5 @@ const project = new JsiiProject({
   //   packageId: 'Constructs'
   // },
 });
-
-project.addScripts({
-  compat: `npx jsii-diff npm:$(node -p "require(\'./package.json\').name") -k --ignore-file .compatignore || (echo "\nUNEXPECTED BREAKING CHANGES\nAdd keys (e.g. 'removed:constructs.Node.of') to .compatignore in order to skip\n" && exit 1)`
-});
-
-// check API compatibility against latest published major version
-project.addCompileCommand('yarn compat');
-project.manifest.author = {
-  name: 'Amazon Web Services',
-  url: 'https://aws.amazon.com',
-  organization: true
-};
 
 project.synth();
