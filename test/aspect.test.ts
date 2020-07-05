@@ -1,5 +1,5 @@
-import { IAspect } from '../lib/aspect';
-import { Construct, Node, IConstruct } from '../lib/construct';
+import { IAspect } from '../src/aspect';
+import { Construct, Node, IConstruct } from '../src/construct';
 import { App } from './util';
 
 class MyConstruct extends Construct {

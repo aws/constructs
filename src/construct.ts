@@ -27,7 +27,7 @@ export class Node {
   public static of(construct: IConstruct): Node {
     const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as Node;
     if (!node) {
-      throw new Error(`construct does not have an associated node. All constructs must extend the "Construct" base class`);
+      throw new Error('construct does not have an associated node. All constructs must extend the "Construct" base class');
     }
 
     return node;
@@ -375,7 +375,7 @@ export class Node {
     return true;
   }
 
-    /**
+  /**
    * Synthesizes a CloudAssembly from a construct tree.
    * @param options Synthesis options.
    */
@@ -402,7 +402,7 @@ export class Node {
         node._lock();
         const ctx = {
           ...options.sessionContext,
-          outdir: options.outdir
+          outdir: options.outdir,
         };
         (construct as any).onSynthesize(ctx); // "as any" is needed because we want to keep "synthesize" protected
       } finally {
@@ -425,7 +425,7 @@ export class Node {
     for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {      
       const cn = construct as any;
       if ('onPrepare' in cn) {
-        if (typeof(cn.onPrepare) !== 'function') { throw new Error(`expecting "onPrepare" to be a function`); }
+        if (typeof(cn.onPrepare) !== 'function') { throw new Error('expecting "onPrepare" to be a function'); }
         cn.onPrepare();
       }
     }
@@ -532,7 +532,7 @@ export class Construct implements IConstruct {
 
     // implement IDependable privately
     DependableTrait.implement(this, {
-      dependencyRoots: [ this ]
+      dependencyRoots: [ this ],
     });
   }
 
