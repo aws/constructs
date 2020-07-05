@@ -45,5 +45,4 @@ project.manifest.author = {
   organization: true
 };
 
-
 project.synth();

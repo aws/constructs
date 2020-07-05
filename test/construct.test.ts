@@ -102,7 +102,7 @@ test('construct.getChild(name) can be used to retrieve a child from a parent', (
 test('construct.getContext(key) can be used to read a value from context defined at the root level', () => {
   const context = {
     ctx1: 12,
-    ctx2: 'hello'
+    ctx2: 'hello',
   };
 
   const t = createTree(context);
@@ -310,7 +310,7 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
     { path: 'MyConstruct', message: 'my-error2' },
     { path: 'TheirConstruct/YourConstruct', message: 'your-error1' },
     { path: 'TheirConstruct', message: 'their-error' },
-    { path: '', message: 'stack-error' }
+    { path: '', message: 'stack-error' },
   ]);
 
 });
@@ -410,16 +410,16 @@ describe('defaultChild', () => {
 
     expect(Node.of(root).defaultChild).toBeUndefined();
   });
-test('fails if there are both "Resource" and "Default"', () => {
-  const root = new Root();
-  new Construct(root, 'child1');
-  new Construct(root, 'Default');
-  new Construct(root, 'child2');
-  new Construct(root, 'Resource');
+  test('fails if there are both "Resource" and "Default"', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+    new Construct(root, 'Default');
+    new Construct(root, 'child2');
+    new Construct(root, 'Resource');
 
-  expect(() => Node.of(root).defaultChild)
-    .toThrow(/Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
-});
+    expect(() => Node.of(root).defaultChild)
+      .toThrow(/Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
+  });
   test('constructs created in an Aspect are prepared', () => {
     const root = new Root();
     const construct = new Construct(root, 'Resource');
@@ -427,7 +427,7 @@ test('fails if there are both "Resource" and "Default"', () => {
     Node.of(root).prepare();
     // THEN
     const addedConstruct = Node.of(root).findAll(ConstructOrder.PREORDER)
-    .find(child => Node.of(child).id === `AspectAdded-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
+      .find(child => Node.of(child).id === `AspectAdded-${Node.of(construct).id}`) as MyAlmostBeautifulConstruct;
     expect(addedConstruct.status).toBe('Prepared');
   });
 });
@@ -484,7 +484,7 @@ function createTree(context?: any) {
   const child2_1 = new Construct(child2, 'Child21');
 
   return {
-    root, child1, child2, child1_1, child1_2, child1_1_1, child2_1
+    root, child1, child2, child1_1, child1_2, child1_1_1, child2_1,
   };
 }
 
