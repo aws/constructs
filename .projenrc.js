@@ -15,26 +15,29 @@ const project = new JsiiProject({
     "jsii"
   ],
 
-  java: {
-    javaPackage: 'software.constructs',
-    mavenGroupId: 'software.constructs',
-    mavenArtifactId: 'constructs'
-  },
-
-  python: {
-    distName: 'constructs',
-    module: 'constructs'
-  },
-
-  dotnet: {
-    dotNetNamespace: 'Constructs',
-    packageId: 'Constructs'
-  },
-
   stability: 'stable',
-
   minNodeVersion: '10.3.0',
 
+  //----------------------------------------------------
+  // pre-release 4.x: publish "next" dist-tag and do not publish non-npm languages
+  //----------------------------------------------------------
+  npmDistTag: 'next',
+
+  // java: {
+  //   javaPackage: 'software.constructs',
+  //   mavenGroupId: 'software.constructs',
+  //   mavenArtifactId: 'constructs'
+  // },
+
+  // python: {
+  //   distName: 'constructs',
+  //   module: 'constructs'
+  // },
+
+  // dotnet: {
+  //   dotNetNamespace: 'Constructs',
+  //   packageId: 'Constructs'
+  // },
 });
 
 project.addScripts({

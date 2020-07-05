@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10.3.0
-      - run: npx projen@0.2.3
+      - run: npx projen@0.2.4
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - name: Anti-tamper check
