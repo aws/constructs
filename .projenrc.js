@@ -40,6 +40,8 @@ const project = new JsiiProject({
   stability: 'stable',
 
   minNodeVersion: '10.17.0',
+
+  releaseBranches: [ 'master', '2.x' ],
 });
 
 project.synth();
