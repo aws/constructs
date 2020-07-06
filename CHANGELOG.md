@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/aws/constructs/compare/v4.0.0...v4.1.0) (2020-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* to add validation logic for constructs, implement the `IValidation` interface. 
+* The `construct.node.validate()` method no longer validates the entire tree, but only the specific construct on which it is called.
+* constructs no longer have an `onPrepare()` and `onSynthesis()` hooks. See domain-specific (such as AWS CDK and cdk8s) for alternatives.
+* aspects are no longer supported as part of the constructs library, so `node.applyAspect()` is no longer available. The AWS CDK implements aspects through `Aspects.of(construct).apply()`.
+
+### Features
+
+* aspect are no longer supported ([ffe8cf6](https://github.com/aws/constructs/commit/ffe8cf6c4dbcb67b25d874028c09a04ed68e264c))
+* introduce IValidation instead of onValidate() ([c99d198](https://github.com/aws/constructs/commit/c99d198bca8698c19e88cd53fb8393fb4ec50bed))
+* remove onPrepare() and onSynthesize() ([a312b34](https://github.com/aws/constructs/commit/a312b3455227ba25853eece6a3a588d67a3edb4c))
+
 ## [4.0.0](https://github.com/aws/constructs/compare/v3.0.4...v4.0.0) (2020-07-05)
 
 
