@@ -324,27 +324,25 @@ test('construct.validate() can be implemented to perform validation, node.valida
 
 });
 
+test('node.validate() returns an empty array if the construct does not implement IValidation', () => {
+  // GIVEN
+  const root = new Root();
+
+  // THEN
+  expect(root.node.validate()).toStrictEqual([]);
+});
+
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
-
-  class LockableConstruct extends Construct {
-    public lockMe() {
-      this.node.lock();
-    }
-
-    public unlockMe() {
-      this.node.unlock();
-    }
-  }
 
   const stack = new Root();
 
-  const c0a = new LockableConstruct(stack, 'c0a');
+  const c0a = new Construct(stack, 'c0a');
   const c0b = new Construct(stack, 'c0b');
 
   const c1a = new Construct(c0a, 'c1a');
   const c1b = new Construct(c0a, 'c1b');
 
-  c0a.lockMe();
+  c0a.node.lock();
 
   // now we should still be able to add children to c0b, but not to c0a or any its children
   new Construct(c0b, 'c1a');
@@ -352,12 +350,15 @@ test('construct.lock() protects against adding children anywhere under this cons
   expect(() => new Construct(c1a, 'fail2')).toThrow(/Cannot add children to "c0a\/c1a" during synthesis/);
   expect(() => new Construct(c1b, 'fail3')).toThrow(/Cannot add children to "c0a\/c1b" during synthesis/);
 
-  c0a.unlockMe();
+  c0a.node.unlock();
 
   new Construct(c0a, 'c0aZ');
   new Construct(c1a, 'c1aZ');
   new Construct(c1b, 'c1bZ');
 
+  // lock root
+  stack.node.lock();
+  expect(() => new Construct(stack, 'test')).toThrow(/Cannot add children during synthesis/);
 });
 
 test('findAll returns a list of all children in either DFS or BFS', () => {
@@ -501,6 +502,33 @@ describe('dependencies', () => {
     expect(() => Dependable.of({})).toThrow(/does not implement IDependable/);
   });
 
+});
+
+test('tryRemoveChild()', () => {
+  // GIVEN
+  const root = new Root();
+  new Construct(root, 'child1');
+  new Construct(root, 'child2');
+
+  // WHEN
+  expect(root.node.children.length).toBe(2);
+  expect(root.node.tryRemoveChild('child1')).toBeTruthy();
+  expect(root.node.tryRemoveChild('child-not-found')).toBeFalsy();
+
+  // THEN
+  expect(root.node.children.length).toBe(1);
+});
+
+test('toString()', () => {
+  // GIVEN
+  const root = new Root();
+  const child = new Construct(root, 'child');
+  const grand = new Construct(child, 'grand');
+
+  // THEN
+  expect(root.toString()).toStrictEqual('<root>');
+  expect(child.toString()).toStrictEqual('child');
+  expect(grand.toString()).toStrictEqual('child/grand');
 });
 
 function createTree(context?: any) {
