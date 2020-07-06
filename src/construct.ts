@@ -1,12 +1,12 @@
 import { ConstructMetadata, MetadataEntry } from './metadata';
-import { DependableTrait } from './private/dependency';
+import { Dependable, IDependable } from './dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
 /**
  * Represents a construct.
  */
-export interface IConstruct {
+export interface IConstruct extends IDependable {
   /**
    * The tree node.
    */
@@ -307,39 +307,24 @@ export class Node {
   }
 
   /**
-   * Add an ordering dependency on another Construct.
+   * Add an ordering dependency on another construct.
    *
-   * All constructs in the dependency's scope will be deployed before any
-   * construct in this construct's scope.
+   * An `IDependable`
    */
-  public addDependency(...dependencies: IConstruct[]) {
-    for (const dependency of dependencies) {
-      this._dependencies.add(dependency);
+  public addDependency(...dep: IDependable[]) {
+    for (const scope of dep) {
+      const roots = Dependable.of(scope).dependencies;
+      for (const root of roots) {
+        this._dependencies.add(root);
+      }
     }
   }
 
   /**
-   * Return all dependencies registered on this node or any of its children
+   * Return all dependencies registered on this node (non-recursive).
    */
-  public get dependencies(): Dependency[] {
-    const found = new Map<IConstruct, Set<IConstruct>>(); // Deduplication map
-    const ret = new Array<Dependency>();
-
-    for (const source of this.findAll()) {
-      for (const dependable of source.node._dependencies) {
-        for (const target of DependableTrait.get(dependable).dependencyRoots) {
-          let foundTargets = found.get(source);
-          if (!foundTargets) { found.set(source, foundTargets = new Set()); }
-
-          if (!foundTargets.has(target)) {
-            ret.push({ source, target });
-            foundTargets.add(target);
-          }
-        }
-      }
-    }
-
-    return ret;
+  public get dependencies(): IConstruct[] {
+    return [ ...this._dependencies ];
   }
 
   /**
@@ -439,8 +424,8 @@ export class Construct implements IConstruct {
     this.node = new Node(this, scope, id);
 
     // implement IDependable privately
-    DependableTrait.implement(this, {
-      dependencyRoots: [ this ],
+    Dependable.implement(this, {
+      dependencies: [ this ],
     });
   }
 
@@ -480,21 +465,6 @@ export enum ConstructOrder {
    * Depth-first, post-order (leaf nodes first)
    */
   POSTORDER
-}
-
-/**
- * A single dependency
- */
-export interface Dependency {
-  /**
-   * Source the dependency
-   */
-  readonly source: IConstruct;
-
-  /**
-   * Target of the dependency
-   */
-  readonly target: IConstruct;
 }
 
 /**

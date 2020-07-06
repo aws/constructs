@@ -15,3 +15,6 @@ removed:constructs.ISynthesisSession
 removed:constructs.SynthesisOptions
 
 removed:constructs.Construct.onValidate
+
+changed-type:constructs.Node.dependencies
+removed:constructs.Dependency

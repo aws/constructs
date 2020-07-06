@@ -6,6 +6,8 @@ Name|Description
 ----|-----------
 [Construct](#constructs-construct)|Represents the building block of the construct graph.
 [ConstructMetadata](#constructs-constructmetadata)|Metadata keys used by constructs.
+[Dependable](#constructs-dependable)|Trait for IDependable.
+[DependencyGroup](#constructs-dependencygroup)|A set of constructs to be used as a dependable.
 [Node](#constructs-node)|Represents the construct node in the scope tree.
 
 
@@ -13,7 +15,6 @@ Name|Description
 
 Name|Description
 ----|-----------
-[Dependency](#constructs-dependency)|A single dependency.
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
 [ValidationError](#constructs-validationerror)|An error returned during the validation phase.
 
@@ -23,6 +24,7 @@ Name|Description
 Name|Description
 ----|-----------
 [IConstruct](#constructs-iconstruct)|Represents a construct.
+[IDependable](#constructs-idependable)|Trait marker for classes that can be depended upon.
 [IValidation](#constructs-ivalidation)|Implement this interface in order for the construct to be able to validate itself.
 
 
@@ -41,7 +43,7 @@ Represents the building block of the construct graph.
 All constructs besides the root construct must be created within the scope of
 another construct.
 
-__Implements__: [IConstruct](#constructs-iconstruct)
+__Implements__: [IConstruct](#constructs-iconstruct), [IDependable](#constructs-idependable)
 
 ### Initializer
 
@@ -92,10 +94,110 @@ Metadata keys used by constructs.
 
 Name | Type | Description 
 -----|------|-------------
-*static* **DISABLE_STACK_TRACE_IN_METADATA** | <code>string</code> | If set in the construct's context, omits stack traces from metadata entries.
 *static* **ERROR_METADATA_KEY** | <code>string</code> | Context type for error level messages.
 *static* **INFO_METADATA_KEY** | <code>string</code> | Context type for info level messages.
 *static* **WARNING_METADATA_KEY** | <code>string</code> | Context type for warning level messages.
+
+
+
+## class Dependable 🔹 <a id="constructs-dependable"></a>
+
+Trait for IDependable.
+
+Traits are interfaces that are privately implemented by objects. Instead of
+showing up in the public interface of a class, they need to be queried
+explicitly. This is used to implement certain framework features that are
+not intended to be used by Construct consumers, and so should be hidden
+from accidental use.
+
+
+### Initializer
+
+
+
+
+```ts
+new Dependable()
+```
+
+
+
+
+### Properties
+
+
+Name | Type | Description 
+-----|------|-------------
+**dependencies**🔹 | <code>Array<[IConstruct](#constructs-iconstruct)></code> | The set of constructs that form the root of this dependable.
+
+### Methods
+
+
+#### *static* implement(instance, trait)🔹 <a id="constructs-dependable-implement"></a>
+
+Turn any object into an IDependable.
+
+```ts
+static implement(instance: IDependable, trait: Dependable): void
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+* **trait** (<code>[Dependable](#constructs-dependable)</code>)  *No description*
+
+
+
+
+#### *static* of(instance)🔹 <a id="constructs-dependable-of"></a>
+
+Return the matching Dependable for the given class instance.
+
+```ts
+static of(instance: IDependable): Dependable
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+__Returns__:
+* <code>[Dependable](#constructs-dependable)</code>
+
+
+
+## class DependencyGroup 🔹 <a id="constructs-dependencygroup"></a>
+
+A set of constructs to be used as a dependable.
+
+This class can be used when a set of constructs which are disjoint in the
+construct tree needs to be combined to be used as a single dependable.
+
+__Implements__: [IDependable](#constructs-idependable)
+
+### Initializer
+
+
+
+
+```ts
+new DependencyGroup(...scopes: IConstruct[])
+```
+
+* **scopes** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+
+
+### Methods
+
+
+#### add(...scopes)🔹 <a id="constructs-dependencygroup-add"></a>
+
+Add a construct to the dependency roots.
+
+```ts
+add(...scopes: IConstruct[]): void
+```
+
+* **scopes** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+
+
+
 
 
 
@@ -125,7 +227,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 Name | Type | Description 
 -----|------|-------------
 **children** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | All direct children of this construct.
-**dependencies** | <code>Array<[Dependency](#constructs-dependency)></code> | Return all dependencies registered on this node or any of its children.
+**dependencies** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | Return all dependencies registered on this node (non-recursive).
 **id** | <code>string</code> | The id of this construct within the current scope.
 **locked** | <code>boolean</code> | Returns true if this construct or the scopes in which it is defined are locked.
 **metadata** | <code>Array<[MetadataEntry](#constructs-metadataentry)></code> | An immutable array of metadata objects associated with this construct.
@@ -140,18 +242,17 @@ Name | Type | Description
 ### Methods
 
 
-#### addDependency(...dependencies) <a id="constructs-node-adddependency"></a>
+#### addDependency(...dep) <a id="constructs-node-adddependency"></a>
 
-Add an ordering dependency on another Construct.
+Add an ordering dependency on another construct.
 
-All constructs in the dependency's scope will be deployed before any
-construct in this construct's scope.
+An `IDependable`
 
 ```ts
-addDependency(...dependencies: IConstruct[]): void
+addDependency(...dep: IDependable[]): void
 ```
 
-* **dependencies** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+* **dep** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
 
 
 
@@ -351,20 +452,6 @@ __Returns__:
 
 
 
-## struct Dependency  <a id="constructs-dependency"></a>
-
-
-A single dependency.
-
-
-
-Name | Type | Description 
------|------|-------------
-**source** | <code>[IConstruct](#constructs-iconstruct)</code> | Source the dependency.
-**target** | <code>[IConstruct](#constructs-iconstruct)</code> | Target of the dependency.
-
-
-
 ## interface IConstruct  <a id="constructs-iconstruct"></a>
 
 __Implemented by__: [Construct](#constructs-construct)
@@ -379,6 +466,21 @@ Name | Type | Description
 -----|------|-------------
 **node** | <code>[Node](#constructs-node)</code> | The tree node.
 
+
+
+## interface IDependable  <a id="constructs-idependable"></a>
+
+__Implemented by__: [Construct](#constructs-construct), [DependencyGroup](#constructs-dependencygroup)
+
+Trait marker for classes that can be depended upon.
+
+The presence of this interface indicates that an object has
+an `IDependableTrait` implementation.
+
+This interface can be used to take an (ordering) dependency on a set of
+constructs. An ordering dependency implies that the resources represented by
+those constructs are deployed before the resources depending ON them are
+deployed.
 
 
 ## interface IValidation  <a id="constructs-ivalidation"></a>

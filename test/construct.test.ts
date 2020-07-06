@@ -1,4 +1,4 @@
-import { Construct, ConstructMetadata, ConstructOrder, ValidationError } from '../src';
+import { Construct, ConstructMetadata, ConstructOrder, ValidationError, DependencyGroup, Dependable } from '../src';
 import { App as Root } from './util';
 
 // tslint:disable:variable-name
@@ -429,6 +429,78 @@ describe('defaultChild', () => {
     expect(() => root.node.defaultChild)
       .toThrow(/Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
   });
+});
+
+describe('dependencies', () => {
+
+  test('addDependency() defines a dependency between two scopes', () => {
+    // GIVEN
+    const root = new Root();
+    const consumer = new Construct(root, 'consumer');
+    const producer1 = new Construct(root, 'producer1');
+    const producer2 = new Construct(root, 'producer2');
+
+    // WHEN
+    consumer.node.addDependency(producer1);
+    consumer.node.addDependency(producer2);
+
+    // THEN
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2' ]);
+  });
+
+  test('are deduplicated', () => {
+    // GIVEN
+    const root = new Root();
+    const consumer = new Construct(root, 'consumer');
+    const producer = new Construct(root, 'producer');
+
+
+    // WHEN
+    consumer.node.addDependency(producer);
+    consumer.node.addDependency(producer);
+    consumer.node.addDependency(producer);
+    consumer.node.addDependency(producer);
+
+    // THEN
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+  });
+
+  test('DependencyGroup can represent a group of disjoined producers', () => {
+    // GIVEN
+    const root = new Root();
+    const group = new DependencyGroup(new Construct(root, 'producer1'), new Construct(root, 'producer2'));
+    const consumer = new Construct(root, 'consumer');
+
+    // WHEN
+    group.add(new Construct(root, 'producer3'), new Construct(root, 'producer4'));
+    consumer.node.addDependency(group);
+
+    // THEN
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2', 'producer3', 'producer4' ]);
+  });
+
+  test('Dependable.implement() can be used to implement IDependable on any object', () => {
+    // GIVEN
+    const root = new Root();
+    const producer = new Construct(root, 'producer');
+    const consumer = new Construct(root, 'consumer');
+
+    // WHEN
+    const foo = { };
+    Dependable.implement(foo, {
+      get dependencies() { return [ producer ]; },
+    });
+    consumer.node.addDependency(foo);
+
+    // THEN
+    expect(Dependable.of(foo).dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+  });
+
+  test('Dependable.of() throws an error the object does not implement IDependable', () => {
+    expect(() => Dependable.of({})).toThrow(/does not implement IDependable/);
+  });
+
 });
 
 function createTree(context?: any) {
