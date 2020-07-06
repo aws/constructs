@@ -355,62 +355,6 @@ export class Node {
   }
 
   /**
-   * Synthesizes a CloudAssembly from a construct tree.
-   * @param options Synthesis options.
-   */
-  public synthesize(options: SynthesisOptions): void {
-    // the three holy phases of synthesis: prepare, validate and synthesize
-
-    // prepare
-    this.prepare();
-
-    // validate
-    const validate = options.skipValidation === undefined ? true : !options.skipValidation;
-    if (validate) {
-      const errors = this.validate();
-      if (errors.length > 0) {
-        const errorList = errors.map(e => `[${e.source.node.path}] ${e.message}`).join('\n  ');
-        throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
-      }
-    }
-
-    // synthesize (leaves first)
-    for (const construct of this.findAll(ConstructOrder.POSTORDER)) {
-      const node = construct.node;
-      try {
-        node._lock();
-        const ctx = {
-          ...options.sessionContext,
-          outdir: options.outdir,
-        };
-        (construct as any).onSynthesize(ctx); // "as any" is needed because we want to keep "synthesize" protected
-      } finally {
-        node._unlock();
-      }
-    }
-  }
-
-  /**
-   * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
-   */
-  public prepare() {
-    // Aspects are applied root to leaf
-    for (const construct of this.findAll(ConstructOrder.PREORDER)) {
-      construct.node.invokeAspects();
-    }
-
-    // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
-    // use PREORDER.reverse() for backward compatability
-    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {      
-      const cn = construct as any;
-      if ('onPrepare' in cn) {
-        if (typeof(cn.onPrepare) !== 'function') { throw new Error('expecting "onPrepare" to be a function'); }
-        cn.onPrepare();
-      }
-    }
-  }
-
-  /**
    * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
    * the list of all errors. An empty list indicates that there are no errors.
    */
@@ -428,17 +372,15 @@ export class Node {
   /**
    * Locks this construct from allowing more children to be added. After this
    * call, no more children can be added to this construct or to any children.
-   * @internal
    */
-  private _lock() {
+  public lock() {
     this._locked = true;
   }
 
   /**
    * Unlocks this costruct and allows mutations (adding children).
-   * @internal
    */
-  private _unlock() {
+  public unlock() {
     this._locked = false;
   }
 
@@ -518,32 +460,6 @@ export class Construct implements IConstruct {
   protected onValidate(): string[] {
     return [];
   }
-
-  /**
-   * Perform final modifications before synthesis
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * final changes before synthesis. prepare() will be called after child
-   * constructs have been prepared.
-   *
-   * This is an advanced framework feature. Only use this if you
-   * understand the implications.
-   */
-  protected onPrepare(): void {
-    return;
-  }
-
-  /**
-   * Allows this construct to emit artifacts into the cloud assembly during synthesis.
-   *
-   * This method is usually implemented by framework-level constructs such as `Stack` and `Asset`
-   * as they participate in synthesizing the cloud assembly.
-   *
-   * @param session The synthesis session.
-   */
-  protected onSynthesize(session: ISynthesisSession): void {
-    ignore(session);
-  }
 }
 
 /**
@@ -592,45 +508,9 @@ export interface Dependency {
 }
 
 /**
- * Represents a single session of synthesis. Passed into `construct.onSynthesize()` methods.
  */
-export interface ISynthesisSession {
   /**
-   * The output directory for this synthesis session.
    */
-  readonly outdir: string;
-
-  /**
-   * Additional context passed to synthesizeNode through `sessionContext`.
-   */
-  [key: string]: any;
-}
-
-/**
- * Options for synthesis.
- */
-export interface SynthesisOptions {
-  /**
-   * The output directory into which to synthesize the cloud assembly.
-   * @default - creates a temporary directory
-   */
-  readonly outdir: string;
-
-  /**
-   * Whether synthesis should skip the validation phase.
-   * @default false
-   */
-  readonly skipValidation?: boolean;
-
-  /**
-   * Additional context passed into the synthesis session object when `construct.synth` is called.
-   * @default - no additional context is passed to `onSynthesize`
-   */
-  readonly sessionContext?: { [key: string]: any };
-}
-
-function ignore(_x: any) {
-  return;
 }
 
 // Import this _after_ everything else to help node work the classes out in the correct order...

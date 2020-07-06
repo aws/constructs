@@ -15,7 +15,6 @@ Name|Description
 ----|-----------
 [Dependency](#constructs-dependency)|A single dependency.
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
-[SynthesisOptions](#constructs-synthesisoptions)|Options for synthesis.
 [ValidationError](#constructs-validationerror)|An error returned during the validation phase.
 
 
@@ -23,9 +22,7 @@ Name|Description
 
 Name|Description
 ----|-----------
-[IAspect](#constructs-iaspect)|Represents an Aspect.
 [IConstruct](#constructs-iconstruct)|Represents a construct.
-[ISynthesisSession](#constructs-isynthesissession)|Represents a single session of synthesis.
 
 
 **Enums**
@@ -81,37 +78,7 @@ toString(): string
 __Returns__:
 * <code>string</code>
 
-#### protected onPrepare() <a id="constructs-construct-onprepare"></a>
 
-Perform final modifications before synthesis.
-
-This method can be implemented by derived constructs in order to perform
-final changes before synthesis. prepare() will be called after child
-constructs have been prepared.
-
-This is an advanced framework feature. Only use this if you
-understand the implications.
-
-```ts
-protected onPrepare(): void
-```
-
-
-
-
-
-#### protected onSynthesize(session) <a id="constructs-construct-onsynthesize"></a>
-
-Allows this construct to emit artifacts into the cloud assembly during synthesis.
-
-This method is usually implemented by framework-level constructs such as `Stack` and `Asset`
-as they participate in synthesizing the cloud assembly.
-
-```ts
-protected onSynthesize(session: ISynthesisSession): void
-```
-
-* **session** (<code>[ISynthesisSession](#constructs-isynthesissession)</code>)  The synthesis session.
 
 
 
@@ -301,12 +268,15 @@ findChild(id: string): IConstruct
 __Returns__:
 * <code>[IConstruct](#constructs-iconstruct)</code>
 
-#### prepare() <a id="constructs-node-prepare"></a>
+#### lock() <a id="constructs-node-lock"></a>
 
-Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
+Locks this construct from allowing more children to be added.
+
+After this
+call, no more children can be added to this construct or to any children.
 
 ```ts
-prepare(): void
+lock(): void
 ```
 
 
@@ -326,22 +296,6 @@ setContext(key: string, value: any): void
 
 * **key** (<code>string</code>)  The context key.
 * **value** (<code>any</code>)  The context value.
-
-
-
-
-#### synthesize(options) <a id="constructs-node-synthesize"></a>
-
-Synthesizes a CloudAssembly from a construct tree.
-
-```ts
-synthesize(options: SynthesisOptions): void
-```
-
-* **options** (<code>[SynthesisOptions](#constructs-synthesisoptions)</code>)  Synthesis options.
-  * **outdir** (<code>string</code>)  The output directory into which to synthesize the cloud assembly. 
-  * **sessionContext** (<code>Map<string, any></code>)  Additional context passed into the synthesis session object when `construct.synth` is called. __*Default*__: no additional context is passed to `onSynthesize`
-  * **skipValidation** (<code>boolean</code>)  Whether synthesis should skip the validation phase. __*Default*__: false
 
 
 
@@ -386,6 +340,18 @@ tryRemoveChild(childName: string): boolean
 
 __Returns__:
 * <code>boolean</code>
+
+#### unlock() <a id="constructs-node-unlock"></a>
+
+Unlocks this costruct and allows mutations (adding children).
+
+```ts
+unlock(): void
+```
+
+
+
+
 
 #### validate() <a id="constructs-node-validate"></a>
 
@@ -461,21 +427,6 @@ Name | Type | Description
 **data** | <code>any</code> | The data.
 **type** | <code>string</code> | The metadata entry type.
 **trace**? | <code>Array<string></code> | Stack trace.<br/>__*Default*__: no trace information
-
-
-
-## struct SynthesisOptions  <a id="constructs-synthesisoptions"></a>
-
-
-Options for synthesis.
-
-
-
-Name | Type | Description 
------|------|-------------
-**outdir** | <code>string</code> | The output directory into which to synthesize the cloud assembly.
-**sessionContext**? | <code>Map<string, any></code> | Additional context passed into the synthesis session object when `construct.synth` is called.<br/>__*Default*__: no additional context is passed to `onSynthesize`
-**skipValidation**? | <code>boolean</code> | Whether synthesis should skip the validation phase.<br/>__*Default*__: false
 
 
 

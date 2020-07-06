@@ -6,3 +6,10 @@ removed:constructs.INodeFactory
 
 removed:constructs.Node.applyAspect
 removed:constructs.IAspect
+
+removed:constructs.Construct.onPrepare
+removed:constructs.Construct.onSynthesize
+removed:constructs.Node.prepare
+removed:constructs.Node.synthesize
+removed:constructs.ISynthesisSession
+removed:constructs.SynthesisOptions
