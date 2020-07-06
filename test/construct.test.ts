@@ -1,6 +1,5 @@
-import { Construct, ConstructMetadata, IConstruct, ConstructOrder, ValidationError } from '../src';
+import { Construct, ConstructMetadata, ConstructOrder, ValidationError } from '../src';
 import { App as Root } from './util';
-import { IAspect } from '../src/aspect';
 
 // tslint:disable:variable-name
 // tslint:disable:max-line-length
@@ -260,16 +259,16 @@ test('multiple children of the same type, with explicit names are welcome', () =
 });
 
 // tslint:disable-next-line:max-line-length
-test('construct.onValidate() can be implemented to perform validation, node.validate() will return all errors from the subtree (DFS)', () => {
+test('construct.validate() can be implemented to perform validation, node.validate() will return all errors from the subtree (DFS)', () => {
 
   class MyConstruct extends Construct {
-    protected onValidate() {
+    protected validate() {
       return [ 'my-error1', 'my-error2' ];
     }
   }
 
   class YourConstruct extends Construct {
-    protected onValidate() {
+    protected validate() {
       return [ 'your-error1' ];
     }
   }
@@ -281,7 +280,7 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
       new YourConstruct(this, 'YourConstruct');
     }
 
-    protected onValidate() {
+    protected validate() {
       return [ 'their-error' ];
     }
   }
@@ -294,14 +293,24 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
       new TheirConstruct(this, 'TheirConstruct');
     }
 
-    protected onValidate() {
+    protected validate() {
       return  [ 'stack-error' ];
     }
   }
 
   const stack = new TestStack();
 
-  const errors = stack.node.validate()
+  const validateTree = (root: Construct) => {
+    const errors = [];
+    for (const child of root.node.children) {
+      errors.push(...validateTree(child));
+    }
+
+    errors.push(...root.node.validate());
+    return errors;
+  }
+
+  const errors = validateTree(stack)
     .map((v: ValidationError) => ({ path: v.source.node.path, message: v.message }));
 
   // validate DFS
@@ -319,11 +328,11 @@ test('construct.lock() protects against adding children anywhere under this cons
 
   class LockableConstruct extends Construct {
     public lockMe() {
-      (this.node as any)._lock();
+      this.node.lock();
     }
 
     public unlockMe() {
-      (this.node as any)._unlock();
+      this.node.unlock();
     }
   }
 
@@ -420,53 +429,6 @@ describe('defaultChild', () => {
     expect(() => root.node.defaultChild)
       .toThrow(/Cannot determine default child for . There is both a child with id "Resource" and id "Default"/);
   });
-  test('constructs created in an Aspect are prepared', () => {
-    const root = new Root();
-    const construct = new Construct(root, 'Resource');
-    construct.node.applyAspect(new AddConstructAspect(construct));
-    root.node.prepare();
-    // THEN
-    const addedConstruct = root.node.findAll(ConstructOrder.PREORDER)
-      .find(child => child.node.id === `AspectAdded-${construct.node.id}`) as MyAlmostBeautifulConstruct;
-    expect(addedConstruct.status).toBe('Prepared');
-  });
-});
-
-describe('construct prepare', () => {
-
-  it('created constructs are prepared', () => {
-    const root = new Root();
-    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
-    const construct02 = new MyAlmostBeautifulConstruct(root, 'Resource02');
-    
-    root.node.prepare();
-    // THEN
-    expect(construct01.status).toEqual('Prepared');
-    expect(construct02.status).toEqual('Prepared');    
-  });
-
-  it('only constructs with onPrepare function are prepared', () => {
-    const root = new Root();
-    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
-    const construct02 = new MyMissingPrepareConstruct(root, 'Resource02');
-    
-    root.node.prepare();
-    // THEN
-    expect(construct01.status).toEqual('Prepared');
-    expect(construct02.status).not.toEqual('Prepared'); 
-  })
-
-  it('only constructs with onPrepare function are prepared', () => {
-    const root = new Root();
-    const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01') as any;
-
-    // we try to force the error
-    construct01.onPrepare = undefined;
-
-    expect(() => root.node.prepare())
-      .toThrow(/expecting "onPrepare" to be a function/);
-  });
-
 });
 
 function createTree(context?: any) {
@@ -488,36 +450,8 @@ function createTree(context?: any) {
   };
 }
 
-class MyMissingPrepareConstruct extends Construct {
-  public status: string = 'PrePrepared'; 
-
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-  }
-}
-
 class MyBeautifulConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-  }
-}
-
-class MyAlmostBeautifulConstruct extends Construct {
-  public status: string = 'PrePrepared';
-
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-  }
-
-  protected onPrepare() {
-    this.status = 'Prepared'
-  }
-}
-
-class AddConstructAspect implements IAspect {
-  constructor(private readonly scope: Construct) {}
-
-  visit(node: IConstruct): void {
-    new MyAlmostBeautifulConstruct(this.scope, `AspectAdded-${node.node.id}`);
   }
 }

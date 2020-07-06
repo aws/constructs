@@ -4,3 +4,5 @@ removed:constructs.Node.of
 removed:constructs.ConstructOptions
 removed:constructs.INodeFactory
 
+removed:constructs.Node.applyAspect
+removed:constructs.IAspect

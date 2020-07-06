@@ -273,19 +273,6 @@ addWarning(message: string): void
 
 
 
-#### applyAspect(aspect) <a id="constructs-node-applyaspect"></a>
-
-Applies the aspect to this Constructs node.
-
-```ts
-applyAspect(aspect: IAspect): void
-```
-
-* **aspect** (<code>[IAspect](#constructs-iaspect)</code>)  *No description*
-
-
-
-
 #### findAll(order?) <a id="constructs-node-findall"></a>
 
 Return this construct and all of its children in the given order.
@@ -427,28 +414,6 @@ Name | Type | Description
 -----|------|-------------
 **source** | <code>[IConstruct](#constructs-iconstruct)</code> | Source the dependency.
 **target** | <code>[IConstruct](#constructs-iconstruct)</code> | Target of the dependency.
-
-
-
-## interface IAspect  <a id="constructs-iaspect"></a>
-
-
-Represents an Aspect.
-### Methods
-
-
-#### visit(node) <a id="constructs-iaspect-visit"></a>
-
-All aspects can visit an IConstruct.
-
-```ts
-visit(node: IConstruct): void
-```
-
-* **node** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
-
-
-
 
 
 

@@ -1,4 +1,3 @@
-import { IAspect } from './aspect';
 import { ConstructMetadata, MetadataEntry } from './metadata';
 import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
@@ -38,12 +37,10 @@ export class Node {
   public readonly id: string;
 
   private _locked = false; // if this is "true", addChild will fail
-  private readonly _aspects: IAspect[] = [];
   private readonly _children: { [id: string]: IConstruct } = { };
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
   private readonly _dependencies = new Set<IConstruct>();
-  private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
@@ -267,14 +264,6 @@ export class Node {
   }
 
   /**
-   * Applies the aspect to this Constructs node
-   */
-  public applyAspect(aspect: IAspect): void {
-    this._aspects.push(aspect);
-    return;
-  }
-
-  /**
    * All parent scopes of this construct.
    *
    * @returns a list of parent scopes. The last element in the list will always
@@ -478,20 +467,6 @@ export class Node {
     }
 
     this._children[childName] = child;
-  }
-
-  /**
-   * Triggers each aspect to invoke visit
-   */
-  private invokeAspects(): void {
-    const descendants = this.findAll();
-    for (const aspect of this._aspects) {
-      if (this.invokedAspects.includes(aspect)) {
-        continue;
-      }
-      descendants.forEach(member => aspect.visit(member));
-      this.invokedAspects.push(aspect);
-    }
   }
 }
 
