@@ -304,7 +304,7 @@ addMetadata(type: string, data: any, options?: MetadataOptions): void
 
 * **type** (<code>string</code>)  a string denoting the type of metadata.
 * **data** (<code>any</code>)  the value of the metadata (can be a Token).
-* **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  *No description*
+* **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  options.
   * **stackTrace** (<code>boolean</code>)  Include stack trace with metadata entry. __*Default*__: false
 
 
