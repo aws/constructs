@@ -221,46 +221,46 @@ export class Node {
    *
    * @param type a string denoting the type of metadata
    * @param data the value of the metadata (can be a Token). If null/undefined, metadata will not be added.
-   * @param fromFunction a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata)
+   * @param options options
    */
-  public addMetadata(type: string, data: any, fromFunction?: any): void {
+  public addMetadata(type: string, data: any, options: MetadataOptions = { }): void {
     if (data == null) {
       return;
     }
 
-    const trace = this.tryGetContext(ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA)
-      ? undefined
-      : captureStackTrace(fromFunction || this.addMetadata);
-
+    const trace = options.stackTrace ? captureStackTrace(this.addMetadata) : undefined;
     this._metadata.push({ type, data, trace });
   }
 
   /**
    * Adds a { "info": <message> } metadata entry to this construct.
    * The toolkit will display the info message when apps are synthesized.
+   * Stack trace will be included.
    * @param message The info message.
    */
   public addInfo(message: string): void {
-    this.addMetadata(ConstructMetadata.INFO_METADATA_KEY, message);
+    this.addMetadata(ConstructMetadata.INFO_METADATA_KEY, message, { stackTrace: true });
   }
 
   /**
    * Adds a { "warning": <message> } metadata entry to this construct.
    * The toolkit will display the warning when an app is synthesized, or fail
    * if run in --strict mode.
+   * Stack trace will be included.
    * @param message The warning message.
    */
   public addWarning(message: string): void {
-    this.addMetadata(ConstructMetadata.WARNING_METADATA_KEY, message);
+    this.addMetadata(ConstructMetadata.WARNING_METADATA_KEY, message, { stackTrace: true });
   }
 
   /**
    * Adds an { "error": <message> } metadata entry to this construct.
    * The toolkit will fail synthesis when errors are reported.
+   * Stack trace will be included.
    * @param message The error message.
    */
   public addError(message: string) {
-    this.addMetadata(ConstructMetadata.ERROR_METADATA_KEY, message);
+    this.addMetadata(ConstructMetadata.ERROR_METADATA_KEY, message, { stackTrace: true });
   }
 
   /**
@@ -491,4 +491,15 @@ const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
 function sanitizeId(id: string) {
   // Escape path seps as double dashes
   return id.replace(PATH_SEP_REGEX, '--');
+}
+
+/**
+ * Options for `construct.addMetadata()`.
+ */
+export interface MetadataOptions {
+  /**
+   * Include stack trace with metadata entry.
+   * @default false
+   */
+  readonly stackTrace?: boolean;
 }

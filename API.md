@@ -16,6 +16,7 @@ Name|Description
 Name|Description
 ----|-----------
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
+[MetadataOptions](#constructs-metadataoptions)|Options for `construct.addMetadata()`.
 [ValidationError](#constructs-validationerror)|An error returned during the validation phase.
 
 
@@ -262,6 +263,7 @@ addDependency(...dep: IDependable[]): void
 Adds an { "error": <message> } metadata entry to this construct.
 
 The toolkit will fail synthesis when errors are reported.
+Stack trace will be included.
 
 ```ts
 addError(message: string): void
@@ -277,6 +279,7 @@ addError(message: string): void
 Adds a { "info": <message> } metadata entry to this construct.
 
 The toolkit will display the info message when apps are synthesized.
+Stack trace will be included.
 
 ```ts
 addInfo(message: string): void
@@ -287,7 +290,7 @@ addInfo(message: string): void
 
 
 
-#### addMetadata(type, data, fromFunction?) <a id="constructs-node-addmetadata"></a>
+#### addMetadata(type, data, options?) <a id="constructs-node-addmetadata"></a>
 
 Adds a metadata entry to this construct.
 
@@ -296,12 +299,13 @@ the code location for when the entry was added. It can be used, for example, to 
 mapping in CloudFormation templates to improve diagnostics.
 
 ```ts
-addMetadata(type: string, data: any, fromFunction?: any): void
+addMetadata(type: string, data: any, options?: MetadataOptions): void
 ```
 
 * **type** (<code>string</code>)  a string denoting the type of metadata.
 * **data** (<code>any</code>)  the value of the metadata (can be a Token).
-* **fromFunction** (<code>any</code>)  a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata).
+* **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  *No description*
+  * **stackTrace** (<code>boolean</code>)  Include stack trace with metadata entry. __*Default*__: false
 
 
 
@@ -312,6 +316,7 @@ Adds a { "warning": <message> } metadata entry to this construct.
 
 The toolkit will display the warning when an app is synthesized, or fail
 if run in --strict mode.
+Stack trace will be included.
 
 ```ts
 addWarning(message: string): void
@@ -518,7 +523,20 @@ Name | Type | Description
 -----|------|-------------
 **data** | <code>any</code> | The data.
 **type** | <code>string</code> | The metadata entry type.
-**trace**? | <code>Array<string></code> | Stack trace.<br/>__*Default*__: no trace information
+**trace**? | <code>Array<string></code> | Stack trace at the point of adding the metadata.<br/>__*Default*__: no trace information
+
+
+
+## struct MetadataOptions  <a id="constructs-metadataoptions"></a>
+
+
+Options for `construct.addMetadata()`.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**stackTrace**? | <code>boolean</code> | Include stack trace with metadata entry.<br/>__*Default*__: false
 
 
 

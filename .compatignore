@@ -18,3 +18,6 @@ removed:constructs.Construct.onValidate
 
 changed-type:constructs.Node.dependencies
 removed:constructs.Dependency
+
+removed:constructs.ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA
+incompatible-argument:constructs.Node.addMetadata

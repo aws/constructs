@@ -187,7 +187,7 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
 
   const node = con.node;
   (function FIND_ME() { // <-- Creates a stack trace marker we'll be able to look for
-    node.addMetadata('key', 'value');
+    node.addMetadata('key', 'value', { stackTrace: true });
     node.addMetadata('number', 103);
     node.addMetadata('array', [123, 456]);
   })();

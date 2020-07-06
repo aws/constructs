@@ -13,8 +13,9 @@ export interface MetadataEntry {
   readonly data: any;
 
   /**
-   * Stack trace. Can be omitted by setting the context key
-   * `ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA` to 1.
+   * Stack trace at the point of adding the metadata.
+   *
+   * Only available if `addMetadata()` is called with `stackTrace: true`.
    *
    * @default - no trace information
    */
@@ -25,11 +26,6 @@ export interface MetadataEntry {
  * Metadata keys used by constructs.
  */
 export class ConstructMetadata {
-  /**
-   * If set in the construct's context, omits stack traces from metadata entries.
-   */
-  public static readonly DISABLE_STACK_TRACE_IN_METADATA = 'disable-stack-trace';
-
   /**
    * Context type for info level messages.
    */
