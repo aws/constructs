@@ -306,6 +306,7 @@ addMetadata(type: string, data: any, options?: MetadataOptions): void
 * **data** (<code>any</code>)  the value of the metadata (can be a Token).
 * **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  options.
   * **stackTrace** (<code>boolean</code>)  Include stack trace with metadata entry. __*Default*__: false
+  * **traceFromFunction** (<code>any</code>)  A JavaScript function to begin tracing from. __*Default*__: addMetadata()
 
 
 
@@ -537,6 +538,7 @@ Options for `construct.addMetadata()`.
 Name | Type | Description 
 -----|------|-------------
 **stackTrace**? | <code>boolean</code> | Include stack trace with metadata entry.<br/>__*Default*__: false
+**traceFromFunction**? | <code>any</code> | A JavaScript function to begin tracing from.<br/>__*Default*__: addMetadata()
 
 
 

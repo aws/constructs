@@ -228,7 +228,8 @@ export class Node {
       return;
     }
 
-    const trace = options.stackTrace ? captureStackTrace(this.addMetadata) : undefined;
+    const shouldTrace = options.stackTrace ?? false;
+    const trace = shouldTrace ? captureStackTrace(options.traceFromFunction ?? this.addMetadata) : undefined;
     this._metadata.push({ type, data, trace });
   }
 
@@ -502,4 +503,13 @@ export interface MetadataOptions {
    * @default false
    */
   readonly stackTrace?: boolean;
+
+  /**
+   * A JavaScript function to begin tracing from.
+   *
+   * This option is ignored unless `stackTrace` is `true`.
+   *
+   * @default addMetadata()
+   */
+  readonly traceFromFunction?: any;
 }
