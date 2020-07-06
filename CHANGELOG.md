@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1-pre.0](https://github.com/aws/constructs/compare/v4.1.0...v4.1.1-pre.0) (2020-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Stack traces are not attached to metadata entries by default. To include stack trace in a metadata entry, pass `{ stackTrace: true }` as the 3rd parameter, which is now of type `MetadataOptions` and not a `fromFunction` pointer.
+* `construct.node.dependencies` is not transitive anymore. It returns the set of dependencies added directly to the node. The `Dependency` type has also been removed as a result since it's not needed any longer.
+
+### Features
+
+* addMetadata() no longer attaches stack traces by default ([2bedd90](https://github.com/aws/constructs/commit/2bedd907f39b64715cade2d49e94a9978930bc56))
+* IDependable ([d11bd33](https://github.com/aws/constructs/commit/d11bd339aed3cad000d07fdd8ef7d2741153935a))
+* traceFromFunction in addMetadata() ([46652b0](https://github.com/aws/constructs/commit/46652b04d81e5a0031be5a5f48fe713ce47a8765))
+
 ## [4.1.0](https://github.com/aws/constructs/compare/v4.0.0...v4.1.0) (2020-07-06)
 
 
