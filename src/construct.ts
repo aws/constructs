@@ -355,18 +355,20 @@ export class Node {
   }
 
   /**
-   * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
-   * the list of all errors. An empty list indicates that there are no errors.
+   * Validates this construct.
+   *
+   * If the construct implements the `IValidation` interface and has a `validate()` method, it will be
+   * invoked. Otherwise, just returns an empty list of validation errors.
+   *
+   * @returns an array of validation errors
    */
-  public validate() {
-    let errors = new Array<ValidationError>();
-
-    for (const child of this.children) {
-      errors = errors.concat(child.node.validate());
+  public validate(): ValidationError[] {
+    const validation = this.host as unknown as IValidation;
+    if (!validation.validate || typeof(validation.validate) !== 'function') {
+      return [];
     }
 
-    const localErrors: string[] = (this.host as any).onValidate(); // "as any" is needed because we want to keep "validate" protected
-    return errors.concat(localErrors.map(msg => ({ source: this.host, message: msg })));
+    return validation.validate().map(msg => ({ source: this.host, message: msg }));
   }
 
   /**
@@ -448,18 +450,6 @@ export class Construct implements IConstruct {
   public toString() {
     return this.node.path || '<root>';
   }
-
-  /**
-   * Validate the current construct.
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * validation logic. It is called on all constructs before synthesis.
-   *
-   * @returns An array of validation error messages, or an empty array if there the construct is valid.
-   */
-  protected onValidate(): string[] {
-    return [];
-  }
 }
 
 /**
@@ -508,9 +498,18 @@ export interface Dependency {
 }
 
 /**
+ * Implement this interface in order for the construct to be able to validate itself.
  */
+export interface IValidation {
   /**
+   * Validate the current construct.
+   *
+   * This method can be implemented by derived constructs in order to perform
+   * validation logic. It is called on all constructs before synthesis.
+   *
+   * @returns An array of validation error messages, or an empty array if there the construct is valid.
    */
+  validate(): string[];
 }
 
 // Import this _after_ everything else to help node work the classes out in the correct order...

@@ -301,7 +301,7 @@ test('construct.validate() can be implemented to perform validation, node.valida
   const stack = new TestStack();
 
   const validateTree = (root: Construct) => {
-    const errors = [];
+    const errors: ValidationError[] = [];
     for (const child of root.node.children) {
       errors.push(...validateTree(child));
     }

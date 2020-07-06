@@ -13,3 +13,5 @@ removed:constructs.Node.prepare
 removed:constructs.Node.synthesize
 removed:constructs.ISynthesisSession
 removed:constructs.SynthesisOptions
+
+removed:constructs.Construct.onValidate

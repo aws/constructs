@@ -23,6 +23,7 @@ Name|Description
 Name|Description
 ----|-----------
 [IConstruct](#constructs-iconstruct)|Represents a construct.
+[IValidation](#constructs-ivalidation)|Implement this interface in order for the construct to be able to validate itself.
 
 
 **Enums**
@@ -77,26 +78,6 @@ toString(): string
 
 __Returns__:
 * <code>string</code>
-
-
-
-
-
-
-#### protected onValidate() <a id="constructs-construct-onvalidate"></a>
-
-Validate the current construct.
-
-This method can be implemented by derived constructs in order to perform
-validation logic. It is called on all constructs before synthesis.
-
-```ts
-protected onValidate(): Array<string>
-```
-
-
-__Returns__:
-* <code>Array<string></code>
 
 
 
@@ -355,9 +336,10 @@ unlock(): void
 
 #### validate() <a id="constructs-node-validate"></a>
 
-Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns the list of all errors.
+Validates this construct.
 
-An empty list indicates that there are no errors.
+If the construct implements the `IValidation` interface and has a `validate()` method, it will be
+invoked. Otherwise, just returns an empty list of validation errors.
 
 ```ts
 validate(): Array<ValidationError>
@@ -399,19 +381,27 @@ Name | Type | Description
 
 
 
-## interface ISynthesisSession  <a id="constructs-isynthesissession"></a>
+## interface IValidation  <a id="constructs-ivalidation"></a>
 
 
-Represents a single session of synthesis.
-
-Passed into `construct.onSynthesize()` methods.
-
-### Properties
+Implement this interface in order for the construct to be able to validate itself.
+### Methods
 
 
-Name | Type | Description 
------|------|-------------
-**outdir** | <code>string</code> | The output directory for this synthesis session.
+#### validate() <a id="constructs-ivalidation-validate"></a>
+
+Validate the current construct.
+
+This method can be implemented by derived constructs in order to perform
+validation logic. It is called on all constructs before synthesis.
+
+```ts
+validate(): Array<string>
+```
+
+
+__Returns__:
+* <code>Array<string></code>
 
 
 
