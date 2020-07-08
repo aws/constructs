@@ -1,4 +1,4 @@
-import { Construct, ConstructMetadata, ConstructOrder, ValidationError, DependencyGroup, Dependable } from '../src';
+import { Construct, ConstructOrder, ValidationError, DependencyGroup, Dependable, ConstructScopeSettings } from '../src';
 import { App as Root } from './util';
 
 // tslint:disable:variable-name
@@ -200,6 +200,26 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
   expect(node.metadata[0].trace?.[0]).toContain('FIND_ME');
 });
 
+test('addMetadata() respects the "stackTrace" option', () => {
+  const root = new Root();
+  const con = new Construct(root, 'Foo');
+  const con2 = new Construct(root, 'Foo2');
+
+  con.node.addMetadata('foo', 'bar1', { stackTrace: true });
+  con.node.addMetadata('foo', 'bar2', { stackTrace: false });
+
+  // disable stack traces only for "con"
+  ConstructScopeSettings.of(con).disableStackTraces();
+  con.node.addMetadata('foo', 'bar3', { stackTrace: true });
+  con2.node.addMetadata('hello', 'world', { stackTrace: true });''
+
+  expect(con.node.metadata.length).toBe(3);
+  expect(con.node.metadata[0]?.trace?.length).toBeGreaterThan(0);
+  expect(con.node.metadata[1]?.trace).toBeUndefined();
+  expect(con.node.metadata[2]?.trace).toBeUndefined();
+  expect(con2.node.metadata[0]?.trace?.length).toBeGreaterThan(0);
+});
+
 test('addMetadata(type, undefined/null) is ignored', () => {
   const root = new Root();
   const con = new Construct(root, 'Foo');
@@ -219,34 +239,62 @@ test('addMetadata(type, undefined/null) is ignored', () => {
   expect(exists('Empty')).toBeTruthy();
 });
 
-test('addWarning(message) can be used to add a "WARNING" message entry to the construct', () => {
-  const root = new Root();
-  const con = new Construct(root, 'MyConstruct');
-  const node = con.node;
-  node.addWarning('This construct is deprecated, use the other one instead');
-  expect(node.metadata[0].type).toBe(ConstructMetadata.WARNING_METADATA_KEY);
-  expect(node.metadata[0].data).toBe('This construct is deprecated, use the other one instead');
-  expect(node.metadata[0].trace?.length).toBeGreaterThan(0);
-});
+describe('info/warning/error', () => {
 
-test('addError(message) can be used to add a "ERROR" message entry to the construct', () => {
-  const root = new Root();
-  const con = new Construct(root, 'MyConstruct');
-  const node = con.node;
-  node.addError('Stop!');
-  expect(node.metadata[0].type).toBe(ConstructMetadata.ERROR_METADATA_KEY);
-  expect(node.metadata[0].data).toBe('Stop!');
-  expect(node.metadata[0].trace?.length).toBeGreaterThan(0);
-});
+  const tests = [
+    {
+      key: 'info',
+      op: (scope: Construct, message: string) => scope.node.addInfo(message),
+      overrideKey: (scope: Construct, newKey: string) => ConstructScopeSettings.of(scope).infoMetadataKey = newKey,
+    },
+    {
+      key: 'warning',
+      op: (c: Construct, message: string) => c.node.addWarning(message),
+      overrideKey: (scope: Construct, newKey: string) => ConstructScopeSettings.of(scope).warningMetadataKey = newKey,
+    },
+    {
+      key: 'error',
+      op: (c: Construct, message: string) => c.node.addError(message),
+      overrideKey: (scope: Construct, newKey: string) => ConstructScopeSettings.of(scope).errorMetadataKey = newKey,
+    },
+  ];
 
-test('addInfo(message) can be used to add an "INFO" message entry to the construct', () => {
-  const root = new Root();
-  const con = new Construct(root, 'MyConstruct');
-  const node = con.node;
-  node.addInfo('Hey there, how do you do?');
-  expect(node.metadata[0].type).toBe(ConstructMetadata.INFO_METADATA_KEY);
-  expect(node.metadata[0].data).toBe('Hey there, how do you do?');
-  expect(node.metadata[0].trace?.length).toBeGreaterThan(0);
+  for (const t of tests) {
+    test(`${t.key} - normal operation`, () => {
+      const root = new Root();
+      const con = new Construct(root, 'MyConstruct');
+      const message = 'This is a message 12334';
+      t.op(con, message);
+      expect(con.node.metadata[0].type).toBe(t.key);
+      expect(con.node.metadata[0].data).toBe(message);
+      expect(con.node.metadata[0].trace?.length).toBeGreaterThan(0);
+    });
+
+    test(`${t.key} - key can be overridden`, () => {
+      const root = new Root();
+      t.overrideKey(root, 'my-new-key');
+      const con = new Construct(root, 'MyConstruct');
+      const message = 'This is a message 12334';
+      
+      t.op(con, message);
+      expect(con.node.metadata[0].type).toBe('my-new-key');
+      expect(con.node.metadata[0].data).toBe(message);
+      expect(con.node.metadata[0].trace?.length).toBeGreaterThan(0);
+    });
+
+    test(`${t.key} - stack trace disabled`, () => {
+      const root = new Root();
+      ConstructScopeSettings.of(root).disableStackTraces();
+
+      const con = new Construct(root, 'MyConstruct');
+      const message = 'This is a message 12334';
+      t.op(con, message);
+      expect(con.node.metadata[0].type).toBe(t.key);
+      expect(con.node.metadata[0].data).toBe(message);
+      expect(con.node.metadata[0].trace).toBe(undefined);
+    });
+  }
+
 });
 
 test('multiple children of the same type, with explicit names are welcome', () => {

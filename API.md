@@ -5,7 +5,7 @@
 Name|Description
 ----|-----------
 [Construct](#constructs-construct)|Represents the building block of the construct graph.
-[ConstructMetadata](#constructs-constructmetadata)|Metadata keys used by constructs.
+[ConstructScopeSettings](#constructs-constructscopesettings)|Global settings for this library.
 [Dependable](#constructs-dependable)|Trait for IDependable.
 [DependencyGroup](#constructs-dependencygroup)|A set of constructs to be used as a dependable.
 [Node](#constructs-node)|Represents the construct node in the scope tree.
@@ -84,9 +84,11 @@ __Returns__:
 
 
 
-## class ConstructMetadata  <a id="constructs-constructmetadata"></a>
+## class ConstructScopeSettings  <a id="constructs-constructscopesettings"></a>
 
-Metadata keys used by constructs.
+Global settings for this library.
+
+Mostly here to enable backwards compatibility with the AWS CDK.
 
 
 
@@ -95,9 +97,37 @@ Metadata keys used by constructs.
 
 Name | Type | Description 
 -----|------|-------------
-*static* **ERROR_METADATA_KEY** | <code>string</code> | Context type for error level messages.
-*static* **INFO_METADATA_KEY** | <code>string</code> | Context type for info level messages.
-*static* **WARNING_METADATA_KEY** | <code>string</code> | Context type for warning level messages.
+**errorMetadataKey** | <code>string</code> | <span></span>
+**infoMetadataKey** | <code>string</code> | <span></span>
+**warningMetadataKey** | <code>string</code> | <span></span>
+
+### Methods
+
+
+#### disableStackTraces() <a id="constructs-constructscopesettings-disablestacktraces"></a>
+
+
+
+```ts
+disableStackTraces(): void
+```
+
+
+
+
+
+#### *static* of(scope) <a id="constructs-constructscopesettings-of"></a>
+
+
+
+```ts
+static of(scope: Construct): ConstructScopeSettings
+```
+
+* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
+
+__Returns__:
+* <code>[ConstructScopeSettings](#constructs-constructscopesettings)</code>
 
 
 
@@ -129,10 +159,23 @@ new Dependable()
 
 Name | Type | Description 
 -----|------|-------------
-**dependencies**🔹 | <code>Array<[IConstruct](#constructs-iconstruct)></code> | The set of constructs that form the root of this dependable.
+**dependencyRoots**🔹 | <code>Array<[IConstruct](#constructs-iconstruct)></code> | The set of constructs that form the root of this dependable.
 
 ### Methods
 
+
+#### *static* get(instance)⚠️ <a id="constructs-dependable-get"></a>
+
+Return the matching Dependable for the given class instance.
+
+```ts
+static get(instance: IDependable): Dependable
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+__Returns__:
+* <code>[Dependable](#constructs-dependable)</code>
 
 #### *static* implement(instance, trait)🔹 <a id="constructs-dependable-implement"></a>
 
@@ -263,7 +306,7 @@ addDependency(...dep: IDependable[]): void
 Adds an { "error": <message> } metadata entry to this construct.
 
 The toolkit will fail synthesis when errors are reported.
-Stack trace will be included.
+Stack trace will be included unless stack traces are disabled for this scope.
 
 ```ts
 addError(message: string): void
@@ -279,7 +322,7 @@ addError(message: string): void
 Adds a { "info": <message> } metadata entry to this construct.
 
 The toolkit will display the info message when apps are synthesized.
-Stack trace will be included.
+Stack trace will be included unless stack traces are disabled for this scope.
 
 ```ts
 addInfo(message: string): void
@@ -317,7 +360,7 @@ Adds a { "warning": <message> } metadata entry to this construct.
 
 The toolkit will display the warning when an app is synthesized, or fail
 if run in --strict mode.
-Stack trace will be included.
+Stack trace will be included unless stack traces are disabled for this scope.
 
 ```ts
 addWarning(message: string): void

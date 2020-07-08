@@ -21,3 +21,5 @@ removed:constructs.Dependency
 
 removed:constructs.ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA
 incompatible-argument:constructs.Node.addMetadata
+
+removed:constructs.ConstructMetadata

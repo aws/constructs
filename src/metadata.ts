@@ -21,25 +21,3 @@ export interface MetadataEntry {
    */
   readonly trace?: string[];
 }
-
-/**
- * Metadata keys used by constructs.
- */
-export class ConstructMetadata {
-  /**
-   * Context type for info level messages.
-   */
-  public static readonly INFO_METADATA_KEY = 'info';
-
-  /**
-   * Context type for warning level messages.
-   */
-  public static readonly WARNING_METADATA_KEY = 'warning';
-
-  /**
-   * Context type for error level messages.
-   */
-  public static readonly ERROR_METADATA_KEY = 'error';
-
-  private constructor() { }
-}

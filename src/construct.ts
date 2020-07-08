@@ -1,7 +1,8 @@
-import { ConstructMetadata, MetadataEntry } from './metadata';
+import { MetadataEntry } from './metadata';
 import { Dependable, IDependable } from './dependency';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
+import * as consts from './private/consts';
 
 /**
  * Represents a construct.
@@ -228,7 +229,7 @@ export class Node {
       return;
     }
 
-    const shouldTrace = options.stackTrace ?? false;
+    const shouldTrace = this.tryGetContext(consts.DISABLE_STACK_TRACE) ? false : (options.stackTrace ?? false);
     const trace = shouldTrace ? captureStackTrace(options.traceFromFunction ?? this.addMetadata) : undefined;
     this._metadata.push({ type, data, trace });
   }
@@ -236,32 +237,32 @@ export class Node {
   /**
    * Adds a { "info": <message> } metadata entry to this construct.
    * The toolkit will display the info message when apps are synthesized.
-   * Stack trace will be included.
+   * Stack trace will be included unless stack traces are disabled for this scope.
    * @param message The info message.
    */
   public addInfo(message: string): void {
-    this.addMetadata(ConstructMetadata.INFO_METADATA_KEY, message, { stackTrace: true });
+    this.addMessageMetadata(consts.DEFAULT_INFO_KEY, consts.CUSTOM_INFO_KEY, message);
   }
 
   /**
    * Adds a { "warning": <message> } metadata entry to this construct.
    * The toolkit will display the warning when an app is synthesized, or fail
    * if run in --strict mode.
-   * Stack trace will be included.
+   * Stack trace will be included unless stack traces are disabled for this scope.
    * @param message The warning message.
    */
   public addWarning(message: string): void {
-    this.addMetadata(ConstructMetadata.WARNING_METADATA_KEY, message, { stackTrace: true });
+    this.addMessageMetadata(consts.DEFAULT_WARNING_KEY, consts.CUSTOM_WARNING_KEY, message);
   }
 
   /**
    * Adds an { "error": <message> } metadata entry to this construct.
    * The toolkit will fail synthesis when errors are reported.
-   * Stack trace will be included.
+   * Stack trace will be included unless stack traces are disabled for this scope.
    * @param message The error message.
    */
   public addError(message: string) {
-    this.addMetadata(ConstructMetadata.ERROR_METADATA_KEY, message, { stackTrace: true });
+    this.addMessageMetadata(consts.DEFAULT_ERROR_KEY, consts.CUSTOM_ERROR_KEY, message);
   }
 
   /**
@@ -397,6 +398,12 @@ export class Node {
     }
 
     this._children[childName] = child;
+  }
+
+  private addMessageMetadata(defaultKey: string, customContextKey: string, message: string) {
+    const key = this.tryGetContext(customContextKey) ?? defaultKey;
+    const stackTrace = !this.tryGetContext(consts.DISABLE_STACK_TRACE);
+    this.addMetadata(key, message, { stackTrace });
   }
 }
 
