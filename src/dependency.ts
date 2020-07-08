@@ -29,7 +29,7 @@ export class DependencyGroup implements IDependable {
   constructor(...scopes: IConstruct[]) {
     const self = this;
     Dependable.implement(this, {
-      get dependencies() { return self._dependencyRoots; },
+      get dependencyRoots() { return self._dependencyRoots; },
     });
 
     this.add(...scopes);
@@ -89,10 +89,18 @@ export abstract class Dependable {
   }
 
   /**
+   * Return the matching Dependable for the given class instance.
+   * @deprecated use `of`
+   */
+  public static get(instance: IDependable): Dependable {
+    return this.of(instance);
+  }
+
+  /**
    * The set of constructs that form the root of this dependable
    *
    * All resources under all returned constructs are included in the ordering
    * dependency.
    */
-  public abstract readonly dependencies: IConstruct[];
+  public abstract readonly dependencyRoots: IConstruct[];
 }

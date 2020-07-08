@@ -315,7 +315,7 @@ export class Node {
    */
   public addDependency(...dep: IDependable[]) {
     for (const scope of dep) {
-      const roots = Dependable.of(scope).dependencies;
+      const roots = Dependable.of(scope).dependencyRoots;
       for (const root of roots) {
         this._dependencies.add(root);
       }
@@ -433,7 +433,7 @@ export class Construct implements IConstruct {
 
     // implement IDependable privately
     Dependable.implement(this, {
-      dependencies: [ this ],
+      dependencyRoots: [ this ],
     });
   }
 

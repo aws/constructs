@@ -537,12 +537,12 @@ describe('dependencies', () => {
     // WHEN
     const foo = { };
     Dependable.implement(foo, {
-      get dependencies() { return [ producer ]; },
+      get dependencyRoots() { return [ producer ]; },
     });
     consumer.node.addDependency(foo);
 
     // THEN
-    expect(Dependable.of(foo).dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(Dependable.of(foo).dependencyRoots.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
     expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
   });
 
