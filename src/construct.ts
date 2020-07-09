@@ -45,24 +45,13 @@ export class Node {
   private _defaultChild: IConstruct | undefined;
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
-    id = id || ''; // if undefined, convert to empty string
+    id = id ?? ''; // if undefined, convert to empty string
 
     this.id = sanitizeId(id);
     this.scope = scope;
 
-    // We say that scope is required, but root scopes will bypass the type
-    // checks and actually pass in 'undefined'.
-    if (scope != null) {
-      if (id === '') {
-        throw new Error('Only root constructs may have an empty name');
-      }
-
-      // Has side effect so must be very last thing in constructor
-      scope.node.addChild(host, this.id);
-    } else {
-      // This is a root construct.
-      this.id = id;
-    }
+    // add to parent scope
+    scope?.node.addChild(host, this.id);
   }
 
   /**
@@ -71,7 +60,14 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.slice(1).map(c => c.node.id);
+    const components = this.scopes.map(c => c.node.id);
+
+    if (components.filter(x => x).length === 0) {
+      return components.join(Node.PATH_SEP);
+    } else {
+      components.shift();
+    }
+
     return components.join(Node.PATH_SEP);
   }
 
@@ -80,7 +76,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => c.node.id);
+    const components = this.scopes.map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 

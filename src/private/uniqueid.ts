@@ -30,7 +30,7 @@ const MAX_ID_LEN = 255;
  * @returns a unique alpha-numeric identifier with a maximum length of 255
  */
 export function makeUniqueId(components: string[]) {
-  components = components.filter(x => x !== HIDDEN_ID);
+  components = components.filter(x => x && x !== HIDDEN_ID);
 
   if (components.length === 0) {
     throw new Error('Unable to calculate a unique id for an empty set of components');

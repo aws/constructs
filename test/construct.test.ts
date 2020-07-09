@@ -12,10 +12,29 @@ test('the "Root" construct is a special construct which can be used as the root 
   expect(node.children.length).toBe(0);
 });
 
-test('constructs cannot be created with an empty name unless they are root', () => {
+test('an empty string is a valid name for a construct', () => {
   const root = new Root();
-  expect(() => new Construct(root, '')).toThrow(/Only root constructs may have an empty name/);
-});
+  const child = new Construct(root, '');
+  const childWithName = new Construct(root, 'hi-there');
+  const grandchild = new Construct(child, '');
+  const grandchildWithName = new Construct(child, 'boom');
+  const grandgrand = new Construct(grandchild, 'hello');
+
+  // fail if another child with an empty id is added
+  expect(() => new Construct(root, '')).toThrow(/There is already/);
+
+  expect(root.node.path).toStrictEqual('');
+  expect(child.node.path).toStrictEqual('/');
+  expect(childWithName.node.path).toStrictEqual('hi-there');
+  expect(grandchildWithName.node.path).toStrictEqual('/boom');
+  expect(grandchild.node.path).toStrictEqual('//');
+  expect(grandgrand.node.path).toStrictEqual('//hello');
+
+  // unique id cannot be calculated on a path that only includes empty names
+  expect(() => root.node.uniqueId).toThrow(/Unable to calculate/);
+  expect(() => child.node.uniqueId).toThrow(/Unable to calculate/);
+  expect(() => grandchild.node.uniqueId).toThrow(/Unable to calculate/);
+})
 
 test('construct.name returns the name of the construct', () => {
   const t = createTree();
