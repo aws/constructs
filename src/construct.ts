@@ -60,7 +60,7 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.map(c => c.node.id);
+    const components = this.scopes.map(c => c.node.id).filter(id => id);
     return components.join(Node.PATH_SEP);
   }
 
@@ -381,12 +381,20 @@ export class Node {
     }
 
     if (childName in this._children) {
-      const name = this.id || '';
+      const name = this.id ?? '';
       const typeName = this.host.constructor.name;
       throw new Error(`There is already a Construct with name '${childName}' in ${typeName}${name.length > 0 ? ' [' + name + ']' : ''}`);
     }
 
+    if (!childName && this.id) {
+      throw new Error(`cannot add a nameless construct to the named scope: ${this.path}`);
+    }
+
     this._children[childName] = child;
+
+    if (Object.keys(this._children).length > 1 && Object.keys(this._children).filter(x => !x).length > 0) {
+      throw new Error('only a single construct is allowed in a scope if it has an empty name')
+    }
   }
 
   private addMessageMetadata(defaultKey: string, customContextKey: string, message: string) {
