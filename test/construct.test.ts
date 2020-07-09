@@ -19,16 +19,18 @@ test('an empty string is a valid name for a construct', () => {
   const grandchild = new Construct(child, '');
   const grandchildWithName = new Construct(child, 'boom');
   const grandgrand = new Construct(grandchild, 'hello');
+  const grandgrandWithName = new Construct(grandchildWithName, 'trach');
 
   // fail if another child with an empty id is added
   expect(() => new Construct(root, '')).toThrow(/There is already/);
 
   expect(root.node.path).toStrictEqual('');
   expect(child.node.path).toStrictEqual('/');
-  expect(childWithName.node.path).toStrictEqual('hi-there');
-  expect(grandchildWithName.node.path).toStrictEqual('/boom');
+  expect(childWithName.node.path).toStrictEqual('/hi-there');
+  expect(grandchildWithName.node.path).toStrictEqual('//boom');
+  expect(grandgrandWithName.node.path).toStrictEqual('//boom/trach');
   expect(grandchild.node.path).toStrictEqual('//');
-  expect(grandgrand.node.path).toStrictEqual('//hello');
+  expect(grandgrand.node.path).toStrictEqual('///hello');
 
   // unique id cannot be calculated on a path that only includes empty names
   expect(() => root.node.uniqueId).toThrow(/Unable to calculate/);
@@ -83,8 +85,8 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
   const c1 = new Construct(child2, 'My construct');
   const c2 = new Construct(child1, 'My construct');
 
-  expect(c1.node.path).toBe('This is the first child/Second level/My construct');
-  expect(c2.node.path).toBe('This is the first child/My construct');
+  expect(c1.node.path).toBe('/This is the first child/Second level/My construct');
+  expect(c2.node.path).toBe('/This is the first child/My construct');
   expect(c1.node.uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
   expect(c2.node.uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
 });
@@ -172,14 +174,14 @@ test('construct.setContext(key, value) can only be called before adding any chil
 test('construct.pathParts returns an array of strings of all names from root to node', () => {
   const tree = createTree();
   expect(tree.root.node.path).toBe('');
-  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
-  expect(tree.child2.node.path).toBe('HighChild/Child2');
+  expect(tree.child1_1_1.node.path).toBe('/HighChild/Child1/Child11/Child111');
+  expect(tree.child2.node.path).toBe('/HighChild/Child2');
 });
 
 test('if a root construct has a name, it should be included in the path', () => {
   const tree = createTree({});
   expect(tree.root.node.path).toBe('');
-  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
+  expect(tree.child1_1_1.node.path).toBe('/HighChild/Child1/Child11/Child111');
 });
 
 test('construct can not be created with the name of a sibling', () => {
@@ -382,10 +384,10 @@ test('construct.validate() can be implemented to perform validation, node.valida
 
   // validate DFS
   expect(errors).toEqual([
-    { path: 'MyConstruct', message: 'my-error1' },
-    { path: 'MyConstruct', message: 'my-error2' },
-    { path: 'TheirConstruct/YourConstruct', message: 'your-error1' },
-    { path: 'TheirConstruct', message: 'their-error' },
+    { path: '/MyConstruct', message: 'my-error1' },
+    { path: '/MyConstruct', message: 'my-error2' },
+    { path: '/TheirConstruct/YourConstruct', message: 'your-error1' },
+    { path: '/TheirConstruct', message: 'their-error' },
     { path: '', message: 'stack-error' },
   ]);
 
@@ -413,9 +415,9 @@ test('construct.lock() protects against adding children anywhere under this cons
 
   // now we should still be able to add children to c0b, but not to c0a or any its children
   new Construct(c0b, 'c1a');
-  expect(() => new Construct(c0a, 'fail1')).toThrow(/Cannot add children to "c0a" during synthesis/);
-  expect(() => new Construct(c1a, 'fail2')).toThrow(/Cannot add children to "c0a\/c1a" during synthesis/);
-  expect(() => new Construct(c1b, 'fail3')).toThrow(/Cannot add children to "c0a\/c1b" during synthesis/);
+  expect(() => new Construct(c0a, 'fail1')).toThrow(/Cannot add children to "\/c0a" during synthesis/);
+  expect(() => new Construct(c1a, 'fail2')).toThrow(/Cannot add children to "\/c0a\/c1a" during synthesis/);
+  expect(() => new Construct(c1b, 'fail3')).toThrow(/Cannot add children to "\/c0a\/c1b" during synthesis/);
 
   c0a.node.unlock();
 
@@ -513,7 +515,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(producer2);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ '/producer1', '/producer2' ]);
   });
 
   test('are deduplicated', () => {
@@ -530,7 +532,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(producer);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ '/producer' ]);
   });
 
   test('DependencyGroup can represent a group of disjoined producers', () => {
@@ -544,7 +546,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(group);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2', 'producer3', 'producer4' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ '/producer1', '/producer2', '/producer3', '/producer4' ]);
   });
 
   test('Dependable.implement() can be used to implement IDependable on any object', () => {
@@ -561,8 +563,8 @@ describe('dependencies', () => {
     consumer.node.addDependency(foo);
 
     // THEN
-    expect(Dependable.of(foo).dependencyRoots.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(Dependable.of(foo).dependencyRoots.map(x => x.node.path)).toStrictEqual([ '/producer' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ '/producer' ]);
   });
 
   test('Dependable.of() throws an error the object does not implement IDependable', () => {
@@ -594,8 +596,8 @@ test('toString()', () => {
 
   // THEN
   expect(root.toString()).toStrictEqual('<root>');
-  expect(child.toString()).toStrictEqual('child');
-  expect(grand.toString()).toStrictEqual('child/grand');
+  expect(child.toString()).toStrictEqual('/child');
+  expect(grand.toString()).toStrictEqual('/child/grand');
 });
 
 function createTree(context?: any) {

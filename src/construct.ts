@@ -61,13 +61,6 @@ export class Node {
    */
   public get path(): string {
     const components = this.scopes.map(c => c.node.id);
-
-    if (components.filter(x => x).length === 0) {
-      return components.join(Node.PATH_SEP);
-    } else {
-      components.shift();
-    }
-
     return components.join(Node.PATH_SEP);
   }
 
