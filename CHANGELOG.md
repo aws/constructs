@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1-pre.1](https://github.com/aws/constructs/compare/v4.1.1-pre.0...v4.1.1-pre.1) (2020-07-09)
+
+
+### Features
+
+* construct scope settings ([1d842c2](https://github.com/aws/constructs/commit/1d842c24952896c335fcdd7550a136e8af5f75c4))
+
+
+### Bug Fixes
+
+* backwards compatibility of `Dependency` ([9ebe17a](https://github.com/aws/constructs/commit/9ebe17a88a2a0e38331bc3eff5d772dbb8e9e6db))
+
 ### [4.1.1-pre.0](https://github.com/aws/constructs/compare/v4.1.0...v4.1.1-pre.0) (2020-07-06)
 
 
