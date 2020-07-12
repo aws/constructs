@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1-pre.3](https://github.com/aws/constructs/compare/v4.1.1-pre.2...v4.1.1-pre.3) (2020-07-12)
+
+
+### Features
+
+* support composite dependables via DependencyGroup ([d8cffc0](https://github.com/aws/constructs/commit/d8cffc0de0d55f67fdbc88e2885fd110928426a5))
+
 ### [4.1.1-pre.2](https://github.com/aws/constructs/compare/v4.1.1-pre.0...v4.1.1-pre.2) (2020-07-12)
 
 
