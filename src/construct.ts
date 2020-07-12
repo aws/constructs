@@ -4,6 +4,8 @@ import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 import * as consts from './private/consts';
 
+const CONSTRUCT_SYMBOL = Symbol.for('constructs.Construct');
+
 /**
  * Represents a construct.
  */
@@ -412,6 +414,15 @@ export class Node {
  */
 export class Construct implements IConstruct {
   /**
+   * Checks if `x` is a construct.
+   * @returns true if `x` is an object created from a class which extends `Construct`.
+   * @param x Any object
+   */
+  public static isConstruct(x: any): x is Construct {
+    return x && typeof(x) === 'object' && CONSTRUCT_SYMBOL in x;
+  }
+
+  /**
    * The tree node.
    */
   public readonly node: Node;
@@ -427,6 +438,11 @@ export class Construct implements IConstruct {
    */
   constructor(scope: Construct, id: string) {
     this.node = new Node(this, scope, id);
+
+    // used by isConstruct()
+    Object.defineProperty(this, CONSTRUCT_SYMBOL, {
+      value: true,
+    });
 
     // implement IDependable privately
     Dependable.implement(this, {

@@ -601,6 +601,25 @@ test('toString()', () => {
   expect(grand.toString()).toStrictEqual('child/grand');
 });
 
+test('Construct.isConstruct returns true for constructs', () => {
+  // GIVEN
+  const root = new Root();
+  class Subclass extends Construct {};
+  const subclass = new Subclass(root, 'subclass');
+  const someRandomObject = {};
+
+  // THEN
+  expect(Construct.isConstruct(root)).toBeTruthy();
+  expect(Construct.isConstruct(subclass)).toBeTruthy();
+  expect(Construct.isConstruct(undefined)).toBeFalsy();
+  expect(Construct.isConstruct(null)).toBeFalsy();
+  expect(Construct.isConstruct('string')).toBeFalsy();
+  expect(Construct.isConstruct(1234)).toBeFalsy();
+  expect(Construct.isConstruct(true)).toBeFalsy();
+  expect(Construct.isConstruct([ 1, 2, 3 ])).toBeFalsy();
+  expect(Construct.isConstruct(someRandomObject)).toBeFalsy();
+});
+
 function createTree(context?: any) {
   const root = new Root();
   const highChild = new Construct(root, 'HighChild');
