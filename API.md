@@ -5,7 +5,6 @@
 Name|Description
 ----|-----------
 [Construct](#constructs-construct)|Represents the building block of the construct graph.
-[ConstructScopeSettings](#constructs-constructscopesettings)|Global settings for this library.
 [Dependable](#constructs-dependable)|Trait for IDependable.
 [DependencyGroup](#constructs-dependencygroup)|A set of constructs to be used as a dependable.
 [Node](#constructs-node)|Represents the construct node in the scope tree.
@@ -94,53 +93,6 @@ static isConstruct(x: any): boolean
 
 __Returns__:
 * <code>boolean</code>
-
-
-
-## class ConstructScopeSettings  <a id="constructs-constructscopesettings"></a>
-
-Global settings for this library.
-
-Mostly here to enable backwards compatibility with the AWS CDK.
-
-
-
-### Properties
-
-
-Name | Type | Description 
------|------|-------------
-**errorMetadataKey** | <code>string</code> | <span></span>
-**infoMetadataKey** | <code>string</code> | <span></span>
-**warningMetadataKey** | <code>string</code> | <span></span>
-
-### Methods
-
-
-#### disableStackTraces() <a id="constructs-constructscopesettings-disablestacktraces"></a>
-
-
-
-```ts
-disableStackTraces(): void
-```
-
-
-
-
-
-#### *static* of(scope) <a id="constructs-constructscopesettings-of"></a>
-
-
-
-```ts
-static of(scope: Construct): ConstructScopeSettings
-```
-
-* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
-
-__Returns__:
-* <code>[ConstructScopeSettings](#constructs-constructscopesettings)</code>
 
 
 
@@ -314,38 +266,6 @@ addDependency(...dep: IDependable[]): void
 
 
 
-#### addError(message) <a id="constructs-node-adderror"></a>
-
-Adds an { "error": <message> } metadata entry to this construct.
-
-The toolkit will fail synthesis when errors are reported.
-Stack trace will be included unless stack traces are disabled for this scope.
-
-```ts
-addError(message: string): void
-```
-
-* **message** (<code>string</code>)  The error message.
-
-
-
-
-#### addInfo(message) <a id="constructs-node-addinfo"></a>
-
-Adds a { "info": <message> } metadata entry to this construct.
-
-The toolkit will display the info message when apps are synthesized.
-Stack trace will be included unless stack traces are disabled for this scope.
-
-```ts
-addInfo(message: string): void
-```
-
-* **message** (<code>string</code>)  The info message.
-
-
-
-
 #### addMetadata(type, data, options?) <a id="constructs-node-addmetadata"></a>
 
 Adds a metadata entry to this construct.
@@ -363,23 +283,6 @@ addMetadata(type: string, data: any, options?: MetadataOptions): void
 * **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  options.
   * **stackTrace** (<code>boolean</code>)  Include stack trace with metadata entry. __*Default*__: false
   * **traceFromFunction** (<code>any</code>)  A JavaScript function to begin tracing from. __*Default*__: addMetadata()
-
-
-
-
-#### addWarning(message) <a id="constructs-node-addwarning"></a>
-
-Adds a { "warning": <message> } metadata entry to this construct.
-
-The toolkit will display the warning when an app is synthesized, or fail
-if run in --strict mode.
-Stack trace will be included unless stack traces are disabled for this scope.
-
-```ts
-addWarning(message: string): void
-```
-
-* **message** (<code>string</code>)  The warning message.
 
 
 

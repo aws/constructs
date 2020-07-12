@@ -23,3 +23,7 @@ removed:constructs.ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA
 incompatible-argument:constructs.Node.addMetadata
 
 removed:constructs.ConstructMetadata
+
+removed:constructs.Node.addError
+removed:constructs.Node.addInfo
+removed:constructs.Node.addWarning
