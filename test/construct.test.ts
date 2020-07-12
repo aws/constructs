@@ -506,6 +506,43 @@ describe('dependencies', () => {
     expect(() => Dependable.of({})).toThrow(/does not implement IDependable/);
   });
 
+  test('dependencyRoots are only resolved when node dependencies are evaluated', () => {
+    // GIVEN
+    const root = new Root();
+    const c1 = new Construct(root, 'c1');
+    const c2 = new Construct(root, 'c2');
+    const c3 = new Construct(root, 'c3');
+    const group = new DependencyGroup();
+    group.add(c2);
+    c1.node.addDependency(group);
+
+    // WHEN
+    // add s3 after "addDependency" is called
+    group.add(c3);
+
+    // THEN
+    expect(c1.node.dependencies.length).toBe(2);
+    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'c2', 'c3' ]);
+  });
+
+  test('DependencyGroup can also include other IDependables', () => {
+    // GIVEN
+    const root = new Root();
+    const c1 = new Construct(root, 'c1');
+
+    // WHEN
+    const groupA = new DependencyGroup(new Construct(root, 'a1'), new Construct(root, 'a2'));
+    const groupB = new DependencyGroup(new Construct(root, 'b1'), new Construct(root, 'b2'));
+    const composite = new DependencyGroup(groupA);
+
+    c1.node.addDependency(composite);
+    composite.add(groupB);
+    groupB.add(new Construct(root, 'b3'));
+
+    // THEN
+    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'a1', 'a2', 'b1', 'b2', 'b3' ]);
+    expect(c1.node.dependencies.length).toBe(5);
+  });
 });
 
 test('tryRemoveChild()', () => {

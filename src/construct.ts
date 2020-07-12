@@ -42,7 +42,7 @@ export class Node {
   private readonly _children: { [id: string]: IConstruct } = { };
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
-  private readonly _dependencies = new Set<IConstruct>();
+  private readonly _dependencies = new Set<IDependable>();
   private _defaultChild: IConstruct | undefined;
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
@@ -272,12 +272,9 @@ export class Node {
    *
    * An `IDependable`
    */
-  public addDependency(...dep: IDependable[]) {
-    for (const scope of dep) {
-      const roots = Dependable.of(scope).dependencyRoots;
-      for (const root of roots) {
-        this._dependencies.add(root);
-      }
+  public addDependency(...deps: IDependable[]) {
+    for (const d of deps) {
+      this._dependencies.add(d);
     }
   }
 
@@ -285,7 +282,14 @@ export class Node {
    * Return all dependencies registered on this node (non-recursive).
    */
   public get dependencies(): IConstruct[] {
-    return [ ...this._dependencies ];
+    const result = new Array<IConstruct>();
+    for (const dep of this._dependencies) {
+      for (const root of Dependable.of(dep).dependencyRoots) {
+        result.push(root);
+      }
+    }
+
+    return result;
   }
 
   /**

@@ -186,10 +186,10 @@ __Implements__: [IDependable](#constructs-idependable)
 
 
 ```ts
-new DependencyGroup(...scopes: IConstruct[])
+new DependencyGroup(...deps: IDependable[])
 ```
 
-* **scopes** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+* **deps** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
 
 
 ### Methods
@@ -200,10 +200,10 @@ new DependencyGroup(...scopes: IConstruct[])
 Add a construct to the dependency roots.
 
 ```ts
-add(...scopes: IConstruct[]): void
+add(...scopes: IDependable[]): void
 ```
 
-* **scopes** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+* **scopes** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
 
 
 
@@ -251,17 +251,17 @@ Name | Type | Description
 ### Methods
 
 
-#### addDependency(...dep) <a id="constructs-node-adddependency"></a>
+#### addDependency(...deps) <a id="constructs-node-adddependency"></a>
 
 Add an ordering dependency on another construct.
 
 An `IDependable`
 
 ```ts
-addDependency(...dep: IDependable[]): void
+addDependency(...deps: IDependable[]): void
 ```
 
-* **dep** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+* **deps** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
 
 
 

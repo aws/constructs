@@ -24,22 +24,29 @@ export interface IDependable {
  * @experimental
  */
 export class DependencyGroup implements IDependable {
-  private readonly _dependencyRoots = new Array<IConstruct>();
+  private readonly _deps = new Array<IDependable>();
 
-  constructor(...scopes: IConstruct[]) {
+  constructor(...deps: IDependable[]) {
     const self = this;
+
     Dependable.implement(this, {
-      get dependencyRoots() { return self._dependencyRoots; },
+      get dependencyRoots() {
+        const result = new Array<IConstruct>();
+        for (const d of self._deps) {
+          result.push(...Dependable.of(d).dependencyRoots);
+        }
+        return result;
+      },
     });
 
-    this.add(...scopes);
+    this.add(...deps);
   }
 
   /**
    * Add a construct to the dependency roots
    */
-  public add(...scopes: IConstruct[]) {
-    this._dependencyRoots.push(...scopes);
+  public add(...scopes: IDependable[]) {
+    this._deps.push(...scopes);
   }
 }
 
