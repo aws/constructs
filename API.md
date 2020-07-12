@@ -82,6 +82,19 @@ toString(): string
 __Returns__:
 * <code>string</code>
 
+#### *static* isConstruct(x) <a id="constructs-construct-isconstruct"></a>
+
+Checks if `x` is a construct.
+
+```ts
+static isConstruct(x: any): boolean
+```
+
+* **x** (<code>any</code>)  Any object.
+
+__Returns__:
+* <code>boolean</code>
+
 
 
 ## class ConstructScopeSettings  <a id="constructs-constructscopesettings"></a>
