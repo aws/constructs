@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1-pre.4](https://github.com/aws/constructs/compare/v4.1.1-pre.3...v4.1.1-pre.4) (2020-07-13)
+
+
+### Features
+
+* construct.node.addValidation() ([51b629f](https://github.com/aws/constructs/commit/51b629fe78dd1772ef135ccebe10f8d659cdba18))
+
 ### [4.1.1-pre.3](https://github.com/aws/constructs/compare/v4.1.1-pre.2...v4.1.1-pre.3) (2020-07-12)
 
 
