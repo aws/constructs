@@ -44,6 +44,7 @@ export class Node {
   private readonly _metadata = new Array<MetadataEntry>();
   private readonly _dependencies = new Set<IDependable>();
   private _defaultChild: IConstruct | undefined;
+  private readonly _validations = new Array<IValidation>();
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
@@ -305,20 +306,43 @@ export class Node {
   }
 
   /**
+   * Adds a validation to this construct.
+   *
+   * When `node.validate()` is called, the `validate()` method will be called on
+   * all validations and all errors will be returned.
+   *
+   * @param validation The validation object
+   */
+  public addValidation(validation: IValidation) {
+    this._validations.push(validation);
+  }
+
+  /**
    * Validates this construct.
    *
-   * If the construct implements the `IValidation` interface and has a `validate()` method, it will be
-   * invoked. Otherwise, just returns an empty list of validation errors.
+   * Invokes the `validate()` method on all validations added through
+   * `addValidation()`.
    *
-   * @returns an array of validation errors
+   * @returns an array of validation error messages associated with this
+   * construct.
    */
-  public validate(): ValidationError[] {
-    const validation = this.host as unknown as IValidation;
-    if (!validation.validate || typeof(validation.validate) !== 'function') {
-      return [];
+  public validate(): string[] {
+    const errors = new Array<string>();
+    for (const v of this._validations) {
+      errors.push(...v.validate());
     }
 
-    return validation.validate().map(msg => ({ source: this.host, message: msg }));
+    // throw if the construct itself has a validate() method
+
+
+    // for backwards compatibility, if the construct itself has a "validate()"
+    // method treat it as a validation.
+    const validation = this.host as unknown as IValidation;
+    if (validation.validate && typeof(validation.validate) === 'function') {
+      throw new Error(`the construct ${this.path} has a "validate()" method which is no longer supported. Use "construct.node.addValidation()" to add validations to a construct`);
+    }
+
+    return errors;
   }
 
   /**

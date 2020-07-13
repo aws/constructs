@@ -287,6 +287,22 @@ addMetadata(type: string, data: any, options?: MetadataOptions): void
 
 
 
+#### addValidation(validation) <a id="constructs-node-addvalidation"></a>
+
+Adds a validation to this construct.
+
+When `node.validate()` is called, the `validate()` method will be called on
+all validations and all errors will be returned.
+
+```ts
+addValidation(validation: IValidation): void
+```
+
+* **validation** (<code>[IValidation](#constructs-ivalidation)</code>)  The validation object.
+
+
+
+
 #### findAll(order?) <a id="constructs-node-findall"></a>
 
 Return this construct and all of its children in the given order.
@@ -404,16 +420,16 @@ unlock(): void
 
 Validates this construct.
 
-If the construct implements the `IValidation` interface and has a `validate()` method, it will be
-invoked. Otherwise, just returns an empty list of validation errors.
+Invokes the `validate()` method on all validations added through
+`addValidation()`.
 
 ```ts
-validate(): Array<ValidationError>
+validate(): Array<string>
 ```
 
 
 __Returns__:
-* <code>Array<[ValidationError](#constructs-validationerror)></code>
+* <code>Array<string></code>
 
 
 

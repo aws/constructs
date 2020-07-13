@@ -27,3 +27,5 @@ removed:constructs.ConstructMetadata
 removed:constructs.Node.addError
 removed:constructs.Node.addInfo
 removed:constructs.Node.addWarning
+change-return-type:constructs.Node.validate
+

@@ -1,4 +1,4 @@
-import { Construct, ConstructOrder, ValidationError, DependencyGroup, Dependable } from '../src';
+import { Construct, ConstructOrder, DependencyGroup, Dependable, IConstruct } from '../src';
 import { App as Root } from './util';
 
 // tslint:disable:variable-name
@@ -263,17 +263,21 @@ test('multiple children of the same type, with explicit names are welcome', () =
 });
 
 // tslint:disable-next-line:max-line-length
-test('construct.validate() can be implemented to perform validation, node.validate() will return all errors from the subtree (DFS)', () => {
+test('node.addValidation() can be implemented to perform validation, node.validate() will return errors', () => {
 
   class MyConstruct extends Construct {
-    protected validate() {
-      return [ 'my-error1', 'my-error2' ];
+    constructor(scope: Construct, id: string) {
+      super(scope, id);
+
+      this.node.addValidation({ validate: () => [ 'my-error1', 'my-error2' ] });
     }
   }
 
   class YourConstruct extends Construct {
-    protected validate() {
-      return [ 'your-error1' ];
+    constructor(scope: Construct, id: string) {
+      super(scope, id);
+
+      this.node.addValidation({ validate: () => [ 'your-error1' ]});
     }
   }
 
@@ -282,10 +286,8 @@ test('construct.validate() can be implemented to perform validation, node.valida
       super(scope, id);
 
       new YourConstruct(this, 'YourConstruct');
-    }
 
-    protected validate() {
-      return [ 'their-error' ];
+      this.node.addValidation({ validate: () => [ 'their-error' ]});
     }
   }
 
@@ -295,10 +297,8 @@ test('construct.validate() can be implemented to perform validation, node.valida
 
       new MyConstruct(this, 'MyConstruct');
       new TheirConstruct(this, 'TheirConstruct');
-    }
 
-    protected validate() {
-      return  [ 'stack-error' ];
+      this.node.addValidation({ validate: () => [ 'stack-error' ]})
     }
   }
 
@@ -310,7 +310,7 @@ test('construct.validate() can be implemented to perform validation, node.valida
       errors.push(...validateTree(child));
     }
 
-    errors.push(...root.node.validate());
+    errors.push(...root.node.validate().map(message => ({ source: root, message })));
     return errors;
   }
 
@@ -334,6 +334,29 @@ test('node.validate() returns an empty array if the construct does not implement
 
   // THEN
   expect(root.node.validate()).toStrictEqual([]);
+});
+
+test('node.addValidation() can be used to add a validation function to a construct', () => {
+  // GIVEN
+  const construct = new Root();
+  construct.node.addValidation({ validate: () => [ 'error1', 'error2' ] });
+  construct.node.addValidation({ validate: () => [ 'error3' ] });
+
+  expect(construct.node.validate()).toStrictEqual([ 'error1', 'error2', 'error3' ]);
+});
+
+test('fails with a deprecation error if "validate()" is implemented at the construct level', () => {
+  // GIVEN
+  class Foo extends Construct {
+    validate() {
+      return [ 'foo', 'bar' ]
+    }
+  }
+
+  const foo = new Foo(new Construct(undefined as any, 'root'), 'foo');
+
+  // THEN
+  expect(() => foo.node.validate()).toThrow(/the construct root\/foo has a \"validate\(\)\" method which is no longer supported/);
 });
 
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
@@ -614,4 +637,9 @@ class MyBeautifulConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
   }
+}
+
+interface ValidationError {
+  readonly source: IConstruct;
+  readonly message: string;
 }
