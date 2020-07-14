@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/aws/constructs",
   "devDependencies": {
-    "projen": "^0.2.5",
+    "projen": "^0.3.2",
     "standard-version": "^8.0.0",
     "jsii": "^1.6.0",
     "jsii-diff": "^1.6.0",
