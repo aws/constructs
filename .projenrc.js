@@ -48,4 +48,9 @@ const project = new JsiiProject({
   // },
 });
 
+project.addScripts({
+  bump: 'standard-version -r patch -p pre',
+  release: 'yarn bump && git push --follow-tags origin 4.x' 
+});
+
 project.synth();
