@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1-pre.5](https://github.com/aws/constructs/compare/v4.1.1-pre.4...v4.1.1-pre.5) (2020-07-15)
+
+
+### Features
+
+* node.relocate() ([d5e4420](https://github.com/aws/constructs/commit/d5e4420cded68012af47a1ea6c9d09842c88ecd3))
+
 ### [4.1.1-pre.4](https://github.com/aws/constructs/compare/v4.1.1-pre.3...v4.1.1-pre.4) (2020-07-13)
 
 
