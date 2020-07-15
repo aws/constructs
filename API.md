@@ -322,6 +322,25 @@ prepare(): void
 
 
 
+#### relocate(rootPath)🔹 <a id="constructs-node-relocate"></a>
+
+Relocates this scope to a different root path.
+
+This will cause the `path` and
+`uniqueId` of this scope (and all children) to behave as if this construct was
+rooted at the new location.
+
+This method cannot be called after children have been added to this scope.
+
+```ts
+relocate(rootPath: string): void
+```
+
+* **rootPath** (<code>string</code>)  The new root (can also be an empty string to represent THE root).
+
+
+
+
 #### setContext(key, value) <a id="constructs-node-setcontext"></a>
 
 This can be used to set contextual values.
