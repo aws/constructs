@@ -32,12 +32,7 @@ test('an empty string is a valid name for a construct', () => {
   expect(child.node.path).toStrictEqual('');
   expect(grandchild.node.path).toStrictEqual('');
   expect(grandgrand.node.path).toStrictEqual('hello');
-
-  // unique id cannot be calculated on a path that only includes empty names
-  expect(() => root.node.uniqueId).toThrow(/Unable to calculate/);
-  expect(() => child.node.uniqueId).toThrow(/Unable to calculate/);
-  expect(() => grandchild.node.uniqueId).toThrow(/Unable to calculate/);
-})
+});
 
 test('construct.name returns the name of the construct', () => {
   const t = createTree();
