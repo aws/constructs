@@ -43,7 +43,7 @@
     "json-schema": "^0.2.5",
     "jest": "^26.0.1",
     "@types/jest": "^25.2.1",
-    "ts-jest": "^26.1.0",
+    "ts-jest": "^26.1.2",
     "@types/node": "^10.17.0",
     "jsii": "^1.6.0",
     "jsii-diff": "^1.6.0",
