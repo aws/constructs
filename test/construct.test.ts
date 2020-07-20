@@ -87,17 +87,6 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
   expect(c2.node.uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
 });
 
-test('ids with "/" are sanitized so they wont be considered as path components', () => {
-  const root = new Root();
-  const c1 = new Construct(root, 'my/id');
-  const c2 = new Construct(root, 'my');
-  const c3 = new Construct(c2, 'id');
-
-  expect(c1.node.id).toStrictEqual('my--id');
-  expect(c1.node.uniqueId).toStrictEqual('myid');
-  expect(c3.node.uniqueId).toStrictEqual('myid1AB152C1');
-});
-
 test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
   const root = new Root();
   const c = new Construct(root, 'Default');
@@ -618,69 +607,6 @@ test('Construct.isConstruct returns true for constructs', () => {
   expect(Construct.isConstruct(true)).toBeFalsy();
   expect(Construct.isConstruct([ 1, 2, 3 ])).toBeFalsy();
   expect(Construct.isConstruct(someRandomObject)).toBeFalsy();
-});
-
-describe('node.relocate() can anchor a scope to a different root', () => {
-  test('without relocation', () => {
-    // GIVEN
-    const root = new Root();
-    const child = new Construct(root, 'foo');
-    const grandchild = new Construct(child, 'foo');
-    const ggchild = new Construct(grandchild, 'foo');
-
-    // THEN: these are the default paths and unique ids
-    expect(root.node.path).toStrictEqual('');
-    expect(child.node.path).toStrictEqual('foo');
-    expect(grandchild.node.path).toStrictEqual('foo/foo');
-    expect(ggchild.node.path).toStrictEqual('foo/foo/foo');
-    expect(child.node.uniqueId).toStrictEqual('foo');
-    expect(grandchild.node.uniqueId).toStrictEqual('fooA41FDE36');
-    expect(ggchild.node.uniqueId).toStrictEqual('foo9BCD0A29');
-  });
-
-  test('relocate a child to act as root', () => {
-    // GIVEN
-    const root = new Root();
-
-    // WHEN
-    const child = new Construct(root, 'foo');
-    child.node.relocate('');
-    const grandchild = new Construct(child, 'foo');
-    const ggchild = new Construct(grandchild, 'foo');
-
-    // THEN: uniqueids are as if we moved everything one level up
-    expect(root.node.path).toStrictEqual('');
-    expect(child.node.path).toStrictEqual('');
-    expect(grandchild.node.path).toStrictEqual('foo');
-    expect(ggchild.node.path).toStrictEqual('foo/foo');
-    expect(grandchild.node.uniqueId).toStrictEqual('foo');
-    expect(ggchild.node.uniqueId).toStrictEqual('fooA41FDE36');
-  });
-
-  test('relocate a child to an arbitrary path', () => {
-    // GIVEN
-    const root = new Root();
-
-    // WHEN
-    const child = new Construct(root, 'foo');
-    child.node.relocate('hello/world');
-    const grandchild = new Construct(child, 'foo');
-    const ggchild = new Construct(grandchild, 'foo');
-
-    // THEN
-    expect(ggchild.node.path).toStrictEqual('hello/world/foo/foo');
-    expect(ggchild.node.uniqueId).toStrictEqual('helloworldfooED166F87');
-  });
-
-  test('cannot relocate after children were added', () => {
-    // GIVEN
-    const root = new Root();
-    const child = new Construct(root, 'foo');
-    new Construct(child, 'foo');
-
-    // WHEN
-    expect(() => child.node.relocate('hello/world')).toThrow(/cannot relocate/);
-  })
 });
 
 function createTree(context?: any) {

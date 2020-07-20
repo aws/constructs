@@ -46,11 +46,6 @@ export class Node {
   private _defaultChild: IConstruct | undefined;
   private readonly _validations = new Array<IValidation>();
 
-  /**
-   * An alternative root path for this scope.
-   */
-  private _relocated?: string;
-
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
 
@@ -67,32 +62,8 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    if (this._relocated !== undefined) {
-      return this._relocated;
-    }
-
-    if (!this.scope) {
-      return this.id;
-    } else {
-      return (this.scope.node.path + Node.PATH_SEP + this.id).replace(/^\//, '');
-    }
-  }
-
-  /**
-   * Relocates this scope to a different root path. This will cause the `path` and
-   * `uniqueId` of this scope (and all children) to behave as if this construct was
-   * rooted at the new location.
-   *
-   * This method cannot be called after children have been added to this scope.
-   *
-   * @param rootPath The new root (can also be an empty string to represent THE root)
-   * @experimental
-   */
-  public relocate(rootPath: string) {
-    if (this.children.length > 0) {
-      throw new Error(`cannot relocate the scope "${this.path}" to "${rootPath}" after children have been added to it`);
-    }
-    this._relocated = rootPath;
+    const components = this.scopes.map(c => c.node.id).filter(id => id);
+    return components.join(Node.PATH_SEP);
   }
 
   /**
@@ -100,7 +71,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.path.split(Node.PATH_SEP);
+    const components = this.scopes.map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
