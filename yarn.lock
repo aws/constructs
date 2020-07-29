@@ -4416,10 +4416,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.5.tgz#24e3abdf63b6d0bd904eda679e517894b46925c3"
-  integrity sha512-hf1XadIAJVOVAiFt5fZQaI6lCeaWCHqk4rDQ3v3Zk1w5Wa/luqiQ3ku85qzwBdFy02FkyHRQFobq8bAp5K8fXQ==
+projen@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.7.tgz#12a090c4b4258f06b05177044b96851cecc45f1b"
+  integrity sha512-QR3Y7BX8CCP0ovexVE5xRMCHeGHXaEccUcvn8T8wrJUbXcsyZkaex2xwMFKIu+ixP2mmaN9tGNUgMfx8rl8fAA==
   dependencies:
     constructs "2.0.1"
     decamelize "^4.0.0"
