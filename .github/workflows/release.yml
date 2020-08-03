@@ -19,7 +19,7 @@ jobs:
       - name: Anti-tamper check
         run: git diff --exit-code
       - name: Upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2.1.2
         with:
           name: dist
           path: dist
