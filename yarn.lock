@@ -1279,11 +1279,6 @@ concat-stream@^2.0.0:
     readable-stream "^3.0.2"
     typedarray "^0.0.6"
 
-constructs@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-2.0.1.tgz#274d6b8ce6a698813495c444466b0c745349ddb5"
-  integrity sha512-edR85YFGI9TBT9byAo5vAfI0PRi+jFGzinwN3RAJwKfv6Yc9x9kALYfoEmgotp95qT7/k/iUQWHrH9BMJeqpdg==
-
 contains-path@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/contains-path/-/contains-path-0.1.0.tgz#fe8cf184ff6670b6baef01a9d4861a5cbec4120a"
@@ -4416,12 +4411,11 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.5.tgz#24e3abdf63b6d0bd904eda679e517894b46925c3"
-  integrity sha512-hf1XadIAJVOVAiFt5fZQaI6lCeaWCHqk4rDQ3v3Zk1w5Wa/luqiQ3ku85qzwBdFy02FkyHRQFobq8bAp5K8fXQ==
+projen@^0.3.23:
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.23.tgz#037c57d08ea8699f57cc4496ddcde39884024617"
+  integrity sha512-q++UO6fLWLHt3YN+zvwlp0rMaKrrx3OOCsRvvNMIdDJvYSIM8DapKb9hapm9YrTCg4YPF7AW/ERHMvUu0P42nA==
   dependencies:
-    constructs "2.0.1"
     decamelize "^4.0.0"
     fs-extra "^9.0.1"
     yaml "^1.9.2"
