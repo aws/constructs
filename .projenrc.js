@@ -43,6 +43,7 @@ const project = new JsiiProject({
 
   releaseBranches: [ 'master', '2.x' ],
   compat: true,
+  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
 project.synth();
