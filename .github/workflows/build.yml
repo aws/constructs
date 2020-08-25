@@ -2,7 +2,8 @@
 name: Build
 on:
   pull_request: {}
-  push: {}
+  push:
+    branches: [master, main]
   workflow_dispatch: {}
 jobs:
   build:
@@ -24,4 +25,4 @@ jobs:
       - name: Anti-tamper check
         run: git diff --exit-code
     container:
-      image: jsii/superchain
+      image: 'jsii/superchain'
