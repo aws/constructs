@@ -2402,7 +2402,7 @@ glob-parent@^5.0.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^7.0.0, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
+glob@^7, glob@^7.0.0, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
   integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
@@ -2618,7 +2618,7 @@ ini@^1.3.2:
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
 
-inquirer@^7.0.0:
+inquirer@^7.0.0, inquirer@^7.3.3:
   version "7.3.3"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-7.3.3.tgz#04d176b2af04afc157a83fd7c100e98ee0aad003"
   integrity sha512-JG3eIAj5V9CwcGvuOmoo6LB9kbAYT8HXffUl6memuszlwDC/qvFAJw49XJ5NROSFNPxp3iQg1GqkFhaY/CR0IA==
@@ -4449,14 +4449,16 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.3.43:
-  version "0.3.43"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.43.tgz#753a052d4c0a206575b0f9b89c889ed9432f8071"
-  integrity sha512-QolC034Qh8o9hOqjjuo5r3vsh5wNmb1jBy1T/FkAezSictxVFRVn17QbMAxyEbbwZMK8R/WPwdlvJB8EfV0zKA==
+projen@^0.3.55:
+  version "0.3.55"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.55.tgz#f6829cce077f577243d3204d891d2a3365d7a37e"
+  integrity sha512-EnZWsNbpT5m2p+VVUBFyC7J/WSfCewBOLuO4BLHbhnT5JnbzXurtgKKBnsqqznjjCdqa1tg4MaIiS1dv4wH5cQ==
   dependencies:
     decamelize "^4.0.0"
     fs-extra "^9.0.1"
-    glob "^7.1.6"
+    glob "^7"
+    inquirer "^7.3.3"
+    semver "^7.3.2"
     yaml "^1.10.0"
     yargs "^15.4.1"
 
