@@ -468,7 +468,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jsii/spec@^1.12.0", "@jsii/spec@^1.13.0", "@jsii/spec@^1.9.0":
+"@jsii/spec@^1.13.0", "@jsii/spec@^1.9.0":
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.13.0.tgz#3389e047065b6b7f7fda238a90d58ac577c811bf"
   integrity sha512-BeDBk9OqsTjo5Oe5MrXT+dt0WqjzPN5DsYedmnhP65oceuBdx3VKS/nKGQ8DOB+9587Go8i9L+nri1wwQz3bpA==
@@ -3456,9 +3456,9 @@ jsii-diff@^1.11.0:
     yargs "^16.0.3"
 
 jsii-docgen@^1.3.2:
-  version "1.4.42"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.4.42.tgz#2d7d16110640621c261cac58e7f19e3808bad129"
-  integrity sha512-PL1spUm+1FzRZZYO/CEJtzhD/v3MKOFyIBqsaXJFskEtXvRX+AbW0U+loO6i45Nayrq9t47pKrlIYCA1Z55Zhw==
+  version "1.4.44"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.4.44.tgz#565fcdbf8b03e21525bd675d79ccc3cd9b5f592f"
+  integrity sha512-lZN7sOSFSg4bD8NeEggPCDSqr9SHHPErWYZQ1GgntjoFyKxALTYP9LhHgyID789sjDc1qQ2wVyiY6yLgybqovw==
   dependencies:
     "@jsii/spec" "^1.9.0"
     fs-extra "^9.0.0"
@@ -3483,7 +3483,7 @@ jsii-pacmak@^1.11.0:
     xmlbuilder "^15.1.1"
     yargs "^16.0.3"
 
-jsii-reflect@^1.12.0, jsii-reflect@^1.13.0, jsii-reflect@^1.9.0:
+jsii-reflect@^1.13.0, jsii-reflect@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.13.0.tgz#773531fd5f449094a3fec102f741922a68391424"
   integrity sha512-HQPjqIWAkMGg/SbiX+m/3MMdMo0p9wejosQNuiynvOYV9LqCRRbRi7MK3BuK4QeOaUHvJw4b+0bu6eCaD3cWxw==
@@ -5083,7 +5083,7 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.5.tgz#3694b5804567a458d3c8045842a6358632f62654"
   integrity sha512-J+FWzZoynJEXGphVIS+XEh3kFSjZX/1i9gFBaWQcB+/tmpe2qUsSBABpcxqxnAxFdiUFEgAX1bjYGQvIZmoz9Q==
 
-spdx-license-list@^6.2.0, spdx-license-list@^6.3.0:
+spdx-license-list@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/spdx-license-list/-/spdx-license-list-6.3.0.tgz#29507bdd88e5f1dcf62634d3c7f9051245e7ef07"
   integrity sha512-Qz8ru5VVK5T4cFOBrshIzggzrQ15fVBcpjpZLCVz2j9KNnpslGbw8w1r06v2vi6YP6bnUSY5CXsFCfUypLZ2GA==
