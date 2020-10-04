@@ -3,8 +3,6 @@ import { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
-const CONSTRUCT_SYMBOL = Symbol.for('constructs.Construct');
-
 /**
  * Represents a construct.
  */
@@ -23,6 +21,16 @@ export class Node {
    * Separator used to delimit construct path components.
    */
   public static readonly PATH_SEP = '/';
+
+  /**
+   * Returns the node associated with a construct.
+   * @param construct the construct
+   *
+   * @deprecated use `construct.node` instead
+   */
+  public static of(construct: IConstruct): Node {
+    return construct.node;
+  }
 
   /**
    * Returns the scope in which this construct is defined.
@@ -415,9 +423,11 @@ export class Construct implements IConstruct {
    * Checks if `x` is a construct.
    * @returns true if `x` is an object created from a class which extends `Construct`.
    * @param x Any object
+   *
+   * @deprecated use `x instanceof Construct` instead
    */
   public static isConstruct(x: any): x is Construct {
-    return x && typeof(x) === 'object' && CONSTRUCT_SYMBOL in x;
+    return x instanceof Construct;
   }
 
   /**
@@ -436,11 +446,6 @@ export class Construct implements IConstruct {
    */
   constructor(scope: Construct, id: string) {
     this.node = new Node(this, scope, id);
-
-    // used by isConstruct()
-    Object.defineProperty(this, CONSTRUCT_SYMBOL, {
-      value: true,
-    });
 
     // implement IDependable privately
     Dependable.implement(this, {

@@ -21,16 +21,6 @@ const project = new JsiiProject({
     "jsii"
   ],
 
-  stability: 'stable',
-  minNodeVersion: '10.17.0',
-
-  releaseBranches: [ 'master', '2.x', '4.x' ],
-
-  //----------------------------------------------------
-  // pre-release 4.x: publish "next" dist-tag and do not publish non-npm languages
-  //----------------------------------------------------------
-  npmDistTag: 'next',
-
   // java: {
   //   javaPackage: 'software.constructs',
   //   mavenGroupId: 'software.constructs',
@@ -46,9 +36,19 @@ const project = new JsiiProject({
   //   dotNetNamespace: 'Constructs',
   //   packageId: 'Constructs'
   // },
-  
-  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+
+  stability: 'stable',
+  minNodeVersion: '10.17.0',
+
+  releaseBranches: [ 'master', '2.x', '4.x' ],
   compat: true,
+
+  //----------------------------------------------------
+  // pre-release 4.x: publish "next" dist-tag and do not publish non-npm languages
+  //----------------------------------------------------------
+  npmDistTag: 'next',
+
+  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
 project.addScripts({

@@ -81,7 +81,7 @@ toString(): string
 __Returns__:
 * <code>string</code>
 
-#### *static* isConstruct(x) <a id="constructs-construct-isconstruct"></a>
+#### *static* isConstruct(x)⚠️ <a id="constructs-construct-isconstruct"></a>
 
 Checks if `x` is a construct.
 
@@ -430,6 +430,19 @@ validate(): Array<string>
 
 __Returns__:
 * <code>Array<string></code>
+
+#### *static* of(construct)⚠️ <a id="constructs-node-of"></a>
+
+Returns the node associated with a construct.
+
+```ts
+static of(construct: IConstruct): Node
+```
+
+* **construct** (<code>[IConstruct](#constructs-iconstruct)</code>)  the construct.
+
+__Returns__:
+* <code>[Node](#constructs-node)</code>
 
 
 
