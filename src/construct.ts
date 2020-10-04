@@ -1,5 +1,5 @@
-import { MetadataEntry } from './metadata';
 import { Dependable, IDependable } from './dependency';
+import { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
 
@@ -71,7 +71,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.map(c => c.node.id);
+    const components = this.scopes.slice(1).map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -202,7 +202,7 @@ export class Node {
    * This can be used, for example, to implement support for deprecation notices, source mapping, etc.
    */
   public get metadata() {
-    return [ ...this._metadata ];
+    return [...this._metadata];
   }
 
   /**
@@ -332,9 +332,17 @@ export class Node {
       errors.push(...v.validate());
     }
 
+    // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
+    // use PREORDER.reverse() for backward compatability
+    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
+      const cn = construct as any;
+      if ('onPrepare' in cn) {
+        if (typeof(cn.onPrepare) !== 'function') { throw new Error('expecting "onPrepare" to be a function'); }
+        cn.onPrepare();
+      }
+    }
+
     // throw if the construct itself has a validate() method
-
-
     // for backwards compatibility, if the construct itself has a "validate()"
     // method treat it as a validation.
     const validation = this.host as unknown as IValidation;
@@ -391,7 +399,7 @@ export class Node {
     this._children[childName] = child;
 
     if (Object.keys(this._children).length > 1 && Object.keys(this._children).filter(x => !x).length > 0) {
-      throw new Error('only a single construct is allowed in a scope if it has an empty name')
+      throw new Error('only a single construct is allowed in a scope if it has an empty name');
     }
   }
 }
@@ -436,7 +444,7 @@ export class Construct implements IConstruct {
 
     // implement IDependable privately
     Dependable.implement(this, {
-      dependencyRoots: [ this ],
+      dependencyRoots: [this],
     });
   }
 

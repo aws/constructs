@@ -212,7 +212,7 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
   expect(node.metadata[0].type).toBe('key');
   expect(node.metadata[0].data).toBe('value');
   expect(node.metadata[1].data).toBe(103);
-  expect(node.metadata[2].data).toEqual([ 123, 456 ]);
+  expect(node.metadata[2].data).toEqual([123, 456]);
 
   expect(node.metadata[0].trace?.[0]).toContain('FIND_ME');
 });
@@ -264,7 +264,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
     constructor(scope: Construct, id: string) {
       super(scope, id);
 
-      this.node.addValidation({ validate: () => [ 'my-error1', 'my-error2' ] });
+      this.node.addValidation({ validate: () => ['my-error1', 'my-error2'] });
     }
   }
 
@@ -272,7 +272,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
     constructor(scope: Construct, id: string) {
       super(scope, id);
 
-      this.node.addValidation({ validate: () => [ 'your-error1' ]});
+      this.node.addValidation({ validate: () => ['your-error1'] });
     }
   }
 
@@ -282,7 +282,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
 
       new YourConstruct(this, 'YourConstruct');
 
-      this.node.addValidation({ validate: () => [ 'their-error' ]});
+      this.node.addValidation({ validate: () => ['their-error'] });
     }
   }
 
@@ -293,7 +293,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
       new MyConstruct(this, 'MyConstruct');
       new TheirConstruct(this, 'TheirConstruct');
 
-      this.node.addValidation({ validate: () => [ 'stack-error' ]})
+      this.node.addValidation({ validate: () => ['stack-error'] });
     }
   }
 
@@ -307,7 +307,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
 
     errors.push(...root.node.validate().map(message => ({ source: root, message })));
     return errors;
-  }
+  };
 
   const errors = validateTree(stack)
     .map((v: ValidationError) => ({ path: v.source.node.path, message: v.message }));
@@ -334,17 +334,17 @@ test('node.validate() returns an empty array if the construct does not implement
 test('node.addValidation() can be used to add a validation function to a construct', () => {
   // GIVEN
   const construct = new Root();
-  construct.node.addValidation({ validate: () => [ 'error1', 'error2' ] });
-  construct.node.addValidation({ validate: () => [ 'error3' ] });
+  construct.node.addValidation({ validate: () => ['error1', 'error2'] });
+  construct.node.addValidation({ validate: () => ['error3'] });
 
-  expect(construct.node.validate()).toStrictEqual([ 'error1', 'error2', 'error3' ]);
+  expect(construct.node.validate()).toStrictEqual(['error1', 'error2', 'error3']);
 });
 
 test('fails with a deprecation error if "validate()" is implemented at the construct level', () => {
   // GIVEN
   class Foo extends Construct {
     validate() {
-      return [ 'foo', 'bar' ]
+      return ['foo', 'bar'];
     }
   }
 
@@ -394,13 +394,13 @@ test('findAll returns a list of all children in either DFS or BFS', () => {
   // THEN
   const node = c1.node;
   expect(node.findAll().map(x => x.node.id)).toEqual(c1.node.findAll(ConstructOrder.PREORDER).map(x => x.node.id)); // default is PreOrder
-  expect(node.findAll(ConstructOrder.PREORDER).map(x => x.node.id)).toEqual([ '1', '2', '4', '5', '3' ]);
-  expect(node.findAll(ConstructOrder.POSTORDER).map(x => x.node.id)).toEqual([ '4', '5', '2', '3', '1' ]);
+  expect(node.findAll(ConstructOrder.PREORDER).map(x => x.node.id)).toEqual(['1', '2', '4', '5', '3']);
+  expect(node.findAll(ConstructOrder.POSTORDER).map(x => x.node.id)).toEqual(['4', '5', '2', '3', '1']);
 });
 
 test('ancestors returns a list of parents up to root', () => {
   const { child1_1_1 } = createTree();
-  expect(child1_1_1.node.scopes.map(x => x.node.id)).toEqual([ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
+  expect(child1_1_1.node.scopes.map(x => x.node.id)).toEqual(['', 'HighChild', 'Child1', 'Child11', 'Child111']);
 });
 
 test('"root" returns the root construct', () => {
@@ -468,7 +468,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(producer2);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual(['producer1', 'producer2']);
   });
 
   test('are deduplicated', () => {
@@ -485,7 +485,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(producer);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual(['producer']);
   });
 
   test('DependencyGroup can represent a group of disjoined producers', () => {
@@ -499,7 +499,7 @@ describe('dependencies', () => {
     consumer.node.addDependency(group);
 
     // THEN
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer1', 'producer2', 'producer3', 'producer4' ]);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual(['producer1', 'producer2', 'producer3', 'producer4']);
   });
 
   test('Dependable.implement() can be used to implement IDependable on any object', () => {
@@ -511,13 +511,13 @@ describe('dependencies', () => {
     // WHEN
     const foo = { };
     Dependable.implement(foo, {
-      get dependencyRoots() { return [ producer ]; },
+      get dependencyRoots() { return [producer]; },
     });
     consumer.node.addDependency(foo);
 
     // THEN
-    expect(Dependable.of(foo).dependencyRoots.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
-    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'producer' ]);
+    expect(Dependable.of(foo).dependencyRoots.map(x => x.node.path)).toStrictEqual(['producer']);
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual(['producer']);
   });
 
   test('Dependable.of() throws an error the object does not implement IDependable', () => {
@@ -540,7 +540,7 @@ describe('dependencies', () => {
 
     // THEN
     expect(c1.node.dependencies.length).toBe(2);
-    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'c2', 'c3' ]);
+    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual(['c2', 'c3']);
   });
 
   test('DependencyGroup can also include other IDependables', () => {
@@ -558,7 +558,7 @@ describe('dependencies', () => {
     groupB.add(new Construct(root, 'b3'));
 
     // THEN
-    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual([ 'a1', 'a2', 'b1', 'b2', 'b3' ]);
+    expect(c1.node.dependencies.map(x => x.node.path)).toStrictEqual(['a1', 'a2', 'b1', 'b2', 'b3']);
     expect(c1.node.dependencies.length).toBe(5);
   });
 });
@@ -605,7 +605,7 @@ test('Construct.isConstruct returns true for constructs', () => {
   expect(Construct.isConstruct('string')).toBeFalsy();
   expect(Construct.isConstruct(1234)).toBeFalsy();
   expect(Construct.isConstruct(true)).toBeFalsy();
-  expect(Construct.isConstruct([ 1, 2, 3 ])).toBeFalsy();
+  expect(Construct.isConstruct([1, 2, 3])).toBeFalsy();
   expect(Construct.isConstruct(someRandomObject)).toBeFalsy();
 });
 

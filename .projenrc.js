@@ -46,6 +46,9 @@ const project = new JsiiProject({
   //   dotNetNamespace: 'Constructs',
   //   packageId: 'Constructs'
   // },
+  
+  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+  compat: true,
 });
 
 project.addScripts({
