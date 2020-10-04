@@ -11,8 +11,8 @@
     "start": "npx projen start -i",
     "projen": "node .projenrc.js",
     "no-changes": "(git log --oneline -1 | grep -q \"chore(release):\") && echo \"No changes to release.\"",
-    "bump": "yarn --silent no-changes || standard-version",
-    "release": "yarn --silent no-changes || (yarn bump && git push --follow-tags origin master)",
+    "bump": "standard-version -r patch -p pre",
+    "release": "yarn bump && git push --follow-tags origin 4.x",
     "projen:upgrade": "yarn upgrade -L projen && CI=\"\" yarn projen",
     "compile": "jsii --silence-warnings=reserved-word --no-fix-peer-dependencies && jsii-docgen && yarn compat",
     "watch": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies",
@@ -123,7 +123,7 @@
       "category": 2
     }
   },
-  "version": "3.0.4",
+  "version": "4.1.1-pre.7",
   "types": "lib/index.d.ts",
   "jest": {
     "clearMocks": true,
@@ -148,23 +148,7 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {
-      "java": {
-        "package": "software.constructs",
-        "maven": {
-          "groupId": "software.constructs",
-          "artifactId": "constructs"
-        }
-      },
-      "python": {
-        "distName": "constructs",
-        "module": "constructs"
-      },
-      "dotnet": {
-        "namespace": "Constructs",
-        "packageId": "Constructs"
-      }
-    },
+    "targets": {},
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"

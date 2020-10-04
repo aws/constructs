@@ -1,4 +1,4 @@
-import { IConstruct } from '../construct';
+import { IConstruct } from './construct';
 
 /**
  * Trait marker for classes that can be depended upon
@@ -23,21 +23,30 @@ export interface IDependable {
  *
  * @experimental
  */
-export class ConcreteDependable implements IDependable {
-  private readonly _dependencyRoots = new Array<IConstruct>();
+export class DependencyGroup implements IDependable {
+  private readonly _deps = new Array<IDependable>();
 
-  constructor() {
+  constructor(...deps: IDependable[]) {
     const self = this;
-    DependableTrait.implement(this, {
-      get dependencyRoots() { return self._dependencyRoots; },
+
+    Dependable.implement(this, {
+      get dependencyRoots() {
+        const result = new Array<IConstruct>();
+        for (const d of self._deps) {
+          result.push(...Dependable.of(d).dependencyRoots);
+        }
+        return result;
+      },
     });
+
+    this.add(...deps);
   }
 
   /**
    * Add a construct to the dependency roots
    */
-  public add(construct: IConstruct) {
-    this._dependencyRoots.push(construct);
+  public add(...scopes: IDependable[]) {
+    this._deps.push(...scopes);
   }
 }
 
@@ -64,13 +73,11 @@ const DEPENDABLE_SYMBOL = Symbol.for('@aws-cdk/core.DependableTrait');
  *
  * @experimental
  */
-export abstract class DependableTrait {
+export abstract class Dependable {
   /**
-   * Register `instance` to have the given DependableTrait
-   *
-   * Should be called in the class constructor.
+   * Turn any object into an IDependable.
    */
-  public static implement(instance: IDependable, trait: DependableTrait) {
+  public static implement(instance: IDependable, trait: Dependable) {
     // I would also like to reference classes (to cut down on the list of objects
     // we need to manage), but we can't do that either since jsii doesn't have the
     // concept of a class reference.
@@ -78,14 +85,22 @@ export abstract class DependableTrait {
   }
 
   /**
-   * Return the matching DependableTrait for the given class instance.
+   * Return the matching Dependable for the given class instance.
    */
-  public static get(instance: IDependable): DependableTrait {
+  public static of(instance: IDependable): Dependable {
     const ret = (instance as any)[DEPENDABLE_SYMBOL];
     if (!ret) {
-      throw new Error(`${instance} does not implement DependableTrait`);
+      throw new Error(`${instance} does not implement IDependable. Use "Dependable.implement()" to implement`);
     }
     return ret;
+  }
+
+  /**
+   * Return the matching Dependable for the given class instance.
+   * @deprecated use `of`
+   */
+  public static get(instance: IDependable): Dependable {
+    return this.of(instance);
   }
 
   /**

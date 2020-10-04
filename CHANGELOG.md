@@ -2,6 +2,98 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 4.1.1-pre.7 (2020-10-04)
+
+### [4.1.1-pre.6](https://github.com/aws/constructs/compare/v4.1.1-pre.5...v4.1.1-pre.6) (2020-07-15)
+
+### [4.1.1-pre.5](https://github.com/aws/constructs/compare/v4.1.1-pre.4...v4.1.1-pre.5) (2020-07-15)
+
+
+### Features
+
+* node.relocate() ([d5e4420](https://github.com/aws/constructs/commit/d5e4420cded68012af47a1ea6c9d09842c88ecd3))
+
+### [4.1.1-pre.4](https://github.com/aws/constructs/compare/v4.1.1-pre.3...v4.1.1-pre.4) (2020-07-13)
+
+
+### Features
+
+* construct.node.addValidation() ([51b629f](https://github.com/aws/constructs/commit/51b629fe78dd1772ef135ccebe10f8d659cdba18))
+
+### [4.1.1-pre.3](https://github.com/aws/constructs/compare/v4.1.1-pre.2...v4.1.1-pre.3) (2020-07-12)
+
+
+### Features
+
+* support composite dependables via DependencyGroup ([d8cffc0](https://github.com/aws/constructs/commit/d8cffc0de0d55f67fdbc88e2885fd110928426a5))
+
+### [4.1.1-pre.2](https://github.com/aws/constructs/compare/v4.1.1-pre.0...v4.1.1-pre.2) (2020-07-12)
+
+
+### Features
+
+* allow empty construct names ([03668f9](https://github.com/aws/constructs/commit/03668f9ef15cdcb8ddd9de606045d1fc4ced1a4e))
+* construct scope settings ([1d842c2](https://github.com/aws/constructs/commit/1d842c24952896c335fcdd7550a136e8af5f75c4))
+* Construct.isConstruct(x) ([7e1055b](https://github.com/aws/constructs/commit/7e1055bee09a291724fd1f85e413891dae9745aa))
+
+
+### Bug Fixes
+
+* backwards compatibility of `Dependency` ([9ebe17a](https://github.com/aws/constructs/commit/9ebe17a88a2a0e38331bc3eff5d772dbb8e9e6db))
+
+### [4.1.1-pre.1](https://github.com/aws/constructs/compare/v4.1.1-pre.0...v4.1.1-pre.1) (2020-07-09)
+
+
+### Features
+
+* construct scope settings ([1d842c2](https://github.com/aws/constructs/commit/1d842c24952896c335fcdd7550a136e8af5f75c4))
+
+
+### Bug Fixes
+
+* backwards compatibility of `Dependency` ([9ebe17a](https://github.com/aws/constructs/commit/9ebe17a88a2a0e38331bc3eff5d772dbb8e9e6db))
+
+### [4.1.1-pre.0](https://github.com/aws/constructs/compare/v4.1.0...v4.1.1-pre.0) (2020-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Stack traces are not attached to metadata entries by default. To include stack trace in a metadata entry, pass `{ stackTrace: true }` as the 3rd parameter, which is now of type `MetadataOptions` and not a `fromFunction` pointer.
+* `construct.node.dependencies` is not transitive anymore. It returns the set of dependencies added directly to the node. The `Dependency` type has also been removed as a result since it's not needed any longer.
+
+### Features
+
+* addMetadata() no longer attaches stack traces by default ([2bedd90](https://github.com/aws/constructs/commit/2bedd907f39b64715cade2d49e94a9978930bc56))
+* IDependable ([d11bd33](https://github.com/aws/constructs/commit/d11bd339aed3cad000d07fdd8ef7d2741153935a))
+* traceFromFunction in addMetadata() ([46652b0](https://github.com/aws/constructs/commit/46652b04d81e5a0031be5a5f48fe713ce47a8765))
+
+## [4.1.0](https://github.com/aws/constructs/compare/v4.0.0...v4.1.0) (2020-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* to add validation logic for constructs, implement the `IValidation` interface. 
+* The `construct.node.validate()` method no longer validates the entire tree, but only the specific construct on which it is called.
+* constructs no longer have an `onPrepare()` and `onSynthesis()` hooks. See domain-specific (such as AWS CDK and cdk8s) for alternatives.
+* aspects are no longer supported as part of the constructs library, so `node.applyAspect()` is no longer available. The AWS CDK implements aspects through `Aspects.of(construct).apply()`.
+
+### Features
+
+* aspect are no longer supported ([ffe8cf6](https://github.com/aws/constructs/commit/ffe8cf6c4dbcb67b25d874028c09a04ed68e264c))
+* introduce IValidation instead of onValidate() ([c99d198](https://github.com/aws/constructs/commit/c99d198bca8698c19e88cd53fb8393fb4ec50bed))
+* remove onPrepare() and onSynthesize() ([a312b34](https://github.com/aws/constructs/commit/a312b3455227ba25853eece6a3a588d67a3edb4c))
+
+## [4.0.0](https://github.com/aws/constructs/compare/v3.0.4...v4.0.0) (2020-07-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* `Node.of(construct)` was replaced with `construct.node`.
+
+### Features
+
+* construct.node ([6e4b278](https://github.com/aws/constructs/commit/6e4b2783764ec4155f858b22751804ffe7587f5a))
+
 ### [3.0.4](https://github.com/aws/constructs/compare/v3.0.3...v3.0.4) (2020-06-24)
 
 ### [3.0.3](https://github.com/aws/constructs/compare/v1.1.4...v3.0.3) (2020-05-04)

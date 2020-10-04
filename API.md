@@ -5,7 +5,8 @@
 Name|Description
 ----|-----------
 [Construct](#constructs-construct)|Represents the building block of the construct graph.
-[ConstructMetadata](#constructs-constructmetadata)|Metadata keys used by constructs.
+[Dependable](#constructs-dependable)|Trait for IDependable.
+[DependencyGroup](#constructs-dependencygroup)|A set of constructs to be used as a dependable.
 [Node](#constructs-node)|Represents the construct node in the scope tree.
 
 
@@ -13,10 +14,8 @@ Name|Description
 
 Name|Description
 ----|-----------
-[ConstructOptions](#constructs-constructoptions)|Options for creating constructs.
-[Dependency](#constructs-dependency)|A single dependency.
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
-[SynthesisOptions](#constructs-synthesisoptions)|Options for synthesis.
+[MetadataOptions](#constructs-metadataoptions)|Options for `construct.addMetadata()`.
 [ValidationError](#constructs-validationerror)|An error returned during the validation phase.
 
 
@@ -24,10 +23,9 @@ Name|Description
 
 Name|Description
 ----|-----------
-[IAspect](#constructs-iaspect)|Represents an Aspect.
 [IConstruct](#constructs-iconstruct)|Represents a construct.
-[INodeFactory](#constructs-inodefactory)|A factory for attaching `Node`s to the construct.
-[ISynthesisSession](#constructs-isynthesissession)|Represents a single session of synthesis.
+[IDependable](#constructs-idependable)|Trait marker for classes that can be depended upon.
+[IValidation](#constructs-ivalidation)|Implement this interface in order for the construct to be able to validate itself.
 
 
 **Enums**
@@ -45,7 +43,7 @@ Represents the building block of the construct graph.
 All constructs besides the root construct must be created within the scope of
 another construct.
 
-__Implements__: [IConstruct](#constructs-iconstruct)
+__Implements__: [IConstruct](#constructs-iconstruct), [IDependable](#constructs-idependable)
 
 ### Initializer
 
@@ -53,14 +51,20 @@ __Implements__: [IConstruct](#constructs-iconstruct)
 Creates a new construct node.
 
 ```ts
-new Construct(scope: Construct, id: string, options?: ConstructOptions)
+new Construct(scope: Construct, id: string)
 ```
 
 * **scope** (<code>[Construct](#constructs-construct)</code>)  The scope in which to define this construct.
 * **id** (<code>string</code>)  The scoped construct ID.
-* **options** (<code>[ConstructOptions](#constructs-constructoptions)</code>)  Options.
-  * **nodeFactory** (<code>[INodeFactory](#constructs-inodefactory)</code>)  A factory for attaching `Node`s to the construct. __*Default*__: the default `Node` is associated
 
+
+
+### Properties
+
+
+Name | Type | Description 
+-----|------|-------------
+**node** | <code>[Node](#constructs-node)</code> | The tree node.
 
 ### Methods
 
@@ -77,61 +81,41 @@ toString(): string
 __Returns__:
 * <code>string</code>
 
-#### protected onPrepare() <a id="constructs-construct-onprepare"></a>
+#### *static* isConstruct(x)⚠️ <a id="constructs-construct-isconstruct"></a>
 
-Perform final modifications before synthesis.
-
-This method can be implemented by derived constructs in order to perform
-final changes before synthesis. prepare() will be called after child
-constructs have been prepared.
-
-This is an advanced framework feature. Only use this if you
-understand the implications.
+Checks if `x` is a construct.
 
 ```ts
-protected onPrepare(): void
+static isConstruct(x: any): boolean
 ```
 
-
-
-
-
-#### protected onSynthesize(session) <a id="constructs-construct-onsynthesize"></a>
-
-Allows this construct to emit artifacts into the cloud assembly during synthesis.
-
-This method is usually implemented by framework-level constructs such as `Stack` and `Asset`
-as they participate in synthesizing the cloud assembly.
-
-```ts
-protected onSynthesize(session: ISynthesisSession): void
-```
-
-* **session** (<code>[ISynthesisSession](#constructs-isynthesissession)</code>)  The synthesis session.
-
-
-
-
-#### protected onValidate() <a id="constructs-construct-onvalidate"></a>
-
-Validate the current construct.
-
-This method can be implemented by derived constructs in order to perform
-validation logic. It is called on all constructs before synthesis.
-
-```ts
-protected onValidate(): Array<string>
-```
-
+* **x** (<code>any</code>)  Any object.
 
 __Returns__:
-* <code>Array<string></code>
+* <code>boolean</code>
 
 
 
-## class ConstructMetadata  <a id="constructs-constructmetadata"></a>
+## class Dependable 🔹 <a id="constructs-dependable"></a>
 
-Metadata keys used by constructs.
+Trait for IDependable.
+
+Traits are interfaces that are privately implemented by objects. Instead of
+showing up in the public interface of a class, they need to be queried
+explicitly. This is used to implement certain framework features that are
+not intended to be used by Construct consumers, and so should be hidden
+from accidental use.
+
+
+### Initializer
+
+
+
+
+```ts
+new Dependable()
+```
+
 
 
 
@@ -140,10 +124,89 @@ Metadata keys used by constructs.
 
 Name | Type | Description 
 -----|------|-------------
-*static* **DISABLE_STACK_TRACE_IN_METADATA** | <code>string</code> | If set in the construct's context, omits stack traces from metadata entries.
-*static* **ERROR_METADATA_KEY** | <code>string</code> | Context type for error level messages.
-*static* **INFO_METADATA_KEY** | <code>string</code> | Context type for info level messages.
-*static* **WARNING_METADATA_KEY** | <code>string</code> | Context type for warning level messages.
+**dependencyRoots**🔹 | <code>Array<[IConstruct](#constructs-iconstruct)></code> | The set of constructs that form the root of this dependable.
+
+### Methods
+
+
+#### *static* get(instance)⚠️ <a id="constructs-dependable-get"></a>
+
+Return the matching Dependable for the given class instance.
+
+```ts
+static get(instance: IDependable): Dependable
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+__Returns__:
+* <code>[Dependable](#constructs-dependable)</code>
+
+#### *static* implement(instance, trait)🔹 <a id="constructs-dependable-implement"></a>
+
+Turn any object into an IDependable.
+
+```ts
+static implement(instance: IDependable, trait: Dependable): void
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+* **trait** (<code>[Dependable](#constructs-dependable)</code>)  *No description*
+
+
+
+
+#### *static* of(instance)🔹 <a id="constructs-dependable-of"></a>
+
+Return the matching Dependable for the given class instance.
+
+```ts
+static of(instance: IDependable): Dependable
+```
+
+* **instance** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+__Returns__:
+* <code>[Dependable](#constructs-dependable)</code>
+
+
+
+## class DependencyGroup 🔹 <a id="constructs-dependencygroup"></a>
+
+A set of constructs to be used as a dependable.
+
+This class can be used when a set of constructs which are disjoint in the
+construct tree needs to be combined to be used as a single dependable.
+
+__Implements__: [IDependable](#constructs-idependable)
+
+### Initializer
+
+
+
+
+```ts
+new DependencyGroup(...deps: IDependable[])
+```
+
+* **deps** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+
+### Methods
+
+
+#### add(...scopes)🔹 <a id="constructs-dependencygroup-add"></a>
+
+Add a construct to the dependency roots.
+
+```ts
+add(...scopes: IDependable[]): void
+```
+
+* **scopes** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
+
+
+
 
 
 
@@ -173,7 +236,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 Name | Type | Description 
 -----|------|-------------
 **children** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | All direct children of this construct.
-**dependencies** | <code>Array<[Dependency](#constructs-dependency)></code> | Return all dependencies registered on this node or any of its children.
+**dependencies** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | Return all dependencies registered on this node (non-recursive).
 **id** | <code>string</code> | The id of this construct within the current scope.
 **locked** | <code>boolean</code> | Returns true if this construct or the scopes in which it is defined are locked.
 **metadata** | <code>Array<[MetadataEntry](#constructs-metadataentry)></code> | An immutable array of metadata objects associated with this construct.
@@ -188,53 +251,22 @@ Name | Type | Description
 ### Methods
 
 
-#### addDependency(...dependencies) <a id="constructs-node-adddependency"></a>
+#### addDependency(...deps) <a id="constructs-node-adddependency"></a>
 
-Add an ordering dependency on another Construct.
+Add an ordering dependency on another construct.
 
-All constructs in the dependency's scope will be deployed before any
-construct in this construct's scope.
-
-```ts
-addDependency(...dependencies: IConstruct[]): void
-```
-
-* **dependencies** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
-
-
-
-
-#### addError(message) <a id="constructs-node-adderror"></a>
-
-Adds an { "error": <message> } metadata entry to this construct.
-
-The toolkit will fail synthesis when errors are reported.
+An `IDependable`
 
 ```ts
-addError(message: string): void
+addDependency(...deps: IDependable[]): void
 ```
 
-* **message** (<code>string</code>)  The error message.
+* **deps** (<code>[IDependable](#constructs-idependable)</code>)  *No description*
 
 
 
 
-#### addInfo(message) <a id="constructs-node-addinfo"></a>
-
-Adds a { "info": <message> } metadata entry to this construct.
-
-The toolkit will display the info message when apps are synthesized.
-
-```ts
-addInfo(message: string): void
-```
-
-* **message** (<code>string</code>)  The info message.
-
-
-
-
-#### addMetadata(type, data, fromFunction?) <a id="constructs-node-addmetadata"></a>
+#### addMetadata(type, data, options?) <a id="constructs-node-addmetadata"></a>
 
 Adds a metadata entry to this construct.
 
@@ -243,41 +275,30 @@ the code location for when the entry was added. It can be used, for example, to 
 mapping in CloudFormation templates to improve diagnostics.
 
 ```ts
-addMetadata(type: string, data: any, fromFunction?: any): void
+addMetadata(type: string, data: any, options?: MetadataOptions): void
 ```
 
 * **type** (<code>string</code>)  a string denoting the type of metadata.
 * **data** (<code>any</code>)  the value of the metadata (can be a Token).
-* **fromFunction** (<code>any</code>)  a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata).
+* **options** (<code>[MetadataOptions](#constructs-metadataoptions)</code>)  options.
+  * **stackTrace** (<code>boolean</code>)  Include stack trace with metadata entry. __*Default*__: false
+  * **traceFromFunction** (<code>any</code>)  A JavaScript function to begin tracing from. __*Default*__: addMetadata()
 
 
 
 
-#### addWarning(message) <a id="constructs-node-addwarning"></a>
+#### addValidation(validation) <a id="constructs-node-addvalidation"></a>
 
-Adds a { "warning": <message> } metadata entry to this construct.
+Adds a validation to this construct.
 
-The toolkit will display the warning when an app is synthesized, or fail
-if run in --strict mode.
-
-```ts
-addWarning(message: string): void
-```
-
-* **message** (<code>string</code>)  The warning message.
-
-
-
-
-#### applyAspect(aspect) <a id="constructs-node-applyaspect"></a>
-
-Applies the aspect to this Constructs node.
+When `node.validate()` is called, the `validate()` method will be called on
+all validations and all errors will be returned.
 
 ```ts
-applyAspect(aspect: IAspect): void
+addValidation(validation: IValidation): void
 ```
 
-* **aspect** (<code>[IAspect](#constructs-iaspect)</code>)  *No description*
+* **validation** (<code>[IValidation](#constructs-ivalidation)</code>)  The validation object.
 
 
 
@@ -310,12 +331,15 @@ findChild(id: string): IConstruct
 __Returns__:
 * <code>[IConstruct](#constructs-iconstruct)</code>
 
-#### prepare() <a id="constructs-node-prepare"></a>
+#### lock() <a id="constructs-node-lock"></a>
 
-Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
+Locks this construct from allowing more children to be added.
+
+After this
+call, no more children can be added to this construct or to any children.
 
 ```ts
-prepare(): void
+lock(): void
 ```
 
 
@@ -335,22 +359,6 @@ setContext(key: string, value: any): void
 
 * **key** (<code>string</code>)  The context key.
 * **value** (<code>any</code>)  The context value.
-
-
-
-
-#### synthesize(options) <a id="constructs-node-synthesize"></a>
-
-Synthesizes a CloudAssembly from a construct tree.
-
-```ts
-synthesize(options: SynthesisOptions): void
-```
-
-* **options** (<code>[SynthesisOptions](#constructs-synthesisoptions)</code>)  Synthesis options.
-  * **outdir** (<code>string</code>)  The output directory into which to synthesize the cloud assembly. 
-  * **sessionContext** (<code>Map<string, any></code>)  Additional context passed into the synthesis session object when `construct.synth` is called. __*Default*__: no additional context is passed to `onSynthesize`
-  * **skipValidation** (<code>boolean</code>)  Whether synthesis should skip the validation phase. __*Default*__: false
 
 
 
@@ -396,21 +404,34 @@ tryRemoveChild(childName: string): boolean
 __Returns__:
 * <code>boolean</code>
 
-#### validate() <a id="constructs-node-validate"></a>
+#### unlock() <a id="constructs-node-unlock"></a>
 
-Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns the list of all errors.
-
-An empty list indicates that there are no errors.
+Unlocks this costruct and allows mutations (adding children).
 
 ```ts
-validate(): Array<ValidationError>
+unlock(): void
+```
+
+
+
+
+
+#### validate() <a id="constructs-node-validate"></a>
+
+Validates this construct.
+
+Invokes the `validate()` method on all validations added through
+`addValidation()`.
+
+```ts
+validate(): Array<string>
 ```
 
 
 __Returns__:
-* <code>Array<[ValidationError](#constructs-validationerror)></code>
+* <code>Array<string></code>
 
-#### *static* of(construct) <a id="constructs-node-of"></a>
+#### *static* of(construct)⚠️ <a id="constructs-node-of"></a>
 
 Returns the node associated with a construct.
 
@@ -425,55 +446,6 @@ __Returns__:
 
 
 
-## struct ConstructOptions  <a id="constructs-constructoptions"></a>
-
-
-Options for creating constructs.
-
-
-
-Name | Type | Description 
------|------|-------------
-**nodeFactory**? | <code>[INodeFactory](#constructs-inodefactory)</code> | A factory for attaching `Node`s to the construct.<br/>__*Default*__: the default `Node` is associated
-
-
-
-## struct Dependency  <a id="constructs-dependency"></a>
-
-
-A single dependency.
-
-
-
-Name | Type | Description 
------|------|-------------
-**source** | <code>[IConstruct](#constructs-iconstruct)</code> | Source the dependency.
-**target** | <code>[IConstruct](#constructs-iconstruct)</code> | Target of the dependency.
-
-
-
-## interface IAspect  <a id="constructs-iaspect"></a>
-
-
-Represents an Aspect.
-### Methods
-
-
-#### visit(node) <a id="constructs-iaspect-visit"></a>
-
-All aspects can visit an IConstruct.
-
-```ts
-visit(node: IConstruct): void
-```
-
-* **node** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
-
-
-
-
-
-
 ## interface IConstruct  <a id="constructs-iconstruct"></a>
 
 __Implemented by__: [Construct](#constructs-construct)
@@ -481,44 +453,51 @@ __Obtainable from__: [Node](#constructs-node).[findChild](#constructs-node#const
 
 Represents a construct.
 
-
-## interface INodeFactory  <a id="constructs-inodefactory"></a>
-
-
-A factory for attaching `Node`s to the construct.
-### Methods
-
-
-#### createNode(host, scope, id) <a id="constructs-inodefactory-createnode"></a>
-
-Returns a new `Node` associated with `host`.
-
-```ts
-createNode(host: Construct, scope: IConstruct, id: string): Node
-```
-
-* **host** (<code>[Construct](#constructs-construct)</code>)  the associated construct.
-* **scope** (<code>[IConstruct](#constructs-iconstruct)</code>)  the construct's scope (parent).
-* **id** (<code>string</code>)  the construct id.
-
-__Returns__:
-* <code>[Node](#constructs-node)</code>
-
-
-
-## interface ISynthesisSession  <a id="constructs-isynthesissession"></a>
-
-
-Represents a single session of synthesis.
-
-Passed into `construct.onSynthesize()` methods.
-
 ### Properties
 
 
 Name | Type | Description 
 -----|------|-------------
-**outdir** | <code>string</code> | The output directory for this synthesis session.
+**node** | <code>[Node](#constructs-node)</code> | The tree node.
+
+
+
+## interface IDependable  <a id="constructs-idependable"></a>
+
+__Implemented by__: [Construct](#constructs-construct), [DependencyGroup](#constructs-dependencygroup)
+
+Trait marker for classes that can be depended upon.
+
+The presence of this interface indicates that an object has
+an `IDependableTrait` implementation.
+
+This interface can be used to take an (ordering) dependency on a set of
+constructs. An ordering dependency implies that the resources represented by
+those constructs are deployed before the resources depending ON them are
+deployed.
+
+
+## interface IValidation  <a id="constructs-ivalidation"></a>
+
+
+Implement this interface in order for the construct to be able to validate itself.
+### Methods
+
+
+#### validate() <a id="constructs-ivalidation-validate"></a>
+
+Validate the current construct.
+
+This method can be implemented by derived constructs in order to perform
+validation logic. It is called on all constructs before synthesis.
+
+```ts
+validate(): Array<string>
+```
+
+
+__Returns__:
+* <code>Array<string></code>
 
 
 
@@ -533,22 +512,21 @@ Name | Type | Description
 -----|------|-------------
 **data** | <code>any</code> | The data.
 **type** | <code>string</code> | The metadata entry type.
-**trace**? | <code>Array<string></code> | Stack trace.<br/>__*Default*__: no trace information
+**trace**? | <code>Array<string></code> | Stack trace at the point of adding the metadata.<br/>__*Default*__: no trace information
 
 
 
-## struct SynthesisOptions  <a id="constructs-synthesisoptions"></a>
+## struct MetadataOptions  <a id="constructs-metadataoptions"></a>
 
 
-Options for synthesis.
+Options for `construct.addMetadata()`.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**outdir** | <code>string</code> | The output directory into which to synthesize the cloud assembly.
-**sessionContext**? | <code>Map<string, any></code> | Additional context passed into the synthesis session object when `construct.synth` is called.<br/>__*Default*__: no additional context is passed to `onSynthesize`
-**skipValidation**? | <code>boolean</code> | Whether synthesis should skip the validation phase.<br/>__*Default*__: false
+**stackTrace**? | <code>boolean</code> | Include stack trace with metadata entry.<br/>__*Default*__: false
+**traceFromFunction**? | <code>any</code> | A JavaScript function to begin tracing from.<br/>__*Default*__: addMetadata()
 
 
 

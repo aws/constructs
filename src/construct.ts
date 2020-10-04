@@ -1,15 +1,17 @@
-import { IAspect } from './aspect';
-import { ConstructMetadata, MetadataEntry } from './metadata';
-import { DependableTrait } from './private/dependency';
+import { Dependable, IDependable } from './dependency';
+import { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
 import { makeUniqueId } from './private/uniqueid';
-
-const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
 /**
  * Represents a construct.
  */
-export interface IConstruct { }
+export interface IConstruct extends IDependable {
+  /**
+   * The tree node.
+   */
+  readonly node: Node;
+}
 
 /**
  * Represents the construct node in the scope tree.
@@ -23,14 +25,11 @@ export class Node {
   /**
    * Returns the node associated with a construct.
    * @param construct the construct
+   *
+   * @deprecated use `construct.node` instead
    */
   public static of(construct: IConstruct): Node {
-    const node = (construct as any)[CONSTRUCT_NODE_PROPERTY_SYMBOL] as Node;
-    if (!node) {
-      throw new Error('construct does not have an associated node. All constructs must extend the "Construct" base class');
-    }
-
-    return node;
+    return construct.node;
   }
 
   /**
@@ -48,33 +47,21 @@ export class Node {
   public readonly id: string;
 
   private _locked = false; // if this is "true", addChild will fail
-  private readonly _aspects: IAspect[] = [];
   private readonly _children: { [id: string]: IConstruct } = { };
   private readonly _context: { [key: string]: any } = { };
   private readonly _metadata = new Array<MetadataEntry>();
-  private readonly _dependencies = new Set<IConstruct>();
-  private readonly invokedAspects: IAspect[] = [];
+  private readonly _dependencies = new Set<IDependable>();
   private _defaultChild: IConstruct | undefined;
+  private readonly _validations = new Array<IValidation>();
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
-    id = id || ''; // if undefined, convert to empty string
+    id = id ?? ''; // if undefined, convert to empty string
 
     this.id = sanitizeId(id);
     this.scope = scope;
 
-    // We say that scope is required, but root scopes will bypass the type
-    // checks and actually pass in 'undefined'.
-    if (scope != null) {
-      if (id === '') {
-        throw new Error('Only root constructs may have an empty name');
-      }
-
-      // Has side effect so must be very last thing in constructor
-      Node.of(scope).addChild(host, this.id);
-    } else {
-      // This is a root construct.
-      this.id = id;
-    }
+    // add to parent scope
+    scope?.node.addChild(host, this.id);
   }
 
   /**
@@ -83,7 +70,7 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.slice(1).map(c => Node.of(c).id);
+    const components = this.scopes.map(c => c.node.id).filter(id => id);
     return components.join(Node.PATH_SEP);
   }
 
@@ -92,7 +79,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => Node.of(c).id);
+    const components = this.scopes.slice(1).map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -178,7 +165,7 @@ export class Node {
         ret.push(c);
       }
 
-      for (const child of Node.of(c).children) {
+      for (const child of c.node.children) {
         visit(child);
       }
 
@@ -197,7 +184,7 @@ export class Node {
    */
   public setContext(key: string, value: any) {
     if (this.children.length > 0) {
-      const names = this.children.map(c => Node.of(c).id);
+      const names = this.children.map(c => c.node.id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
     }
     this._context[key] = value;
@@ -215,7 +202,7 @@ export class Node {
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
-    return this.scope && Node.of(this.scope).tryGetContext(key);
+    return this.scope && this.scope.node.tryGetContext(key);
   }
 
   /**
@@ -234,54 +221,16 @@ export class Node {
    *
    * @param type a string denoting the type of metadata
    * @param data the value of the metadata (can be a Token). If null/undefined, metadata will not be added.
-   * @param fromFunction a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata)
+   * @param options options
    */
-  public addMetadata(type: string, data: any, fromFunction?: any): void {
+  public addMetadata(type: string, data: any, options: MetadataOptions = { }): void {
     if (data == null) {
       return;
     }
 
-    const trace = this.tryGetContext(ConstructMetadata.DISABLE_STACK_TRACE_IN_METADATA)
-      ? undefined
-      : captureStackTrace(fromFunction || this.addMetadata);
-
+    const shouldTrace = options.stackTrace ?? false;
+    const trace = shouldTrace ? captureStackTrace(options.traceFromFunction ?? this.addMetadata) : undefined;
     this._metadata.push({ type, data, trace });
-  }
-
-  /**
-   * Adds a { "info": <message> } metadata entry to this construct.
-   * The toolkit will display the info message when apps are synthesized.
-   * @param message The info message.
-   */
-  public addInfo(message: string): void {
-    this.addMetadata(ConstructMetadata.INFO_METADATA_KEY, message);
-  }
-
-  /**
-   * Adds a { "warning": <message> } metadata entry to this construct.
-   * The toolkit will display the warning when an app is synthesized, or fail
-   * if run in --strict mode.
-   * @param message The warning message.
-   */
-  public addWarning(message: string): void {
-    this.addMetadata(ConstructMetadata.WARNING_METADATA_KEY, message);
-  }
-
-  /**
-   * Adds an { "error": <message> } metadata entry to this construct.
-   * The toolkit will fail synthesis when errors are reported.
-   * @param message The error message.
-   */
-  public addError(message: string) {
-    this.addMetadata(ConstructMetadata.ERROR_METADATA_KEY, message);
-  }
-
-  /**
-   * Applies the aspect to this Constructs node
-   */
-  public applyAspect(aspect: IAspect): void {
-    this._aspects.push(aspect);
-    return;
   }
 
   /**
@@ -297,7 +246,7 @@ export class Node {
     let curr: IConstruct | undefined = this.host;
     while (curr) {
       ret.unshift(curr);
-      curr = Node.of(curr).scope;
+      curr = curr.node.scope;
     }
 
     return ret;
@@ -320,7 +269,7 @@ export class Node {
       return true;
     }
 
-    if (this.scope && Node.of(this.scope).locked) {
+    if (this.scope && this.scope.node.locked) {
       return true;
     }
 
@@ -328,39 +277,28 @@ export class Node {
   }
 
   /**
-   * Add an ordering dependency on another Construct.
+   * Add an ordering dependency on another construct.
    *
-   * All constructs in the dependency's scope will be deployed before any
-   * construct in this construct's scope.
+   * An `IDependable`
    */
-  public addDependency(...dependencies: IConstruct[]) {
-    for (const dependency of dependencies) {
-      this._dependencies.add(dependency);
+  public addDependency(...deps: IDependable[]) {
+    for (const d of deps) {
+      this._dependencies.add(d);
     }
   }
 
   /**
-   * Return all dependencies registered on this node or any of its children
+   * Return all dependencies registered on this node (non-recursive).
    */
-  public get dependencies(): Dependency[] {
-    const found = new Map<IConstruct, Set<IConstruct>>(); // Deduplication map
-    const ret = new Array<Dependency>();
-
-    for (const source of this.findAll()) {
-      for (const dependable of Node.of(source)._dependencies) {
-        for (const target of DependableTrait.get(dependable).dependencyRoots) {
-          let foundTargets = found.get(source);
-          if (!foundTargets) { found.set(source, foundTargets = new Set()); }
-
-          if (!foundTargets.has(target)) {
-            ret.push({ source, target });
-            foundTargets.add(target);
-          }
-        }
+  public get dependencies(): IConstruct[] {
+    const result = new Array<IConstruct>();
+    for (const dep of this._dependencies) {
+      for (const root of Dependable.of(dep).dependencyRoots) {
+        result.push(root);
       }
     }
 
-    return ret;
+    return result;
   }
 
   /**
@@ -376,48 +314,30 @@ export class Node {
   }
 
   /**
-   * Synthesizes a CloudAssembly from a construct tree.
-   * @param options Synthesis options.
+   * Adds a validation to this construct.
+   *
+   * When `node.validate()` is called, the `validate()` method will be called on
+   * all validations and all errors will be returned.
+   *
+   * @param validation The validation object
    */
-  public synthesize(options: SynthesisOptions): void {
-    // the three holy phases of synthesis: prepare, validate and synthesize
-
-    // prepare
-    this.prepare();
-
-    // validate
-    const validate = options.skipValidation === undefined ? true : !options.skipValidation;
-    if (validate) {
-      const errors = this.validate();
-      if (errors.length > 0) {
-        const errorList = errors.map(e => `[${Node.of(e.source).path}] ${e.message}`).join('\n  ');
-        throw new Error(`Validation failed with the following errors:\n  ${errorList}`);
-      }
-    }
-
-    // synthesize (leaves first)
-    for (const construct of this.findAll(ConstructOrder.POSTORDER)) {
-      const node = Node.of(construct);
-      try {
-        node._lock();
-        const ctx = {
-          ...options.sessionContext,
-          outdir: options.outdir,
-        };
-        (construct as any).onSynthesize(ctx); // "as any" is needed because we want to keep "synthesize" protected
-      } finally {
-        node._unlock();
-      }
-    }
+  public addValidation(validation: IValidation) {
+    this._validations.push(validation);
   }
 
   /**
-   * Invokes "prepare" on all constructs (depth-first, post-order) in the tree under `node`.
+   * Validates this construct.
+   *
+   * Invokes the `validate()` method on all validations added through
+   * `addValidation()`.
+   *
+   * @returns an array of validation error messages associated with this
+   * construct.
    */
-  public prepare() {
-    // Aspects are applied root to leaf
-    for (const construct of this.findAll(ConstructOrder.PREORDER)) {
-      Node.of(construct).invokeAspects();
+  public validate(): string[] {
+    const errors = new Array<string>();
+    for (const v of this._validations) {
+      errors.push(...v.validate());
     }
 
     // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
@@ -429,37 +349,30 @@ export class Node {
         cn.onPrepare();
       }
     }
-  }
 
-  /**
-   * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
-   * the list of all errors. An empty list indicates that there are no errors.
-   */
-  public validate() {
-    let errors = new Array<ValidationError>();
-
-    for (const child of this.children) {
-      errors = errors.concat(Node.of(child).validate());
+    // throw if the construct itself has a validate() method
+    // for backwards compatibility, if the construct itself has a "validate()"
+    // method treat it as a validation.
+    const validation = this.host as unknown as IValidation;
+    if (validation.validate && typeof(validation.validate) === 'function') {
+      throw new Error(`the construct ${this.path} has a "validate()" method which is no longer supported. Use "construct.node.addValidation()" to add validations to a construct`);
     }
 
-    const localErrors: string[] = (this.host as any).onValidate(); // "as any" is needed because we want to keep "validate" protected
-    return errors.concat(localErrors.map(msg => ({ source: this.host, message: msg })));
+    return errors;
   }
 
   /**
    * Locks this construct from allowing more children to be added. After this
    * call, no more children can be added to this construct or to any children.
-   * @internal
    */
-  private _lock() {
+  public lock() {
     this._locked = true;
   }
 
   /**
    * Unlocks this costruct and allows mutations (adding children).
-   * @internal
    */
-  private _unlock() {
+  public unlock() {
     this._locked = false;
   }
 
@@ -482,25 +395,19 @@ export class Node {
     }
 
     if (childName in this._children) {
-      const name = this.id || '';
+      const name = this.id ?? '';
       const typeName = this.host.constructor.name;
       throw new Error(`There is already a Construct with name '${childName}' in ${typeName}${name.length > 0 ? ' [' + name + ']' : ''}`);
     }
 
-    this._children[childName] = child;
-  }
+    if (!childName && this.id) {
+      throw new Error(`cannot add a nameless construct to the named scope: ${this.path}`);
+    }
 
-  /**
-   * Triggers each aspect to invoke visit
-   */
-  private invokeAspects(): void {
-    const descendants = this.findAll();
-    for (const aspect of this._aspects) {
-      if (this.invokedAspects.includes(aspect)) {
-        continue;
-      }
-      descendants.forEach(member => aspect.visit(member));
-      this.invokedAspects.push(aspect);
+    this._children[childName] = child;
+
+    if (Object.keys(this._children).length > 1 && Object.keys(this._children).filter(x => !x).length > 0) {
+      throw new Error('only a single construct is allowed in a scope if it has an empty name');
     }
   }
 }
@@ -513,6 +420,22 @@ export class Node {
  */
 export class Construct implements IConstruct {
   /**
+   * Checks if `x` is a construct.
+   * @returns true if `x` is an object created from a class which extends `Construct`.
+   * @param x Any object
+   *
+   * @deprecated use `x instanceof Construct` instead
+   */
+  public static isConstruct(x: any): x is Construct {
+    return x instanceof Construct;
+  }
+
+  /**
+   * The tree node.
+   */
+  public readonly node: Node;
+
+  /**
    * Creates a new construct node.
    *
    * @param scope The scope in which to define this construct
@@ -521,17 +444,11 @@ export class Construct implements IConstruct {
    * dash `--`.
    * @param options Options
    */
-  constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
-    // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? { createNode: (host, nodeScope, nodeId) => new Node(host, nodeScope, nodeId) };
-    Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
-      value: nodeFactory.createNode(this, scope, id),
-      enumerable: false,
-      configurable: false,
-    });
+  constructor(scope: Construct, id: string) {
+    this.node = new Node(this, scope, id);
 
     // implement IDependable privately
-    DependableTrait.implement(this, {
+    Dependable.implement(this, {
       dependencyRoots: [this],
     });
   }
@@ -540,45 +457,7 @@ export class Construct implements IConstruct {
    * Returns a string representation of this construct.
    */
   public toString() {
-    return Node.of(this).path || '<root>';
-  }
-
-  /**
-   * Validate the current construct.
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * validation logic. It is called on all constructs before synthesis.
-   *
-   * @returns An array of validation error messages, or an empty array if there the construct is valid.
-   */
-  protected onValidate(): string[] {
-    return [];
-  }
-
-  /**
-   * Perform final modifications before synthesis
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * final changes before synthesis. prepare() will be called after child
-   * constructs have been prepared.
-   *
-   * This is an advanced framework feature. Only use this if you
-   * understand the implications.
-   */
-  protected onPrepare(): void {
-    return;
-  }
-
-  /**
-   * Allows this construct to emit artifacts into the cloud assembly during synthesis.
-   *
-   * This method is usually implemented by framework-level constructs such as `Stack` and `Asset`
-   * as they participate in synthesizing the cloud assembly.
-   *
-   * @param session The synthesis session.
-   */
-  protected onSynthesize(session: ISynthesisSession): void {
-    ignore(session);
+    return this.node.path || '<root>';
   }
 }
 
@@ -613,60 +492,18 @@ export enum ConstructOrder {
 }
 
 /**
- * A single dependency
+ * Implement this interface in order for the construct to be able to validate itself.
  */
-export interface Dependency {
+export interface IValidation {
   /**
-   * Source the dependency
+   * Validate the current construct.
+   *
+   * This method can be implemented by derived constructs in order to perform
+   * validation logic. It is called on all constructs before synthesis.
+   *
+   * @returns An array of validation error messages, or an empty array if there the construct is valid.
    */
-  readonly source: IConstruct;
-
-  /**
-   * Target of the dependency
-   */
-  readonly target: IConstruct;
-}
-
-/**
- * Represents a single session of synthesis. Passed into `construct.onSynthesize()` methods.
- */
-export interface ISynthesisSession {
-  /**
-   * The output directory for this synthesis session.
-   */
-  readonly outdir: string;
-
-  /**
-   * Additional context passed to synthesizeNode through `sessionContext`.
-   */
-  [key: string]: any;
-}
-
-/**
- * Options for synthesis.
- */
-export interface SynthesisOptions {
-  /**
-   * The output directory into which to synthesize the cloud assembly.
-   * @default - creates a temporary directory
-   */
-  readonly outdir: string;
-
-  /**
-   * Whether synthesis should skip the validation phase.
-   * @default false
-   */
-  readonly skipValidation?: boolean;
-
-  /**
-   * Additional context passed into the synthesis session object when `construct.synth` is called.
-   * @default - no additional context is passed to `onSynthesize`
-   */
-  readonly sessionContext?: { [key: string]: any };
-}
-
-function ignore(_x: any) {
-  return;
+  validate(): string[];
 }
 
 // Import this _after_ everything else to help node work the classes out in the correct order...
@@ -681,25 +518,21 @@ function sanitizeId(id: string) {
 }
 
 /**
- * Options for creating constructs.
+ * Options for `construct.addMetadata()`.
  */
-export interface ConstructOptions {
+export interface MetadataOptions {
   /**
-   * A factory for attaching `Node`s to the construct.
-   * @default - the default `Node` is associated
+   * Include stack trace with metadata entry.
+   * @default false
    */
-  readonly nodeFactory?: INodeFactory;
-}
+  readonly stackTrace?: boolean;
 
-/**
- * A factory for attaching `Node`s to the construct.
- */
-export interface INodeFactory {
   /**
-   * Returns a new `Node` associated with `host`.
-   * @param host the associated construct
-   * @param scope the construct's scope (parent)
-   * @param id the construct id
+   * A JavaScript function to begin tracing from.
+   *
+   * This option is ignored unless `stackTrace` is `true`.
+   *
+   * @default addMetadata()
    */
-  createNode(host: Construct, scope: IConstruct, id: string): Node;
+  readonly traceFromFunction?: any;
 }
