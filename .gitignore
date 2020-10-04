@@ -52,7 +52,7 @@ tsconfig.json
 !/.github/dependabot.yml
 !/.github/workflows/projenupgrade.yml
 !/src
-!/.eslintrc.json
 !/tsconfig.jest.json
 !/test
+!/.eslintrc.json
 !/API.md

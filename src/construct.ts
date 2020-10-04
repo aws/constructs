@@ -223,7 +223,7 @@ export class Node {
    * This can be used, for example, to implement support for deprecation notices, source mapping, etc.
    */
   public get metadata() {
-    return [ ...this._metadata ];
+    return [...this._metadata];
   }
 
   /**
@@ -422,7 +422,7 @@ export class Node {
 
     // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
     // use PREORDER.reverse() for backward compatability
-    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {      
+    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
       const cn = construct as any;
       if ('onPrepare' in cn) {
         if (typeof(cn.onPrepare) !== 'function') { throw new Error('expecting "onPrepare" to be a function'); }
@@ -523,7 +523,7 @@ export class Construct implements IConstruct {
    */
   constructor(scope: Construct, id: string, options: ConstructOptions = { }) {
     // attach the construct to the construct tree by creating a node
-    const nodeFactory = options.nodeFactory ?? { createNode: (host, scope, id) => new Node(host, scope, id) };
+    const nodeFactory = options.nodeFactory ?? { createNode: (host, nodeScope, nodeId) => new Node(host, nodeScope, nodeId) };
     Object.defineProperty(this, CONSTRUCT_NODE_PROPERTY_SYMBOL, {
       value: nodeFactory.createNode(this, scope, id),
       enumerable: false,
@@ -532,7 +532,7 @@ export class Construct implements IConstruct {
 
     // implement IDependable privately
     DependableTrait.implement(this, {
-      dependencyRoots: [ this ],
+      dependencyRoots: [this],
     });
   }
 

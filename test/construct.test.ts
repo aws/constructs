@@ -1,6 +1,6 @@
 import { Construct, ConstructMetadata, IConstruct, Node, ConstructOrder, ValidationError } from '../src';
-import { App as Root } from './util';
 import { IAspect } from '../src/aspect';
+import { App as Root } from './util';
 
 // tslint:disable:variable-name
 // tslint:disable:max-line-length
@@ -196,7 +196,7 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
   expect(node.metadata[0].type).toBe('key');
   expect(node.metadata[0].data).toBe('value');
   expect(node.metadata[1].data).toBe(103);
-  expect(node.metadata[2].data).toEqual([ 123, 456 ]);
+  expect(node.metadata[2].data).toEqual([123, 456]);
 
   expect(node.metadata[0].trace?.[0]).toContain('FIND_ME');
 });
@@ -264,13 +264,13 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
 
   class MyConstruct extends Construct {
     protected onValidate() {
-      return [ 'my-error1', 'my-error2' ];
+      return ['my-error1', 'my-error2'];
     }
   }
 
   class YourConstruct extends Construct {
     protected onValidate() {
-      return [ 'your-error1' ];
+      return ['your-error1'];
     }
   }
 
@@ -282,7 +282,7 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
     }
 
     protected onValidate() {
-      return [ 'their-error' ];
+      return ['their-error'];
     }
   }
 
@@ -295,7 +295,7 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
     }
 
     protected onValidate() {
-      return  [ 'stack-error' ];
+      return ['stack-error'];
     }
   }
 
@@ -362,13 +362,13 @@ test('findAll returns a list of all children in either DFS or BFS', () => {
   // THEN
   const node = Node.of(c1);
   expect(node.findAll().map(x => Node.of(x).id)).toEqual(Node.of(c1).findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)); // default is PreOrder
-  expect(node.findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)).toEqual([ '1', '2', '4', '5', '3' ]);
-  expect(node.findAll(ConstructOrder.POSTORDER).map(x => Node.of(x).id)).toEqual([ '4', '5', '2', '3', '1' ]);
+  expect(node.findAll(ConstructOrder.PREORDER).map(x => Node.of(x).id)).toEqual(['1', '2', '4', '5', '3']);
+  expect(node.findAll(ConstructOrder.POSTORDER).map(x => Node.of(x).id)).toEqual(['4', '5', '2', '3', '1']);
 });
 
 test('ancestors returns a list of parents up to root', () => {
   const { child1_1_1 } = createTree();
-  expect(Node.of(child1_1_1).scopes.map(x => Node.of(x).id)).toEqual([ '', 'HighChild', 'Child1', 'Child11', 'Child111' ]);
+  expect(Node.of(child1_1_1).scopes.map(x => Node.of(x).id)).toEqual(['', 'HighChild', 'Child1', 'Child11', 'Child111']);
 });
 
 test('"root" returns the root construct', () => {
@@ -438,23 +438,23 @@ describe('construct prepare', () => {
     const root = new Root();
     const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
     const construct02 = new MyAlmostBeautifulConstruct(root, 'Resource02');
-    
+
     Node.of(root).prepare();
     // THEN
     expect(construct01.status).toEqual('Prepared');
-    expect(construct02.status).toEqual('Prepared');    
+    expect(construct02.status).toEqual('Prepared');
   });
 
   it('only constructs with onPrepare function are prepared', () => {
     const root = new Root();
     const construct01 = new MyAlmostBeautifulConstruct(root, 'Resource01');
     const construct02 = new MyMissingPrepareConstruct(root, 'Resource02');
-    
+
     Node.of(root).prepare();
     // THEN
     expect(construct01.status).toEqual('Prepared');
-    expect(construct02.status).not.toEqual('Prepared'); 
-  })
+    expect(construct02.status).not.toEqual('Prepared');
+  });
 
   it('only constructs with onPrepare function are prepared', () => {
     const root = new Root();
@@ -489,7 +489,7 @@ function createTree(context?: any) {
 }
 
 class MyMissingPrepareConstruct extends Construct {
-  public status: string = 'PrePrepared'; 
+  public status: string = 'PrePrepared';
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -510,7 +510,7 @@ class MyAlmostBeautifulConstruct extends Construct {
   }
 
   protected onPrepare() {
-    this.status = 'Prepared'
+    this.status = 'Prepared';
   }
 }
 
