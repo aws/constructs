@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 4.1.1-pre.8 (2020-10-04)
+
 ### 4.1.1-pre.7 (2020-10-04)
 
 ### [4.1.1-pre.6](https://github.com/aws/constructs/compare/v4.1.1-pre.5...v4.1.1-pre.6) (2020-07-15)
