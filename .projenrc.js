@@ -1,4 +1,4 @@
-const { JsiiProject, Semver } = require('projen');
+const { JsiiProject } = require('projen');
 
 const project = new JsiiProject({
   name: 'constructs',
@@ -40,11 +40,11 @@ const project = new JsiiProject({
   stability: 'stable',
   minNodeVersion: '10.17.0',
 
-  releaseBranches: [ 'master', '2.x', '4.x' ],
+  releaseBranches: [ 'master', '2.x', '10.x' ],
   compat: true,
 
   //----------------------------------------------------
-  // pre-release 4.x: publish "next" dist-tag and do not publish non-npm languages
+  // pre-release 10.x: publish "next" dist-tag and do not publish non-npm languages
   //----------------------------------------------------------
   npmDistTag: 'next',
 
@@ -53,7 +53,7 @@ const project = new JsiiProject({
 
 project.addScripts({
   bump: 'standard-version -r patch -p pre',
-  release: 'yarn bump && git push --follow-tags origin 4.x' 
+  release: 'yarn bump && git push --follow-tags origin 10.x' 
 });
 
 project.synth();
