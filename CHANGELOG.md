@@ -2,73 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## 10.0
-
-### Use `construct.node` instead of `Node.of(construct)`
-
-* The `Node.of(construct)` API is no longer supported. To access the construct
-  node, use `construct.node` instead.
-* The option to customize the node factory is no longer supported and therefore
-  the initializer of `Construct` now only accepts two arguments (scope and ID),
-  and the `ConstructOptions` and `INodeFactory` types have been removed.
-
-### Aspects no longer supported
-
-Aspects are not part of the "constructs" library. The `IAspect` type and
-`node.applyAspect` methods have been removed. The AWS CDK still supports aspects
-through the `Aspects.of(construct).add(aspect)` API.
-
-### `onPrepare()` is no longer supported
-
-The `onPrepare()` hook and the `Node.prepare(node)` method are no longer
-supported as this hook can be abused and cause construct tree corruption when
-the tree is mutated during this stage. An error will be thrown if `onPrepare()`
-is implemented on a construct.
-
-### `onSynthesize()` hook is no longer supported
-
-The `onSynthesize()` hook and the `Node.synthesize(node)` method is no longer
-supported. Synthesis is now implemented at the domain-specific app level (e.g.
-AWS CDK `App`). The `ISynthesisSession` and  `SynthesisOptions` types have been
-removed. An error will be thrown if `onSynthesize()` is implemented on a
-construct.
-
-### Validation is now added using `node.addValidation()` instead of `onValidate()`
-
-To add validation logic to a construct, use `node.addValidation()` instead of
-overriding a protected `onValidate()` method. An error will be thrown if
-`onValidate()` is implemented.
-
-The static method `Node.validate(node)` is no longer available. The method
-`node.validate()` only validates the _current_ node and returns the list of all
-error messages returned by calling `validation.validate()` on all validations
-added to this node. The `ValidationError` type has been removed.
-
-### Logging API is not longer available
-
-The `construct.node.addInfo()`, `construct.node.addWarning()` and
-`construct.node.Error()` methods have been removed and have been moved to
-domain-specific APIs. For example, in the AWS CDK, you can use the
-`Annotations.of(x).addWarning()` method. The `ConstructMetadata` type has also
-been removed.
-
-### Dependencies
-
-* The `node.dependencies` method now returns only dependencies associated with
-  the current node (previously it returned all dependencies within the scope,
-  recursively). The return type is now a simple array of `IConstruct`, and the
-  `Dependency` type has been removed.
-* To implement `IDependable`, use `Dependable.implement()`.
-* The `DependencyGroup` class represents a mutable composition of `IDependable`
-  objects and can be used to combine a disjoined set of constructs into a single
-  dependency list.
-
-### Misc
-
-* `Construct.isConstruct(x)` is no longer supported. Use `x instanceof Construct` instead.
-* For performance reasons, `node.addMetadata()` no longer attaches stack traces
-  by default. Use `{ stackTraces: true }` to opt-in.
-* `node.lock()` can be used by synthesizers to ensure the tree is locked during synthesis.
+## 10.0.0-pre.2 (2020-10-05)
 
 ### [3.0.4](https://github.com/aws/constructs/compare/v3.0.3...v3.0.4) (2020-06-24)
 
