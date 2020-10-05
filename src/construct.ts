@@ -363,13 +363,6 @@ export class Node {
   }
 
   /**
-   * Unlocks this construct and allows mutations (adding children).
-   */
-  public unlock() {
-    this._locked = false;
-  }
-
-  /**
    * Adds a child construct to this node.
    *
    * @param child The child construct

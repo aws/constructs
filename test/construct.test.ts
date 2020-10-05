@@ -341,10 +341,10 @@ test('node.addValidation() can be used to add a validation function to a constru
 
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
 
-  const stack = new Root();
+  const root = new Root();
 
-  const c0a = new Construct(stack, 'c0a');
-  const c0b = new Construct(stack, 'c0b');
+  const c0a = new Construct(root, 'c0a');
+  const c0b = new Construct(root, 'c0b');
 
   const c1a = new Construct(c0a, 'c1a');
   const c1b = new Construct(c0a, 'c1b');
@@ -357,15 +357,11 @@ test('construct.lock() protects against adding children anywhere under this cons
   expect(() => new Construct(c1a, 'fail2')).toThrow(/Cannot add children to "c0a\/c1a" during synthesis/);
   expect(() => new Construct(c1b, 'fail3')).toThrow(/Cannot add children to "c0a\/c1b" during synthesis/);
 
-  c0a.node.unlock();
-
-  new Construct(c0a, 'c0aZ');
-  new Construct(c1a, 'c1aZ');
-  new Construct(c1b, 'c1bZ');
+  new Construct(root, 'c2');
 
   // lock root
-  stack.node.lock();
-  expect(() => new Construct(stack, 'test')).toThrow(/Cannot add children during synthesis/);
+  root.node.lock();
+  expect(() => new Construct(root, 'test')).toThrow(/Cannot add children during synthesis/);
 });
 
 test('findAll returns a list of all children in either DFS or BFS', () => {
