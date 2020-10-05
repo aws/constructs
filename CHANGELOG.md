@@ -67,7 +67,7 @@ been removed.
 
 * `Construct.isConstruct(x)` is no longer supported. Use `x instanceof Construct` instead.
 * For performance reasons, `node.addMetadata()` no longer attaches stack traces
-  by default. Use `{stackTraces: true }` to opt-in.
+  by default. Use `{ stackTraces: true }` to opt-in.
 
 ### [3.0.4](https://github.com/aws/constructs/compare/v3.0.3...v3.0.4) (2020-06-24)
 
