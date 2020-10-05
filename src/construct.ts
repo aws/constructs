@@ -370,7 +370,7 @@ export class Node {
   }
 
   /**
-   * Unlocks this costruct and allows mutations (adding children).
+   * Unlocks this construct and allows mutations (adding children).
    */
   public unlock() {
     this._locked = false;
