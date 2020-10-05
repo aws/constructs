@@ -60,6 +60,10 @@ export class Node {
     this.id = sanitizeId(id);
     this.scope = scope;
 
+    if (scope && !this.id) {
+      throw new Error('Only root constructs may have an empty ID');
+    }
+
     // add to parent scope
     scope?.node.addChild(host, this.id);
   }
@@ -79,7 +83,7 @@ export class Node {
    * Includes all components of the tree.
    */
   public get uniqueId(): string {
-    const components = this.scopes.slice(1).map(c => c.node.id);
+    const components = this.scopes.filter(c => c.node.id).map(c => c.node.id);
     return components.length > 0 ? makeUniqueId(components) : '';
   }
 
@@ -335,27 +339,16 @@ export class Node {
    * construct.
    */
   public validate(): string[] {
-    const errors = new Array<string>();
-    for (const v of this._validations) {
-      errors.push(...v.validate());
-    }
-
-    // since constructs can be added to the tree during invokeAspects, call findAll() to recreate the list.
-    // use PREORDER.reverse() for backward compatability
-    for (const construct of this.findAll(ConstructOrder.PREORDER).reverse()) {
-      const cn = construct as any;
-      if ('onPrepare' in cn) {
-        if (typeof(cn.onPrepare) !== 'function') { throw new Error('expecting "onPrepare" to be a function'); }
-        cn.onPrepare();
+    const deprecated = ['validate', 'onValidate', 'synthesize', 'onSynthesize', 'prepare', 'onPrepare'];
+    for (const method of deprecated) {
+      if (typeof((this.host as any)[method]) === 'function') {
+        throw new Error(`the construct "${this.path}" has a "${method}()" method which is no longer supported. Use "construct.node.addValidation()" to add validations to a construct`);
       }
     }
 
-    // throw if the construct itself has a validate() method
-    // for backwards compatibility, if the construct itself has a "validate()"
-    // method treat it as a validation.
-    const validation = this.host as unknown as IValidation;
-    if (validation.validate && typeof(validation.validate) === 'function') {
-      throw new Error(`the construct ${this.path} has a "validate()" method which is no longer supported. Use "construct.node.addValidation()" to add validations to a construct`);
+    const errors = new Array<string>();
+    for (const v of this._validations) {
+      errors.push(...v.validate());
     }
 
     return errors;

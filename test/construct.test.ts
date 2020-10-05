@@ -12,26 +12,11 @@ test('the "Root" construct is a special construct which can be used as the root 
   expect(node.children.length).toBe(0);
 });
 
-test('an empty string is a valid name for a construct', () => {
+test('an empty string is a valid name for the root construct', () => {
   const root = new Root();
-  const child = new Construct(root, '');
-  const grandchild = new Construct(child, '');
-  const grandgrand = new Construct(grandchild, 'hello');
+  expect(root.node.id).toEqual('');
 
-  // fail if another child with an empty id is added
-  expect(() => new Construct(root, '')).toThrow(/There is already/);
-
-  // cannot add a named child to a parent that already has an unnamed child
-  expect(() => new Construct(root, 'hi-there')).toThrow('only a single construct is allowed');
-  expect(() => new Construct(child, 'boom')).toThrow('only a single construct is allowed');
-
-  // cannot add an unnamed child to a parent with a named child
-  expect(() => new Construct(grandgrand, '')).toThrow(/cannot add a nameless construct/);
-
-  expect(root.node.path).toStrictEqual('');
-  expect(child.node.path).toStrictEqual('');
-  expect(grandchild.node.path).toStrictEqual('');
-  expect(grandgrand.node.path).toStrictEqual('hello');
+  expect(() => new Construct(root, '')).toThrow(/Only root constructs/);
 });
 
 test('construct.name returns the name of the construct', () => {
@@ -85,6 +70,20 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
   expect(c2.node.path).toBe('This is the first child/My construct');
   expect(c1.node.uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
   expect(c2.node.uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
+});
+
+test('construct.uniqueId ignores the first ID only if it is empty', () => {
+  // GIVEN
+  const namefulRoot = new Construct(undefined as any, 'nameful-root');
+  const namelessRoot = new Construct(undefined as any, '');
+
+  // WHEN
+  const childOfNameful = new Construct(namefulRoot, 'Foo');
+  const childOfNameless = new Construct(namelessRoot, 'Foo');
+
+  // THEN
+  expect(childOfNameless.node.uniqueId).toEqual('Foo');
+  expect(childOfNameful.node.uniqueId).toEqual('namefulrootFooA63DDF10');
 });
 
 test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
