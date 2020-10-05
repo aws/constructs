@@ -406,7 +406,7 @@ __Returns__:
 
 #### unlock() <a id="constructs-node-unlock"></a>
 
-Unlocks this costruct and allows mutations (adding children).
+Unlocks this construct and allows mutations (adding children).
 
 ```ts
 unlock(): void
