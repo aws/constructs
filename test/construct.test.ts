@@ -339,20 +339,6 @@ test('node.addValidation() can be used to add a validation function to a constru
   expect(construct.node.validate()).toStrictEqual(['error1', 'error2', 'error3']);
 });
 
-test('fails with a deprecation error if "validate()" is implemented at the construct level', () => {
-  // GIVEN
-  class Foo extends Construct {
-    validate() {
-      return ['foo', 'bar'];
-    }
-  }
-
-  const foo = new Foo(new Construct(undefined as any, 'root'), 'foo');
-
-  // THEN
-  expect(() => foo.node.validate()).toThrow(/the construct root\/foo has a \"validate\(\)\" method which is no longer supported/);
-});
-
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
 
   const stack = new Root();
@@ -606,6 +592,21 @@ test('Construct.isConstruct returns true for constructs', () => {
   expect(Construct.isConstruct(true)).toBeFalsy();
   expect(Construct.isConstruct([1, 2, 3])).toBeFalsy();
   expect(Construct.isConstruct(someRandomObject)).toBeFalsy();
+});
+
+describe('hard deprecations', () => {
+  const methods = ['validate', 'onValidate', 'synthesize', 'onSynthesize', 'prepare', 'onPrepare'];
+
+  for (const method of methods) {
+    test(method, () => {
+      const c = new Construct(new Root(), 'MyConstruct');
+      Object.defineProperty(c, method, {
+        value: () => [],
+      });
+
+      expect(() => c.node.validate()).toThrow(/no longer supported/);
+    });
+  }
 });
 
 function createTree(context?: any) {
