@@ -12,6 +12,7 @@ removed:constructs.Node.applyAspect
 removed:constructs.Node.prepare
 removed:constructs.Node.synthesize
 change-return-type:constructs.Node.validate
+removed:constructs.ValidationError
 changed-type:constructs.Node.dependencies
 removed:constructs.ConstructOptions
 removed:constructs.Dependency

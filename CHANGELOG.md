@@ -42,7 +42,7 @@ overriding a protected `onValidate()` method. An error will be thrown if
 The static method `Node.validate(node)` is no longer available. The method
 `node.validate()` only validates the _current_ node and returns the list of all
 error messages returned by calling `validation.validate()` on all validations
-added to this node.
+added to this node. The `ValidationError` type has been removed.
 
 ### Logging API is not longer available
 

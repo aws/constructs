@@ -16,7 +16,6 @@ Name|Description
 ----|-----------
 [MetadataEntry](#constructs-metadataentry)|An entry in the construct metadata table.
 [MetadataOptions](#constructs-metadataoptions)|Options for `construct.addMetadata()`.
-[ValidationError](#constructs-validationerror)|An error returned during the validation phase.
 
 
 **Interfaces**
@@ -404,18 +403,6 @@ tryRemoveChild(childName: string): boolean
 __Returns__:
 * <code>boolean</code>
 
-#### unlock() <a id="constructs-node-unlock"></a>
-
-Unlocks this construct and allows mutations (adding children).
-
-```ts
-unlock(): void
-```
-
-
-
-
-
 #### validate() <a id="constructs-node-validate"></a>
 
 Validates this construct.
@@ -527,20 +514,6 @@ Name | Type | Description
 -----|------|-------------
 **stackTrace**? | <code>boolean</code> | Include stack trace with metadata entry.<br/>__*Default*__: false
 **traceFromFunction**? | <code>any</code> | A JavaScript function to begin tracing from.<br/>__*Default*__: addMetadata()
-
-
-
-## struct ValidationError  <a id="constructs-validationerror"></a>
-
-
-An error returned during the validation phase.
-
-
-
-Name | Type | Description 
------|------|-------------
-**message** | <code>string</code> | The error message.
-**source** | <code>[Construct](#constructs-construct)</code> | The construct which emitted the error.
 
 
 

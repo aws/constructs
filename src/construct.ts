@@ -54,7 +54,7 @@ export class Node {
   private _defaultChild: IConstruct | undefined;
   private readonly _validations = new Array<IValidation>();
 
-  constructor(private readonly host: Construct, scope: IConstruct, id: string) {
+  public constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
 
     this.id = sanitizeId(id);
@@ -74,7 +74,7 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.map(c => c.node.id).filter(id => id);
+    const components = this.scopes.filter(c => c.node.id).map(c => c.node.id);
     return components.join(Node.PATH_SEP);
   }
 
@@ -448,21 +448,6 @@ export class Construct implements IConstruct {
 }
 
 /**
- * An error returned during the validation phase.
- */
-export interface ValidationError {
-  /**
-   * The construct which emitted the error.
-   */
-  readonly source: Construct;
-
-  /**
-   * The error message.
-   */
-  readonly message: string;
-}
-
-/**
  * In what order to return constructs
  */
 export enum ConstructOrder {
@@ -492,7 +477,6 @@ export interface IValidation {
   validate(): string[];
 }
 
-// Import this _after_ everything else to help node work the classes out in the correct order...
 const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
 
 /**
