@@ -67,8 +67,8 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
 
   expect(Node.of(c1).path).toBe('This is the first child/Second level/My construct');
   expect(Node.of(c2).path).toBe('This is the first child/My construct');
-  expect(Node.of(c1).uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
-  expect(Node.of(c2).uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
+  expect(Node.of(c1).uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct2C382EB7');
+  expect(Node.of(c2).uniqueId).toBe('ThisisthefirstchildMyconstruct812E0F97');
 });
 
 test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
