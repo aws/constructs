@@ -70,8 +70,8 @@ export function makeUniqueId(components: string[]) {
  * The hash is limited in size.
  */
 function pathHash(path: string[]): string {
-  const md5 = crypto.createHash('md5').update(path.join(PATH_SEP)).digest('hex');
-  return md5.slice(0, HASH_LEN).toUpperCase();
+  const hashStr = crypto.createHash('sha1').update(path.join(PATH_SEP)).digest('hex');
+  return hashStr.slice(0, HASH_LEN).toUpperCase();
 }
 
 /**
