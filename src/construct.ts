@@ -55,6 +55,7 @@ export class Node {
   private readonly _dependencies = new Set<IConstruct>();
   private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
+  private readonly _validations = new Array<IValidation>();
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id || ''; // if undefined, convert to empty string
@@ -376,6 +377,18 @@ export class Node {
   }
 
   /**
+   * Adds a validation to this construct.
+   *
+   * When `node.validate()` is called, the `validate()` method will be called on
+   * all validations and all errors will be returned.
+   *
+   * @param validation
+   */
+  public addValidation(validation: IValidation) {
+    this._validations.push(validation);
+  }
+
+  /**
    * Synthesizes a CloudAssembly from a construct tree.
    * @param options Synthesis options.
    */
@@ -432,8 +445,8 @@ export class Node {
   }
 
   /**
-   * Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns
-   * the list of all errors. An empty list indicates that there are no errors.
+   * Validates tree (depth-first, pre-order) and returns the list of all errors.
+   * An empty list indicates that there are no errors.
    */
   public validate() {
     let errors = new Array<ValidationError>();
@@ -443,6 +456,12 @@ export class Node {
     }
 
     const localErrors: string[] = (this.host as any).onValidate(); // "as any" is needed because we want to keep "validate" protected
+
+    // invoke validations
+    for (const v of this._validations) {
+      localErrors.push(...v.validate());
+    }
+
     return errors.concat(localErrors.map(msg => ({ source: this.host, message: msg })));
   }
 
@@ -550,6 +569,8 @@ export class Construct implements IConstruct {
    * validation logic. It is called on all constructs before synthesis.
    *
    * @returns An array of validation error messages, or an empty array if there the construct is valid.
+   * @deprecated use `Node.addValidation()` to subscribe validation functions on this construct
+   * instead of overriding this method.
    */
   protected onValidate(): string[] {
     return [];
@@ -595,6 +616,21 @@ export interface ValidationError {
    * The error message.
    */
   readonly message: string;
+}
+
+/**
+ * Implement this interface in order for the construct to be able to validate itself.
+ */
+export interface IValidation {
+  /**
+   * Validate the current construct.
+   *
+   * This method can be implemented by derived constructs in order to perform
+   * validation logic. It is called on all constructs before synthesis.
+   *
+   * @returns An array of validation error messages, or an empty array if there the construct is valid.
+   */
+  validate(): string[];
 }
 
 /**

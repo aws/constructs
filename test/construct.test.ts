@@ -315,6 +315,96 @@ test('construct.onValidate() can be implemented to perform validation, node.vali
 
 });
 
+test('node.addValidation() can be implemented to perform validation, node.validate() will return errors', () => {
+
+  class MyConstruct extends Construct {
+    constructor(scope: Construct, id: string) {
+      super(scope, id);
+
+      Node.of(this).addValidation({ validate: () => ['my-error1', 'my-error2'] });
+    }
+  }
+
+  class YourConstruct extends Construct {
+    constructor(scope: Construct, id: string) {
+      super(scope, id);
+
+      Node.of(this).addValidation({ validate: () => ['your-error1'] });
+    }
+  }
+
+  class TheirConstruct extends Construct {
+    constructor(scope: Construct, id: string) {
+      super(scope, id);
+
+      new YourConstruct(this, 'YourConstruct');
+
+      Node.of(this).addValidation({ validate: () => ['their-error'] });
+    }
+  }
+
+  class TestStack extends Root {
+    constructor() {
+      super();
+
+      new MyConstruct(this, 'MyConstruct');
+      new TheirConstruct(this, 'TheirConstruct');
+
+      Node.of(this).addValidation({ validate: () => ['stack-error'] });
+    }
+  }
+
+  const stack = new TestStack();
+  const errors = Node.of(stack).validate();
+
+  // validate DFS
+  expect(errors.map(x => ({ path: Node.of(x.source).path, message: x.message }))).toEqual([
+    { path: 'MyConstruct', message: 'my-error1' },
+    { path: 'MyConstruct', message: 'my-error2' },
+    { path: 'TheirConstruct/YourConstruct', message: 'your-error1' },
+    { path: 'TheirConstruct', message: 'their-error' },
+    { path: '', message: 'stack-error' },
+  ]);
+
+});
+
+test('node.validate() returns an empty array if the construct does not implement IValidation', () => {
+  // GIVEN
+  const root = new Root();
+
+  // THEN
+  expect(Node.of(root).validate()).toStrictEqual([]);
+});
+
+test('node.addValidation() can be used to add a validation function to a construct', () => {
+  // GIVEN
+  const construct = new Root();
+  Node.of(construct).addValidation({ validate: () => ['error1', 'error2'] });
+  Node.of(construct).addValidation({ validate: () => ['error3'] });
+
+  expect(Node.of(construct).validate().map(x => x.message)).toStrictEqual(['error1', 'error2', 'error3']);
+});
+
+test('both "onValidate()" and "addValidation()" works', () => {
+  // GIVEN
+  const root = new Root();
+
+  // WHEN
+  class MyConstruct extends Construct {
+    onValidate() {
+      return ['from onValidate()'];
+    }
+  }
+  const c = new MyConstruct(root, 'MyConstruct');
+  Node.of(c).addValidation({ validate: () => ['from addValidation()'] });
+
+  // THEN
+  expect(Node.of(root).validate().map(x => x.message)).toEqual([
+    'from onValidate()',
+    'from addValidation()',
+  ]);
+});
+
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
 
   class LockableConstruct extends Construct {

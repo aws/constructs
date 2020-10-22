@@ -28,6 +28,7 @@ Name|Description
 [IConstruct](#constructs-iconstruct)|Represents a construct.
 [INodeFactory](#constructs-inodefactory)|A factory for attaching `Node`s to the construct.
 [ISynthesisSession](#constructs-isynthesissession)|Represents a single session of synthesis.
+[IValidation](#constructs-ivalidation)|Implement this interface in order for the construct to be able to validate itself.
 
 
 **Enums**
@@ -112,7 +113,7 @@ protected onSynthesize(session: ISynthesisSession): void
 
 
 
-#### protected onValidate() <a id="constructs-construct-onvalidate"></a>
+#### protected onValidate()⚠️ <a id="constructs-construct-onvalidate"></a>
 
 Validate the current construct.
 
@@ -249,6 +250,22 @@ addMetadata(type: string, data: any, fromFunction?: any): void
 * **type** (<code>string</code>)  a string denoting the type of metadata.
 * **data** (<code>any</code>)  the value of the metadata (can be a Token).
 * **fromFunction** (<code>any</code>)  a function under which to restrict the metadata entry's stack trace (defaults to this.addMetadata).
+
+
+
+
+#### addValidation(validation) <a id="constructs-node-addvalidation"></a>
+
+Adds a validation to this construct.
+
+When `node.validate()` is called, the `validate()` method will be called on
+all validations and all errors will be returned.
+
+```ts
+addValidation(validation: IValidation): void
+```
+
+* **validation** (<code>[IValidation](#constructs-ivalidation)</code>)  *No description*
 
 
 
@@ -398,7 +415,7 @@ __Returns__:
 
 #### validate() <a id="constructs-node-validate"></a>
 
-Invokes "validate" on all constructs in the tree (depth-first, pre-order) and returns the list of all errors.
+Validates tree (depth-first, pre-order) and returns the list of all errors.
 
 An empty list indicates that there are no errors.
 
@@ -519,6 +536,30 @@ Passed into `construct.onSynthesize()` methods.
 Name | Type | Description 
 -----|------|-------------
 **outdir** | <code>string</code> | The output directory for this synthesis session.
+
+
+
+## interface IValidation  <a id="constructs-ivalidation"></a>
+
+
+Implement this interface in order for the construct to be able to validate itself.
+### Methods
+
+
+#### validate() <a id="constructs-ivalidation-validate"></a>
+
+Validate the current construct.
+
+This method can be implemented by derived constructs in order to perform
+validation logic. It is called on all constructs before synthesis.
+
+```ts
+validate(): Array<string>
+```
+
+
+__Returns__:
+* <code>Array<string></code>
 
 
 
