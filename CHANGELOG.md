@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 3.1.0 (2020-10-22)
+
+
+### Features
+
+* introduce addValidation() and soft-deprecate onValidate() ([#310](https://github.com/aws/constructs/issues/310)) ([c45ee7f](https://github.com/aws/constructs/commit/c45ee7f551739b69c56c69ac1c20949d594af358))
+
 ### 3.0.29 (2020-10-22)
 
 ### 3.0.28 (2020-10-22)
