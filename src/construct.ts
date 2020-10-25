@@ -98,9 +98,9 @@ export class Node {
    * Addresses are calculated using a SHA-1 of the components of the construct
    * path.
    *
-   * To enable refactorings of construct trees, constructs with the ID `default`
-   * (case insensitive) will be excluded from the calculation. In those cases
-   * constructs in the same tree may have the same addreess.
+   * To enable refactorings of construct trees, constructs with the ID `Default`
+   * will be excluded from the calculation. In those cases constructs in the
+   * same tree may have the same addreess.
    *
    * @example c83a2846e506bcc5f10682b564084bca2d275709ee
    */

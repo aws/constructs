@@ -99,11 +99,10 @@ test('node.addr excludes "default" from the address calculation', () => {
   const c1 = new Construct(root, 'c1');
 
   // WHEN:
-  const group1 = new Construct(root, 'default');
+  const group1 = new Construct(root, 'Default'); // <-- this is a "hidden node"
   const c1a = new Construct(group1, 'c1');
-  const group2 = new Construct(root, 'DeFAULt');
+  const group2 = new Construct(root, 'DeFAULt'); // <-- not hidden, "Default" is case sensitive
   const c1b = new Construct(group2, 'c1');
-
 
   // THEN: all addresses are the same because they go through "default"
   const addr = Node.of(c1).addr;
@@ -112,7 +111,8 @@ test('node.addr excludes "default" from the address calculation', () => {
 
   expect(addr).toEqual('c86a34031367d11f4bef80afca42b7e7e5c6253b77');
   expect(addrA).toEqual(addr);
-  expect(addrB).toEqual(addr);
+  expect(addrB).toEqual('c8fa72abd28f794f6bacb100b26beb761d004572f5');
+  expect(addrB).not.toEqual(addr);
 });
 
 test('construct.getChildren() returns an array of all children', () => {

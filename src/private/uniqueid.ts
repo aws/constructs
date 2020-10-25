@@ -23,7 +23,7 @@ const MAX_ID_LEN = 255;
 /**
  * Calculates the construct uid based on path components.
  *
- * Components named `Default` (case insensitive) are excluded from uid calculation
+ * Components named `Default` (case sensitive) are excluded from uid calculation
  * to allow tree refactorings.
  *
  * @param components path components
@@ -31,10 +31,8 @@ const MAX_ID_LEN = 255;
 export function addressOf(components: string[]) {
   const hash = crypto.createHash('sha1');
   for (const c of components) {
-    // skip "default".
-    if (c.toLocaleLowerCase() === HIDDEN_ID.toLocaleLowerCase()) {
-      continue;
-    }
+    // skip components called "Default" to enable refactorings
+    if (c === HIDDEN_ID) { continue; }
 
     hash.update(c);
     hash.update('\n');
