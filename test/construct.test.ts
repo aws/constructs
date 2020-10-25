@@ -57,7 +57,7 @@ test('if "undefined" is forcefully used as an "id", it will be treated as an emp
   expect(Node.of(c).id).toBe('');
 });
 
-test('construct.uniqueId returns a tree-unique alphanumeric id of this construct', () => {
+test('construct.uniqueId (deprecated) returns a tree-unique alphanumeric id of this construct', () => {
   const root = new Root();
 
   const child1 = new Construct(root, 'This is the first child');
@@ -75,6 +75,44 @@ test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
   const root = new Root();
   const c = new Construct(root, 'Default');
   expect(() => Node.of(c).uniqueId).toThrow(/Unable to calculate a unique id for an empty set of components/);
+});
+
+test('node.addr returns an opaque app-unique address for any construct', () => {
+  const root = new Root();
+
+  const child1 = new Construct(root, 'This is the first child');
+  const child2 = new Construct(child1, 'Second level');
+  const c1 = new Construct(child2, 'My construct');
+  const c2 = new Construct(child1, 'My construct');
+
+  expect(Node.of(c1).path).toBe('This is the first child/Second level/My construct');
+  expect(Node.of(c2).path).toBe('This is the first child/My construct');
+  expect(Node.of(child1).addr).toBe('c8a0dfcbdc45cb728d75ebe6914d369e565dc3f61c');
+  expect(Node.of(child2).addr).toBe('c825c5541e02ebd68e79ea636e370985b6c2de40a9');
+  expect(Node.of(c1).addr).toBe('c83a2846e506bcc5f10682b564084bca2d275709ee');
+  expect(Node.of(c2).addr).toBe('c8003bcb3e82977712d0d7220b155cb69abd9ad383');
+});
+
+test('node.addr excludes "default" from the address calculation', () => {
+  // GIVEN
+  const root = new Root();
+  const c1 = new Construct(root, 'c1');
+
+  // WHEN:
+  const group1 = new Construct(root, 'default');
+  const c1a = new Construct(group1, 'c1');
+  const group2 = new Construct(root, 'DeFAULt');
+  const c1b = new Construct(group2, 'c1');
+
+
+  // THEN: all addresses are the same because they go through "default"
+  const addr = Node.of(c1).addr;
+  const addrA = Node.of(c1a).addr;
+  const addrB = Node.of(c1b).addr;
+
+  expect(addr).toEqual('c86a34031367d11f4bef80afca42b7e7e5c6253b77');
+  expect(addrA).toEqual(addr);
+  expect(addrB).toEqual(addr);
 });
 
 test('construct.getChildren() returns an array of all children', () => {

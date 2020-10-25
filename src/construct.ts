@@ -2,7 +2,7 @@ import { IAspect } from './aspect';
 import { ConstructMetadata, MetadataEntry } from './metadata';
 import { DependableTrait } from './private/dependency';
 import { captureStackTrace } from './private/stack-trace';
-import { makeUniqueId } from './private/uniqueid';
+import { makeLegacyUniqueId, addressOf } from './private/uniqueid';
 
 const CONSTRUCT_NODE_PROPERTY_SYMBOL = Symbol.for('constructs.Construct.node');
 
@@ -56,6 +56,7 @@ export class Node {
   private readonly invokedAspects: IAspect[] = [];
   private _defaultChild: IConstruct | undefined;
   private readonly _validations = new Array<IValidation>();
+  private _addr?: string; // cache
 
   constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id || ''; // if undefined, convert to empty string
@@ -89,12 +90,39 @@ export class Node {
   }
 
   /**
-   * A tree-global unique alphanumeric identifier for this construct.
-   * Includes all components of the tree.
+   * Returns an opaque tree-unique address for this construct.
+   *
+   * Addresses are 42 characters hexadecimal strings. They begin with "c8"
+   * followed by 40 lowercase hexadecimal characters (0-9a-f).
+   *
+   * Addresses are calculated using a SHA-1 of the components of the construct
+   * path.
+   *
+   * To enable refactorings of construct trees, constructs with the ID `default`
+   * (case insensitive) will be excluded from the calculation. In those cases
+   * constructs in the same tree may have the same addreess.
+   *
+   * @example c83a2846e506bcc5f10682b564084bca2d275709ee
+   */
+  public get addr(): string {
+    if (!this._addr) {
+      this._addr = addressOf(this.scopes.map(c => Node.of(c).id));
+    }
+
+    return this._addr;
+  }
+
+  /**
+   * A tree-global unique alphanumeric identifier for this construct. Includes
+   * all components of the tree.
+   *
+   * @deprecated please avoid using this property and use `uid` instead. This
+   * algorithm uses MD5, which is not FIPS-complient and also excludes the
+   * identity of the root construct from the calculation.
    */
   public get uniqueId(): string {
     const components = this.scopes.slice(1).map(c => Node.of(c).id);
-    return components.length > 0 ? makeUniqueId(components) : '';
+    return components.length > 0 ? makeLegacyUniqueId(components) : '';
   }
 
   /**

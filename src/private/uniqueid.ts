@@ -21,6 +21,30 @@ const MAX_HUMAN_LEN = 240; // max ID len is 255
 const MAX_ID_LEN = 255;
 
 /**
+ * Calculates the construct uid based on path components.
+ *
+ * Components named `Default` (case insensitive) are excluded from uid calculation
+ * to allow tree refactorings.
+ *
+ * @param components path components
+ */
+export function addressOf(components: string[]) {
+  const hash = crypto.createHash('sha1');
+  for (const c of components) {
+    // skip "default".
+    if (c.toLocaleLowerCase() === HIDDEN_ID.toLocaleLowerCase()) {
+      continue;
+    }
+
+    hash.update(c);
+    hash.update('\n');
+  }
+
+  // prefix with "c8" so to ensure it starts with non-digit.
+  return 'c8' + hash.digest('hex');
+}
+
+/**
  * Calculates a unique ID for a set of textual components.
  *
  * This is done by calculating a hash on the full path and using it as a suffix
@@ -29,7 +53,7 @@ const MAX_ID_LEN = 255;
  * @param components The path components
  * @returns a unique alpha-numeric identifier with a maximum length of 255
  */
-export function makeUniqueId(components: string[]) {
+export function makeLegacyUniqueId(components: string[]) {
   components = components.filter(x => x !== HIDDEN_ID);
 
   if (components.length === 0) {
@@ -54,7 +78,7 @@ export function makeUniqueId(components: string[]) {
     }
   }
 
-  const hash = pathHash(components);
+  const hash = legacyPathHash(components);
   const human = removeDupes(components)
     .filter(x => x !== HIDDEN_FROM_HUMAN_ID)
     .map(removeNonAlphanumeric)
@@ -69,7 +93,7 @@ export function makeUniqueId(components: string[]) {
  *
  * The hash is limited in size.
  */
-function pathHash(path: string[]): string {
+function legacyPathHash(path: string[]): string {
   const md5 = crypto.createHash('md5').update(path.join(PATH_SEP)).digest('hex');
   return md5.slice(0, HASH_LEN).toUpperCase();
 }
