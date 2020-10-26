@@ -173,6 +173,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 
 Name | Type | Description 
 -----|------|-------------
+**addr** | <code>string</code> | Returns an opaque tree-unique address for this construct.
 **children** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | All direct children of this construct.
 **dependencies** | <code>Array<[Dependency](#constructs-dependency)></code> | Return all dependencies registered on this node or any of its children.
 **id** | <code>string</code> | The id of this construct within the current scope.
@@ -181,7 +182,7 @@ Name | Type | Description
 **path** | <code>string</code> | The full, absolute path of this construct in the tree.
 **root** | <code>[IConstruct](#constructs-iconstruct)</code> | Returns the root of the construct tree.
 **scopes** | <code>Array<[IConstruct](#constructs-iconstruct)></code> | All parent scopes of this construct.
-**uniqueId** | <code>string</code> | A tree-global unique alphanumeric identifier for this construct.
+**uniqueId**⚠️ | <code>string</code> | A tree-global unique alphanumeric identifier for this construct.
 **defaultChild**? | <code>[IConstruct](#constructs-iconstruct)</code> | Returns the child construct that has the id `Default` or `Resource"`.<br/>__*Optional*__
 **scope**? | <code>[IConstruct](#constructs-iconstruct)</code> | Returns the scope in which this construct is defined.<br/>__*Optional*__
 *static* **PATH_SEP** | <code>string</code> | Separator used to delimit construct path components.
