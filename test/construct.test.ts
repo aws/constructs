@@ -58,7 +58,7 @@ test('if "undefined" is forcefully used as an "id", it will be treated as an emp
   expect(c.node.id).toBe('');
 });
 
-test('construct.uniqueId returns a tree-unique alphanumeric id of this construct', () => {
+test('node.addr returns an opaque app-unique address for any construct', () => {
   const root = new Root();
 
   const child1 = new Construct(root, 'This is the first child');
@@ -68,28 +68,32 @@ test('construct.uniqueId returns a tree-unique alphanumeric id of this construct
 
   expect(c1.node.path).toBe('This is the first child/Second level/My construct');
   expect(c2.node.path).toBe('This is the first child/My construct');
-  expect(c1.node.uniqueId).toBe('ThisisthefirstchildSecondlevelMyconstruct202131E0');
-  expect(c2.node.uniqueId).toBe('ThisisthefirstchildMyconstruct8C288DF9');
+  expect(child1.node.addr).toBe('c8a0dfcbdc45cb728d75ebe6914d369e565dc3f61c');
+  expect(child2.node.addr).toBe('c825c5541e02ebd68e79ea636e370985b6c2de40a9');
+  expect(c1.node.addr).toBe('c83a2846e506bcc5f10682b564084bca2d275709ee');
+  expect(c2.node.addr).toBe('c8003bcb3e82977712d0d7220b155cb69abd9ad383');
 });
 
-test('construct.uniqueId ignores the first ID only if it is empty', () => {
+test('node.addr excludes "default" from the address calculation', () => {
   // GIVEN
-  const namefulRoot = new Construct(undefined as any, 'nameful-root');
-  const namelessRoot = new Construct(undefined as any, '');
-
-  // WHEN
-  const childOfNameful = new Construct(namefulRoot, 'Foo');
-  const childOfNameless = new Construct(namelessRoot, 'Foo');
-
-  // THEN
-  expect(childOfNameless.node.uniqueId).toEqual('Foo');
-  expect(childOfNameful.node.uniqueId).toEqual('namefulrootFooA63DDF10');
-});
-
-test('cannot calculate uniqueId if the construct path is ["Default"]', () => {
   const root = new Root();
-  const c = new Construct(root, 'Default');
-  expect(() => c.node.uniqueId).toThrow(/Unable to calculate a unique id for an empty set of components/);
+  const c1 = new Construct(root, 'c1');
+
+  // WHEN:
+  const group1 = new Construct(root, 'Default'); // <-- this is a "hidden node"
+  const c1a = new Construct(group1, 'c1');
+  const group2 = new Construct(root, 'DeFAULt'); // <-- not hidden, "Default" is case sensitive
+  const c1b = new Construct(group2, 'c1');
+
+  // THEN: all addresses are the same because they go through "default"
+  const addr = c1.node.addr;
+  const addrA = c1a.node.addr;
+  const addrB = c1b.node.addr;
+
+  expect(addr).toEqual('c86a34031367d11f4bef80afca42b7e7e5c6253b77');
+  expect(addrA).toEqual(addr);
+  expect(addrB).toEqual('c8fa72abd28f794f6bacb100b26beb761d004572f5');
+  expect(addrB).not.toEqual(addr);
 });
 
 test('construct.getChildren() returns an array of all children', () => {

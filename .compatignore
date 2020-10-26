@@ -20,3 +20,4 @@ removed:constructs.IAspect
 removed:constructs.INodeFactory
 removed:constructs.ISynthesisSession
 removed:constructs.SynthesisOptions
+removed:constructs.Node.uniqueId

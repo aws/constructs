@@ -3,6 +3,81 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ## 10.0.0-pre.2 (2020-10-05)
+## 3.2.0 (2020-10-26)
+
+
+### Features
+
+* introduce "node.addr" (deprecates "uniqueId") ([#314](https://github.com/aws/constructs/issues/314)) ([754a84d](https://github.com/aws/constructs/commit/754a84dfcc09caa920fdf175001035b1283bb106)), closes [#272](https://github.com/aws/constructs/issues/272)
+
+### 3.1.6 (2020-10-26)
+
+### 3.1.5 (2020-10-26)
+
+### 3.1.4 (2020-10-26)
+
+### 3.1.3 (2020-10-24)
+
+### 3.1.2 (2020-10-23)
+
+### 3.1.1 (2020-10-23)
+
+## 3.1.0 (2020-10-22)
+
+
+### Features
+
+* introduce addValidation() and soft-deprecate onValidate() ([#310](https://github.com/aws/constructs/issues/310)) ([c45ee7f](https://github.com/aws/constructs/commit/c45ee7f551739b69c56c69ac1c20949d594af358))
+
+### 3.0.29 (2020-10-22)
+
+### 3.0.28 (2020-10-22)
+
+### 3.0.27 (2020-10-21)
+
+### 3.0.26 (2020-10-21)
+
+### 3.0.25 (2020-10-20)
+
+### 3.0.24 (2020-10-19)
+
+### 3.0.23 (2020-10-18)
+
+### 3.0.22 (2020-10-16)
+
+### 3.0.21 (2020-10-16)
+
+### 3.0.20 (2020-10-15)
+
+### 3.0.19 (2020-10-15)
+
+### 3.0.18 (2020-10-14)
+
+### 3.0.17 (2020-10-14)
+
+### 3.0.16 (2020-10-13)
+
+### 3.0.15 (2020-10-13)
+
+### 3.0.14 (2020-10-12)
+
+### 3.0.13 (2020-10-12)
+
+### 3.0.12 (2020-10-09)
+
+### 3.0.11 (2020-10-09)
+
+### 3.0.10 (2020-10-08)
+
+### 3.0.9 (2020-10-08)
+
+### 3.0.8 (2020-10-07)
+
+### 3.0.7 (2020-10-06)
+
+### 3.0.6 (2020-10-06)
+
+### 3.0.5 (2020-10-05)
 
 ### [3.0.4](https://github.com/aws/constructs/compare/v3.0.3...v3.0.4) (2020-06-24)
 

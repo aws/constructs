@@ -1,7 +1,7 @@
 import { Dependable, IDependable } from './dependency';
 import { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
-import { makeUniqueId } from './private/uniqueid';
+import { addressOf } from './private/uniqueid';
 
 /**
  * Represents a construct.
@@ -53,6 +53,7 @@ export class Node {
   private readonly _dependencies = new Set<IDependable>();
   private _defaultChild: IConstruct | undefined;
   private readonly _validations = new Array<IValidation>();
+  private _addr?: string; // cache
 
   public constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
@@ -79,12 +80,26 @@ export class Node {
   }
 
   /**
-   * A tree-global unique alphanumeric identifier for this construct.
-   * Includes all components of the tree.
+   * Returns an opaque tree-unique address for this construct.
+   *
+   * Addresses are 42 characters hexadecimal strings. They begin with "c8"
+   * followed by 40 lowercase hexadecimal characters (0-9a-f).
+   *
+   * Addresses are calculated using a SHA-1 of the components of the construct
+   * path.
+   *
+   * To enable refactorings of construct trees, constructs with the ID `Default`
+   * will be excluded from the calculation. In those cases constructs in the
+   * same tree may have the same addreess.
+   *
+   * @example c83a2846e506bcc5f10682b564084bca2d275709ee
    */
-  public get uniqueId(): string {
-    const components = this.scopes.filter(c => c.node.id).map(c => c.node.id);
-    return components.length > 0 ? makeUniqueId(components) : '';
+  public get addr(): string {
+    if (!this._addr) {
+      this._addr = addressOf(this.scopes.map(c => Node.of(c).id));
+    }
+
+    return this._addr;
   }
 
   /**
@@ -445,6 +460,21 @@ export class Construct implements IConstruct {
   public toString() {
     return this.node.path || '<root>';
   }
+}
+
+/**
+ * Implement this interface in order for the construct to be able to validate itself.
+ */
+export interface IValidation {
+  /**
+   * Validate the current construct.
+   *
+   * This method can be implemented by derived constructs in order to perform
+   * validation logic. It is called on all constructs before synthesis.
+   *
+   * @returns An array of validation error messages, or an empty array if there the construct is valid.
+   */
+  validate(): string[];
 }
 
 /**
