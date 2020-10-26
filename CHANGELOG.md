@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 3.2.0 (2020-10-26)
+
+
+### Features
+
+* introduce "node.addr" (deprecates "uniqueId") ([#314](https://github.com/aws/constructs/issues/314)) ([754a84d](https://github.com/aws/constructs/commit/754a84dfcc09caa920fdf175001035b1283bb106)), closes [#272](https://github.com/aws/constructs/issues/272)
+
 ### 3.1.6 (2020-10-26)
 
 ### 3.1.5 (2020-10-26)
