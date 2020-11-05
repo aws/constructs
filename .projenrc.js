@@ -37,7 +37,7 @@ const project = new JsiiProject({
     packageId: 'Constructs'
   },
 
-  stability: 'experimental',
+  stability: 'stable',
   minNodeVersion: '10.17.0',
 
   releaseBranches: [ 'master', '2.x', '10.x' ],

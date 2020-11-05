@@ -159,7 +159,7 @@
       }
     }
   },
-  "stability": "experimental",
+  "stability": "stable",
   "jsii": {
     "outdir": "dist",
     "targets": {
