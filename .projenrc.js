@@ -21,21 +21,21 @@ const project = new JsiiProject({
     "jsii"
   ],
 
-  // java: {
-  //   javaPackage: 'software.constructs',
-  //   mavenGroupId: 'software.constructs',
-  //   mavenArtifactId: 'constructs'
-  // },
+  java: {
+    javaPackage: 'software.constructs',
+    mavenGroupId: 'software.constructs',
+    mavenArtifactId: 'constructs'
+  },
 
-  // python: {
-  //   distName: 'constructs',
-  //   module: 'constructs'
-  // },
+  python: {
+    distName: 'constructs',
+    module: 'constructs'
+  },
 
-  // dotnet: {
-  //   dotNetNamespace: 'Constructs',
-  //   packageId: 'Constructs'
-  // },
+  dotnet: {
+    dotNetNamespace: 'Constructs',
+    packageId: 'Constructs'
+  },
 
   stability: 'stable',
   minNodeVersion: '10.17.0',
