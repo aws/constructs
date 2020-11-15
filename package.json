@@ -47,7 +47,7 @@
     "jsii-pacmak": "^1.11.0",
     "jsii-release": "^0.1.6",
     "json-schema": "^0.2.5",
-    "projen": "^0.3.166",
+    "projen": "^0.3.167",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
@@ -137,7 +137,7 @@
       "category": 2
     }
   },
-  "version": "3.2.25",
+  "version": "3.2.27",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
