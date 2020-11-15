@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 3.2.28 (2020-11-15)
+
+
+### Bug Fixes
+
+* **cicd:** pull_request_template.md duplication - Fixes: [#362](https://github.com/aws/constructs/issues/362) ([#363](https://github.com/aws/constructs/issues/363)) ([980e777](https://github.com/aws/constructs/commit/980e777872180fea4ef327d61411f357f5f64d97))
+
 ### 3.2.27 (2020-11-13)
 
 ### 3.2.26 (2020-11-13)
