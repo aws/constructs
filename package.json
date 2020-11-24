@@ -138,7 +138,7 @@
       "category": 2
     }
   },
-  "version": "3.2.38",
+  "version": "3.2.39",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
