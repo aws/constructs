@@ -481,7 +481,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jsii/spec@^1.14.1", "@jsii/spec@^1.15.0", "@jsii/spec@^1.9.0":
+"@jsii/spec@^1.15.0", "@jsii/spec@^1.9.0":
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.15.0.tgz#e7f3a18d231ef6d1826ce7257de7b2f6e2071f40"
   integrity sha512-aybTXziVMQcCp2EGIMCJgAs4uvXtN/iBVeJMyBRzqznhtctG4flOu37FjIdib/OOJLrRLt4NAA95R5kNm/jLpA==
@@ -3632,7 +3632,7 @@ jsii-pacmak@^1.11.0:
     xmlbuilder "^15.1.1"
     yargs "^16.1.1"
 
-jsii-reflect@^1.14.1, jsii-reflect@^1.15.0, jsii-reflect@^1.9.0:
+jsii-reflect@^1.15.0, jsii-reflect@^1.9.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.15.0.tgz#a65297a581b2b7bfbaa213d0bca7f76c693f718e"
   integrity sha512-8mKV5OVt/FwRdLNmr7By5T0HyhjjLlHsE5oiOta6NdkdMB7magjzZ1bucenJ2DdvPidX2dP6IDujfOKoXVNsjA==
@@ -4632,10 +4632,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.3.178:
-  version "0.3.178"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.3.178.tgz#9deca24b579c5b52b16ae6ad66b286e466012c43"
-  integrity sha512-e80c1KOu0cSrB14Zis6azdtTdDfbIp+Nf9Fi8nwk9yLGhzXC7WZroN+W29XRIafZfe0Rk8Cp4Z0ikZ0O4RM4bw==
+projen@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.5.1.tgz#36a0d240a8a9c730dff2dcbc6f0643ba17e3c84f"
+  integrity sha512-kuPgAZXrrmGlVD2pV+s9IfaubHQ7H8+xsPBsyYTk75daJy5HpZ+KrSnLvX6pFAUF+4IgNy4dOt2rKn8LCqGc1A==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.0"
@@ -6117,7 +6117,7 @@ yargs@^15.3.1, yargs@^15.4.1:
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
 
-yargs@^16.0.3, yargs@^16.1.0, yargs@^16.1.1:
+yargs@^16.0.3, yargs@^16.1.1:
   version "16.1.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.1.1.tgz#5a4a095bd1ca806b0a50d0c03611d38034d219a1"
   integrity sha512-hAD1RcFP/wfgfxgMVswPE+z3tlPFtxG8/yWUrG2i17sTWGCGqWnxKcLTF4cUKDUK8fzokwsmO9H0TDkRbMHy8w==
