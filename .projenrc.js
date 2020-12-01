@@ -51,9 +51,7 @@ const project = new JsiiProject({
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
-project.addScripts({
-  bump: 'standard-version -r patch -p pre',
-  release: 'yarn bump && git push --follow-tags origin 10.x' 
-});
+project.tasks.tryFind('bump').reset('standard-version -r patch -p pre');
+project.tasks.tryFind('release').reset('yarn bump && git push --follow-tags origin 10.x');
 
 project.synth();
