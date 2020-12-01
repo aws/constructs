@@ -4632,10 +4632,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.5.6.tgz#298b69c77471cf475f8baf7a4dbd596e79ab7542"
-  integrity sha512-exZaFUE2tPZne06QAVbmLksBmItJFv7b4wygI4dI4QfIVgQ2yKb7vnkFOizWex8dujR4DzUIBoV6LB9rfDpfdA==
+projen@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.5.7.tgz#ab8a28e0b9107ca246a98d0b76cf55a8ad2c27e7"
+  integrity sha512-0a1dV1Nx8ooZ8DGEfZLb9bGXH3fVN+aHDQacypv6iPwyREl+vlif3j7yr95q5SbdFmrWdMlfFjkjVs0zz70qKg==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.0"
@@ -4645,7 +4645,7 @@ projen@^0.5.6:
     inquirer "^7.3.3"
     semver "^7.3.2"
     yaml "^1.10.0"
-    yargs "^16.0.3"
+    yargs "^16.1.1"
 
 prompts@^2.0.1:
   version "2.3.2"
@@ -6117,7 +6117,7 @@ yargs@^15.3.1, yargs@^15.4.1:
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
 
-yargs@^16.0.3, yargs@^16.1.1:
+yargs@^16.1.1:
   version "16.1.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.1.1.tgz#5a4a095bd1ca806b0a50d0c03611d38034d219a1"
   integrity sha512-hAD1RcFP/wfgfxgMVswPE+z3tlPFtxG8/yWUrG2i17sTWGCGqWnxKcLTF4cUKDUK8fzokwsmO9H0TDkRbMHy8w==
