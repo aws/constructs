@@ -15,33 +15,33 @@ const project = new JsiiProject({
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
 
   keywords: [
-    "aws",
-    "constructs",
-    "cdk",
-    "jsii"
+    'aws',
+    'constructs',
+    'cdk',
+    'jsii',
   ],
 
   java: {
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
-    mavenArtifactId: 'constructs'
+    mavenArtifactId: 'constructs',
   },
 
   python: {
     distName: 'constructs',
-    module: 'constructs'
+    module: 'constructs',
   },
 
   dotnet: {
     dotNetNamespace: 'Constructs',
-    packageId: 'Constructs'
+    packageId: 'Constructs',
   },
 
   stability: 'stable',
 
   minNodeVersion: '10.17.0',
 
-  releaseBranches: [ 'master', '2.x' ],
+  releaseBranches: ['master', '2.x'],
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
