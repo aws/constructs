@@ -3611,9 +3611,9 @@ jsii-diff@^1.11.0:
     yargs "^16.1.1"
 
 jsii-docgen@^1.3.2:
-  version "1.4.110"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.4.110.tgz#20e3926dcac3040c9e45ba1e4210abddff4931d1"
-  integrity sha512-sf8EmT0PLi4b7HjnfOxpY89UP0/ZTEkF1QTZSdSIcQ2Dws+kSw7ty1KF557CjeJBfWT2r1Ty1UNUcMjIQyPQ8Q==
+  version "1.4.113"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.4.113.tgz#99b70ad886b3e2906ec605a6cf2051f9210931c5"
+  integrity sha512-KzeX1CwHjVmEftE87HHg094dJlx0mGCKuJ1FkQR1eKPskwafi2QPSiBnOGBFiuhvZAr2sk0PhT8qeve9UncegQ==
   dependencies:
     "@jsii/spec" "^1.9.0"
     fs-extra "^9.0.0"
@@ -3638,7 +3638,7 @@ jsii-pacmak@^1.11.0:
     xmlbuilder "^15.1.1"
     yargs "^16.1.1"
 
-jsii-reflect@^1.15.0, jsii-reflect@^1.16.0, jsii-reflect@^1.9.0:
+jsii-reflect@^1.16.0, jsii-reflect@^1.9.0:
   version "1.16.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.16.0.tgz#79e4d845078cf058524e560109d7cb01d3029b98"
   integrity sha512-1zxZwni5S9WUQrNJJA+fVVkd1s54u6fdxjuiHpkZUvxkcPUnsuurL8KWImMEvbdz5ykGHEmnjMOOiyRh/XEc2Q==
