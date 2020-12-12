@@ -65,7 +65,7 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "3.2.67",
+  "version": "3.2.68",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
