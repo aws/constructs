@@ -1,6 +1,6 @@
 {
   "name": "constructs",
-  "description": "A programming model for composable configuration",
+  "description": "A programming model for software-defined state",
   "repository": {
     "type": "git",
     "url": "https://github.com/aws/constructs.git"

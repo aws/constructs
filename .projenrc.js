@@ -2,7 +2,7 @@ const { JsiiProject } = require('projen');
 
 const project = new JsiiProject({
   name: 'constructs',
-  description: 'A programming model for composable configuration',
+  description: 'A programming model for software-defined state',
   repository: 'https://github.com/aws/constructs.git',
 
   // author
