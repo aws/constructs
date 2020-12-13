@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-pre.5](https://github.com/aws/constructs/compare/v10.0.0-pre.1...v10.0.0-pre.5) (2020-12-13)
+
 ## 10.0.0-pre.3 (2020-12-13)
 
 ## 10.0.0-pre.2 (2020-12-01)
