@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 4.0.0 (2020-12-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `Token` class as well as all related elements
+(`IResolvable`, etc...) were removed from this release. The feature may
+be re-introduced in the future, but was pulled due to causing conflicts
+with overlapping implementations in some consumers.
+
+* add facility to validate construct ids
+
+* Updated version number to 3.0.0
+
+* PR feedback
+
+* Removed Construct ID validator
+
+* Update package.json
+
+Co-authored-by: mergify[bot] <37929162+mergify[bot]@users.noreply.github.com>
+Co-authored-by: Elad Ben-Israel <benisrae@amazon.com>
+* upgrading jsii runtime version in constructs requires
+modules to update to the same jsii version to prevent version conflicts
+in all non typescript/javascript language targets.
+
+### Features
+
+* improve API names and organization around nodes ([#2](https://github.com/aws/constructs/issues/2)) ([68b406d](https://github.com/aws/constructs/commit/68b406dff77cd60ed80a5cd541d6607fa470d2c5))
+* introduce "node.addr" (deprecates "uniqueId") ([#314](https://github.com/aws/constructs/issues/314)) ([754a84d](https://github.com/aws/constructs/commit/754a84dfcc09caa920fdf175001035b1283bb106)), closes [#272](https://github.com/aws/constructs/issues/272)
+* introduce addValidation() and soft-deprecate onValidate() ([#310](https://github.com/aws/constructs/issues/310)) ([c45ee7f](https://github.com/aws/constructs/commit/c45ee7f551739b69c56c69ac1c20949d594af358))
+* remove Token/IResolvable API ([#34](https://github.com/aws/constructs/issues/34)) ([8f2b556](https://github.com/aws/constructs/commit/8f2b556db79f2823542afe210ee40bea57f29bea))
+
+
+### Bug Fixes
+
+* constructs created by an Aspect are not prepared ([#23](https://github.com/aws/constructs/issues/23)) ([aa18192](https://github.com/aws/constructs/commit/aa181929a1ca5d72350ee621ca69827113772a80))
+* cryptic error message in Node.of() ([#17](https://github.com/aws/constructs/issues/17)) ([7db507b](https://github.com/aws/constructs/commit/7db507ba9ad3af1fc5ed956f12d5b10a4d8bada5)), closes [#16](https://github.com/aws/constructs/issues/16) [aws/aws-cdk#6885](https://github.com/aws/aws-cdk/issues/6885)
+* used a typeguard function instead of 'instanceof', that breaks when using npm link as multiple 'construct' libraries could exists in node_modules [#32](https://github.com/aws/constructs/issues/32) ([#33](https://github.com/aws/constructs/issues/33)) ([166ba7e](https://github.com/aws/constructs/commit/166ba7ef9e88fd9ffbedd6fa2e6d096ace370ca4))
+* **cicd:** pull_request_template.md duplication - Fixes: [#362](https://github.com/aws/constructs/issues/362) ([#363](https://github.com/aws/constructs/issues/363)) ([980e777](https://github.com/aws/constructs/commit/980e777872180fea4ef327d61411f357f5f64d97))
+
+
+* upgrade jsii to v1.1.0 ([#14](https://github.com/aws/constructs/issues/14)) ([e4157f1](https://github.com/aws/constructs/commit/e4157f109c3e1d05fe5d24c4bd9ce100b5c56b51))
+
 ### 3.2.78 (2020-12-22)
 
 ### 3.2.77 (2020-12-22)
