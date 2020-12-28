@@ -1,4 +1,4 @@
-const { JsiiProject, Semver } = require('projen');
+const { JsiiProject } = require('projen');
 
 const project = new JsiiProject({
   name: 'constructs',
