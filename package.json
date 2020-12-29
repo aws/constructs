@@ -5,7 +5,6 @@
     "type": "git",
     "url": "https://github.com/aws/constructs.git"
   },
-  "bin": {},
   "scripts": {
     "projen": "npx projen",
     "start": "npx projen start",
@@ -30,7 +29,6 @@
     "url": "https://aws.amazon.com",
     "organization": true
   },
-  "homepage": "https://github.com/aws/constructs",
   "devDependencies": {
     "@types/jest": "^26.0.7",
     "@types/node": "^10.17.0",
@@ -48,13 +46,11 @@
     "jsii-pacmak": "^1.11.0",
     "jsii-release": "^0.2.3",
     "json-schema": "^0.2.5",
-    "projen": "^0.9.2",
+    "projen": "^0.12.2",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
   },
-  "peerDependencies": {},
-  "dependencies": {},
   "bundledDependencies": [],
   "keywords": [
     "aws",
@@ -68,6 +64,7 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "3.2.83",
+  "homepage": "https://github.com/aws/constructs",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
