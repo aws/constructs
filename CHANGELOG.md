@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.85](https://github.com/aws/constructs/compare/v3.2.84...v3.2.85) (2020-12-30)
+
 ### [3.2.84](https://github.com/aws/constructs/compare/v3.2.82...v3.2.84) (2020-12-29)
 
 ### [3.2.83](https://github.com/aws/constructs/compare/v3.2.82...v3.2.83) (2020-12-29)
