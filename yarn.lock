@@ -471,10 +471,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jsii/spec@^1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.16.0.tgz#6d7c657ca6b6219f1d36f77486c184724f768958"
-  integrity sha512-DH3rDGa781UmRtg/ykFyxrfhjaz1SRz2BblNXDxwArhl0aUiN5HOdzi9icX8CFwdB9+ZxTtXuxap3BwvLa5xnA==
+"@jsii/spec@^1.16.0", "@jsii/spec@^1.17.1":
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.17.1.tgz#660ec14fb46cd9765d8f60546eb397378f2e67ee"
+  integrity sha512-9/bdS7MpIVwSgHfaZiYnpE56T2YNE2WAJbhZzQTsYZCYkB8icsP+hVCIWzeyGZmHR9KggaCETbmNlLG0v2QdSw==
   dependencies:
     jsonschema "^1.4.0"
 
@@ -3649,11 +3649,11 @@ jsii-rosetta@^1.16.0:
     yargs "^16.1.1"
 
 jsii@^1.11.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.16.0.tgz#bc39ad771b5dc6a631ce4b85191447686fa96967"
-  integrity sha512-8cgroyD6LOlFUlXUMAmjtUhzgyF3oQpVVpIdDzqcn2dNgs7iDnZN/Wo27MfZj8usbIBLLK3DYv7DSf+0/H0yWA==
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.17.1.tgz#1c8cdece2354a87155e4ea989690c9e1ae8af049"
+  integrity sha512-Hx2oJjD7mXWD73A8yRkNzE9QDkfn+oDNUAwQgeMV5xteBvrzKFwiToucMTrPPVL/KO2mEXvWP2Or7MY03DFu7w==
   dependencies:
-    "@jsii/spec" "^1.16.0"
+    "@jsii/spec" "^1.17.1"
     case "^1.6.3"
     colors "^1.4.0"
     deep-equal "^2.0.5"
@@ -3664,7 +3664,7 @@ jsii@^1.11.0:
     sort-json "^2.0.0"
     spdx-license-list "^6.3.0"
     typescript "~3.9.7"
-    yargs "^16.1.1"
+    yargs "^16.2.0"
 
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
