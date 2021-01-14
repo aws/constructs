@@ -21,18 +21,18 @@ const project = new JsiiProject({
     'jsii',
   ],
 
-  java: {
+  publishToMaven: {
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
   },
 
-  python: {
+  publishToPypi: {
     distName: 'constructs',
     module: 'constructs',
   },
 
-  dotnet: {
+  publishToNuget: {
     dotNetNamespace: 'Constructs',
     packageId: 'Constructs',
   },
