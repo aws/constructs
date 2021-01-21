@@ -46,4 +46,8 @@ const project = new JsiiProject({
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
+project.tryFindObjectFile('package.json').addOverride('jsii.targets.go', {
+  moduleName: 'github.com/aws/constructs-go',
+});
+
 project.synth();
