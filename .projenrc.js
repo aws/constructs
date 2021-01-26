@@ -37,6 +37,10 @@ const project = new JsiiProject({
     packageId: 'Constructs',
   },
 
+  publishToGo: {
+    moduleName: 'github.com/aws/constructs-go',
+  },
+
   stability: 'stable',
 
   minNodeVersion: '10.17.0',
@@ -44,10 +48,6 @@ const project = new JsiiProject({
   releaseBranches: ['master', '2.x'],
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
-});
-
-project.tryFindObjectFile('package.json').addOverride('jsii.targets.go', {
-  moduleName: 'github.com/aws/constructs-go',
 });
 
 project.synth();
