@@ -166,6 +166,9 @@
       "steps": [
         {
           "exec": "jsii-pacmak"
+        },
+        {
+          "exec": "./scripts/go-version-file.sh"
         }
       ]
     },
