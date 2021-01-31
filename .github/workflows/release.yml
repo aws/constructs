@@ -115,7 +115,7 @@ jobs:
         run: npx -p jsii-release jsii-release-nuget
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-  release_go:
+  release_golang:
     name: Release to Go
     needs: build
     runs-on: ubuntu-latest

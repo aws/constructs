@@ -168,7 +168,7 @@
           "exec": "jsii-pacmak"
         },
         {
-          "exec": "./scripts/go-version-file.sh"
+          "exec": "echo $(node -p \"require('./version.json').version\") > dist/constructs/projen/version"
         }
       ]
     },
