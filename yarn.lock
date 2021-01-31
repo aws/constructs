@@ -471,7 +471,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jsii/spec@^1.16.0", "@jsii/spec@^1.17.1", "@jsii/spec@^1.18.0":
+"@jsii/spec@^1.16.0", "@jsii/spec@^1.18.0":
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.18.0.tgz#48a75903ed83c485e154f2ec6e10845e591f55be"
   integrity sha512-NtIvTyKBFCpwmZpCX76WtIks+W6I0Rbo94SvDuLsMGV8KBgiIEfgLP47P57vKxaJkXLNiINMjFBOSTDwF3bWKg==
@@ -3619,7 +3619,7 @@ jsesc@^2.5.1:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==
 
-jsii-diff@^1.17.1:
+jsii-diff@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/jsii-diff/-/jsii-diff-1.18.0.tgz#a3d95fbf7769dcccb93b46ba7f6250cb2544aff9"
   integrity sha512-C0yrnQ1TCCT9LhBVcoNodtq0yNk+82jMJrSyQj7B7KgzJZqL5M4m8fGg6pqFDcxcDyTr2TAQmXP2xg59qlQBfg==
@@ -3641,7 +3641,7 @@ jsii-docgen@^1.3.2:
     jsii-reflect "^1.16.0"
     yargs "^16.2.0"
 
-jsii-pacmak@^1.17.1:
+jsii-pacmak@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/jsii-pacmak/-/jsii-pacmak-1.18.0.tgz#04fc5559575b23d3e089efee4c5be570ff797ac6"
   integrity sha512-j1gRTaCn+IQ1R2a2uLqCfohY+unI/hD8Zedw9TOCTBjpASDDbDd9DMbOGnQBZ9G2nRq4SUIPg5eVOKPovpTI+w==
@@ -3659,7 +3659,7 @@ jsii-pacmak@^1.17.1:
     xmlbuilder "^15.1.1"
     yargs "^16.2.0"
 
-jsii-reflect@^1.16.0, jsii-reflect@^1.17.1, jsii-reflect@^1.18.0:
+jsii-reflect@^1.16.0, jsii-reflect@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.18.0.tgz#7570e0f18d56d2c473f6afcbf4d9c5cdd96bd637"
   integrity sha512-IXLdYl+zWVeUModJT51bOIgPjHGhnk8W/LxBMxIIN+VpFHkcPiZX1P7MfOCWIermAkrxVQOHpPbWEKoeUFl7CQ==
@@ -3687,7 +3687,7 @@ jsii-rosetta@^1.18.0:
     xmldom "^0.4.0"
     yargs "^16.2.0"
 
-jsii@^1.17.1:
+jsii@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.18.0.tgz#7255fa942144b903759cd46172a18c8580e39ff8"
   integrity sha512-5s+kOLF9yJOWjJD3UyaRYGT/PGaPvs0hNBDMtZqJ5AH8yIgjfJz+3+eHDXPLK0ffGaZF83sysiUueA5+Stxkww==
@@ -5313,7 +5313,7 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.7.tgz#e9c18a410e5ed7e12442a549fbd8afa767038d65"
   integrity sha512-U+MTEOO0AiDzxwFvoa4JVnMV6mZlJKk2sBLt90s7G0Gd0Mlknc7kxEn3nuDPNZRta7O2uy8oLcZLVT+4sqNZHQ==
 
-spdx-license-list@^6.3.0, spdx-license-list@^6.4.0:
+spdx-license-list@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/spdx-license-list/-/spdx-license-list-6.4.0.tgz#9850c3699c1d35745285607d064d2a5145049d12"
   integrity sha512-4BxgJ1IZxTJuX1YxMGu2cRYK46Bk9zJNTK2/R0wNZR0cm+6SVl26/uG7FQmQtxoJQX1uZ0EpTi2L7zvMLboaBA==
