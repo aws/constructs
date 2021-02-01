@@ -39,6 +39,8 @@ const project = new JsiiProject({
 
   publishToGo: {
     moduleName: 'github.com/aws/constructs-go',
+    gitUserName: 'AWS CDK Team',
+    gitUserEmail: 'aws-cdk-dev@amazon.com',
   },
 
   stability: 'stable',
@@ -49,5 +51,9 @@ const project = new JsiiProject({
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
+
+// temporary until https://github.com/aws/jsii/pull/2492 is resolveds
+project.packageTask.exec('echo $(node -p "require(\'./version.json\').version") > dist/go/constructs/version');
+project.addDevDeps('jsii-release@^0.2.12');
 
 project.synth();

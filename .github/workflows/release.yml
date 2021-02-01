@@ -115,3 +115,20 @@ jobs:
         run: npx -p jsii-release jsii-release-nuget
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+  release_golang:
+    name: Release to Go
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: jsii/superchain
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: dist
+      - name: Release
+        run: npx -p jsii-release jsii-release-golang
+        env:
+          GITHUB_TOKEN: ${{ secrets.GO_GITHUB_TOKEN }}
+          GIT_USER_NAME: AWS CDK Team
+          GIT_USER_EMAIL: aws-cdk-dev@amazon.com
