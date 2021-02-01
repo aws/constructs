@@ -54,5 +54,6 @@ const project = new JsiiProject({
 
 // temporary until https://github.com/aws/jsii/pull/2492 is resolveds
 project.packageTask.exec('echo $(node -p "require(\'./version.json\').version") > dist/go/constructs/version');
+project.addDevDeps('jsii-release@^0.2.12');
 
 project.synth();
