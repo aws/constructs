@@ -4,6 +4,7 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for composable configuration',
   repository: 'https://github.com/aws/constructs.git',
+  defaultReleaseBranch: 'master', // will move to "main" shortly
 
   // author
   authorName: 'Amazon Web Services',
@@ -52,8 +53,7 @@ const project = new JsiiProject({
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
-// temporary until https://github.com/aws/jsii/pull/2492 is resolveds
-project.packageTask.exec('echo $(node -p "require(\'./version.json\').version") > dist/go/constructs/version');
-project.addDevDeps('jsii-release@^0.2.12');
+// disable go sumdb so that go deps are resolved directly against github
+project.tasks.tryFind('package').prependExec('go env -w GOSUMDB=off');
 
 project.synth();

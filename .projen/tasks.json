@@ -165,10 +165,10 @@
       "description": "Create an npm tarball",
       "steps": [
         {
-          "exec": "jsii-pacmak"
+          "exec": "go env -w GOSUMDB=off"
         },
         {
-          "exec": "echo $(node -p \"require('./version.json').version\") > dist/go/constructs/version"
+          "exec": "jsii-pacmak"
         }
       ]
     },
