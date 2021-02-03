@@ -4,7 +4,7 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for composable configuration',
   repository: 'https://github.com/aws/constructs.git',
-  defaultReleaseBranch: 'master',
+  defaultReleaseBranch: 'master', // will move to "main" shortly
 
   // author
   authorName: 'Amazon Web Services',
