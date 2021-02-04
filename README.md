@@ -1,6 +1,6 @@
 # Constructs Programming Model
 
-> Define composable configuration models through code
+> Software-defined state
 
 ![Release](https://github.com/aws/constructs/workflows/Release/badge.svg)
 [![npm version](https://badge.fury.io/js/constructs.svg)](https://badge.fury.io/js/constructs)
