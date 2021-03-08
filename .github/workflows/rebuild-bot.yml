@@ -2,9 +2,7 @@
 
 name: rebuild-bot
 on:
-  issue_comment:
-    types:
-      - created
+  # ⚠️ CONSULT WITH @ROMAINMULLER BEFORE YOU COMMIT A CHANGE THIS WORKFLOW ⚠️
   workflow_dispatch: {}
 jobs:
   build:
