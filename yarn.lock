@@ -478,6 +478,13 @@
   dependencies:
     jsonschema "^1.4.0"
 
+"@jsii/spec@^1.26.0":
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.26.0.tgz#fcf0ceae1eaa486c504fdb6d2d02897870e43ab4"
+  integrity sha512-wh9Z/wfQYcWE5IgUfKNBYQ9Lhye9Xh/lsRsxMQluqEsgObNqb/8JreenWviqzHzBBcvTcHHyl+G30mpmyO1PWQ==
+  dependencies:
+    jsonschema "^1.4.0"
+
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.3.tgz#3a582bdb53804c6ba6d146579c46e52130cf4a3b"
@@ -1299,10 +1306,10 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
 
-codemaker@^1.25.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/codemaker/-/codemaker-1.25.0.tgz#987abcdf4f1ea7c3d71083dded4ce72941044710"
-  integrity sha512-54qCHs6X6llXIAztHCo2IyzzvuH9GrEecwxxTU925M3EJV4z+7PMiI1AollZxSeyY2pGO5TjNlAQAyLXETI3NQ==
+codemaker@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/codemaker/-/codemaker-1.26.0.tgz#31560f44d597afbb366c015267327394e18efbdf"
+  integrity sha512-oK0SdWi3CUHL7hVcDpXVBQc2xm31RCJSqg7I1wviMifD89zbvu3boAz/s5aoXbcVDKKxLOZn2w55WlGCih9HOw==
   dependencies:
     camelcase "^6.2.0"
     decamelize "^5.0.0"
@@ -3615,14 +3622,14 @@ jsesc@^2.5.1:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==
 
-jsii-diff@^1.24.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/jsii-diff/-/jsii-diff-1.25.0.tgz#410c05422427291c7b19e2d410090b6945eda142"
-  integrity sha512-rW4mpldvQrUDgDY+9Bvglew6nwXPWyVaePgeYTTB/4+9NEoAE7vecQAYhDokTBRdcOVCaEt5ffucwwawMu2ctQ==
+jsii-diff@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/jsii-diff/-/jsii-diff-1.26.0.tgz#41ba434b298771b7542a3a2eb18241ba6cf82a73"
+  integrity sha512-RWu1AFYE8+U+75yZMSKrn5JFj6G21yiKR2Won+XbggD+DveHDGNbopWi9lDHuB5ec04kfiUB7og0yXkanIO4wg==
   dependencies:
-    "@jsii/spec" "^1.25.0"
+    "@jsii/spec" "^1.26.0"
     fs-extra "^9.1.0"
-    jsii-reflect "^1.25.0"
+    jsii-reflect "^1.26.0"
     log4js "^6.3.0"
     typescript "~3.9.9"
     yargs "^16.2.0"
@@ -3637,25 +3644,25 @@ jsii-docgen@^1.3.2:
     jsii-reflect "^1.16.0"
     yargs "^16.2.0"
 
-jsii-pacmak@^1.24.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/jsii-pacmak/-/jsii-pacmak-1.25.0.tgz#389bc16b8c7337769c2ed7a03e04262476b9b69b"
-  integrity sha512-GEVdCYvnwYVnVNdcLDrvStaHqWIXBiZCpM9i4LS2rpA+qSsyXJUF8FV4cj2YFjdHsolUdY1EKY7njSs8XQ+1gg==
+jsii-pacmak@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/jsii-pacmak/-/jsii-pacmak-1.26.0.tgz#c600cb190255e080944c906d885e9b436edd2cd9"
+  integrity sha512-KOKOIazxddh8CuyuLMoBURW2bj3prhzyT0qF5ojUhHrbZeuH3eulF/Sn5PaIAadmQdmCiu69DYJe2JIwY/zwjw==
   dependencies:
-    "@jsii/spec" "^1.25.0"
+    "@jsii/spec" "^1.26.0"
     clone "^2.1.2"
-    codemaker "^1.25.0"
+    codemaker "^1.26.0"
     commonmark "^0.29.3"
     escape-string-regexp "^4.0.0"
     fs-extra "^9.1.0"
-    jsii-reflect "^1.25.0"
-    jsii-rosetta "^1.25.0"
+    jsii-reflect "^1.26.0"
+    jsii-rosetta "^1.26.0"
     semver "^7.3.4"
     spdx-license-list "^6.4.0"
     xmlbuilder "^15.1.1"
     yargs "^16.2.0"
 
-jsii-reflect@^1.16.0, jsii-reflect@^1.25.0:
+jsii-reflect@^1.16.0:
   version "1.25.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.25.0.tgz#713727a07b270d61304a122be7cb50e135b8fdf0"
   integrity sha512-ufBgOeGe6WVmx0CO7ABraEYOzhzxvmx6gJuUvOz/8XMe1dIIU2USLW3O1ArkEtIWchN4F2gITdd7I7jhdzzN1A==
@@ -3666,24 +3673,35 @@ jsii-reflect@^1.16.0, jsii-reflect@^1.25.0:
     oo-ascii-tree "^1.25.0"
     yargs "^16.2.0"
 
-jsii-rosetta@^1.25.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-1.25.0.tgz#07eb3c26f76f6ce7d56052014d651a8946629a73"
-  integrity sha512-2g+O5mkXrcsJPrHs71WPvLhcV4JERYUUzfG4rArZQ+YsGYSlpP2K6FdYlAk8haeCeEgyaedNgsbcW9NbxV8p3A==
+jsii-reflect@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.26.0.tgz#6efa0e8058ff8547b02b3b688263ad933feb646b"
+  integrity sha512-mlu97Xs2M+YCq3Z8z2vzLYOe3XVC3T0YBabvJjkKoNYdH6F/S5zQMVdGwfHEXv1asFv7PrrVu46Zf/dKnqULcw==
   dependencies:
-    "@jsii/spec" "^1.25.0"
+    "@jsii/spec" "^1.26.0"
+    colors "^1.4.0"
+    fs-extra "^9.1.0"
+    oo-ascii-tree "^1.26.0"
+    yargs "^16.2.0"
+
+jsii-rosetta@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/jsii-rosetta/-/jsii-rosetta-1.26.0.tgz#f2107981b769f10f0b2ebf497702c3e6d9d3a2c1"
+  integrity sha512-J/VQR8j/mD4Q5qGF0JmfvOJeNWIx0I158nvo6FsnC8aYmHyIpBPmlpKWZzUGC8fHxoD3mC8oeiFLp2Yv8BNtvQ==
+  dependencies:
+    "@jsii/spec" "^1.26.0"
     commonmark "^0.29.3"
     fs-extra "^9.1.0"
     typescript "~3.9.9"
     xmldom "^0.5.0"
     yargs "^16.2.0"
 
-jsii@^1.24.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.25.0.tgz#ec60566f6c2c7829d25aa8f1fb14d49c700f621e"
-  integrity sha512-5dchUvG+RTc48v8euUUNvxKxAlPMIaE9rG8BFp4RiXQiB3EFDTJeeM89cXK4w/vAhjgDlAxMDx3EJr7k6e461A==
+jsii@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/jsii/-/jsii-1.26.0.tgz#8994498b69a616be7c255285dc6d8142b5032b61"
+  integrity sha512-ZUu5N8+u12VyNkPgSgvVzIhZ+aEAd531zDZK4qkth7UsGNhSy4zBz9BJMSSKnaVV0oR6Pvehhg5DJ3dCu8qJrw==
   dependencies:
-    "@jsii/spec" "^1.25.0"
+    "@jsii/spec" "^1.26.0"
     case "^1.6.3"
     colors "^1.4.0"
     deep-equal "^2.0.5"
@@ -4348,6 +4366,11 @@ oo-ascii-tree@^1.25.0:
   version "1.25.0"
   resolved "https://registry.yarnpkg.com/oo-ascii-tree/-/oo-ascii-tree-1.25.0.tgz#97ce4d7e61a26d9c44117b041bf313a5329edf85"
   integrity sha512-bV3aHhVkSc862VMMj1JV9y8yBqzhXCMNE9UFt8w9NwkM7tvw94O8niGlvmFzNx2Hf4+qhO4gYdtRAYQqUaH+1w==
+
+oo-ascii-tree@^1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/oo-ascii-tree/-/oo-ascii-tree-1.26.0.tgz#c282175f2e620615d385e613ef451e9ffb6ad9a5"
+  integrity sha512-JcRUxvHG+QAheXnxx9cwtgDJY6aXc70UAvgoFxKtRz+KfWEU47z/X2HHb81O/aZ3mN4fRnnnnwQhaTUuQRw2Ag==
 
 optionator@^0.8.1, optionator@^0.8.3:
   version "0.8.3"
