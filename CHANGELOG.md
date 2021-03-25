@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/aws/constructs/compare/v3.3.71...v10.0.0) (2021-03-25)
+
+## [10.0.0-pre.1](https://github.com/aws/constructs/compare/v3.2.51...v10.0.0-pre.1) (2020-12-01)
+
+## [10.0.0-pre.0](https://github.com/aws/constructs/compare/v10.0.0-pre.4...v10.0.0-pre.0) (2020-11-05)
+
+## [10.0.0-pre.4](https://github.com/aws/constructs/compare/v3.2.13...v10.0.0-pre.4) (2020-11-05)
+
+## [10.0.0-pre.3](https://github.com/aws/constructs/compare/v3.2.0...v10.0.0-pre.3) (2020-10-26)
+
 ### [3.3.71](https://github.com/aws/constructs/compare/v3.3.70...v3.3.71) (2021-03-24)
 
 ### [3.3.70](https://github.com/aws/constructs/compare/v3.3.69...v3.3.70) (2021-03-24)
