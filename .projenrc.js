@@ -4,6 +4,7 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for software-defined state',
   repository: 'https://github.com/aws/constructs.git',
+  defaultReleaseBranch: 'master', // will move to "main" shortly
 
   // author
   authorName: 'Amazon Web Services',
@@ -21,20 +22,26 @@ const project = new JsiiProject({
     'jsii',
   ],
 
-  java: {
+  publishToMaven: {
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
   },
 
-  python: {
+  publishToPypi: {
     distName: 'constructs',
     module: 'constructs',
   },
 
-  dotnet: {
+  publishToNuget: {
     dotNetNamespace: 'Constructs',
     packageId: 'Constructs',
+  },
+
+  publishToGo: {
+    moduleName: 'github.com/aws/constructs-go',
+    gitUserName: 'AWS CDK Team',
+    gitUserEmail: 'aws-cdk-dev@amazon.com',
   },
 
   stability: 'stable',
@@ -51,7 +58,7 @@ const project = new JsiiProject({
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
-project.tasks.tryFind('bump').reset('standard-version -r patch -p pre');
-project.tasks.tryFind('release').reset('yarn bump && git push --follow-tags origin 10.x');
+// disable go sumdb so that go deps are resolved directly against github
+project.tasks.tryFind('package').prependExec('go env -w GOSUMDB=off');
 
 project.synth();

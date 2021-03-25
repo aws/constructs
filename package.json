@@ -5,11 +5,10 @@
     "type": "git",
     "url": "https://github.com/aws/constructs.git"
   },
-  "bin": {},
   "scripts": {
-    "projen": "npx projen",
-    "start": "npx projen start",
+    "clobber": "npx projen clobber",
     "compile": "npx projen compile",
+    "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -21,14 +20,15 @@
     "package": "npx projen package",
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
-    "docgen": "npx projen docgen"
+    "docgen": "npx projen docgen",
+    "projen": "npx projen",
+    "start": "npx projen start"
   },
   "author": {
     "name": "Amazon Web Services",
     "url": "https://aws.amazon.com",
     "organization": true
   },
-  "homepage": "https://github.com/aws/constructs",
   "devDependencies": {
     "@types/jest": "^26.0.7",
     "@types/node": "^10.17.0",
@@ -40,19 +40,16 @@
     "eslint-plugin-import": "^2.20.2",
     "jest": "^26.4.2",
     "jest-junit": "^12",
-    "jsii": "^1.11.0",
-    "jsii-diff": "^1.11.0",
+    "jsii": "^1.26.0",
+    "jsii-diff": "^1.26.0",
     "jsii-docgen": "^1.3.2",
-    "jsii-pacmak": "^1.11.0",
-    "jsii-release": "^0.2.3",
+    "jsii-pacmak": "^1.26.0",
     "json-schema": "^0.2.5",
-    "projen": "^0.6.10",
-    "standard-version": "^9.0.0",
+    "projen": "^0.17.17",
+    "standard-version": "^9",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
   },
-  "peerDependencies": {},
-  "dependencies": {},
   "bundledDependencies": [],
   "keywords": [
     "aws",
@@ -66,9 +63,23 @@
   "main": "lib/index.js",
   "license": "Apache-2.0",
   "version": "10.0.0-pre.5",
+  "homepage": "https://github.com/aws/constructs",
+  "publishConfig": {
+    "tag": "next"
+  },
   "jest": {
+    "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
     "clearMocks": true,
     "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "clover",
+      "text"
+    ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
@@ -76,9 +87,8 @@
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],
-    "testMatch": [
-      "**/__tests__/**/*.ts?(x)",
-      "**/?(*.)+(spec|test).ts?(x)"
+    "watchPathIgnorePatterns": [
+      "/node_modules/"
     ],
     "reporters": [
       "default",
@@ -115,6 +125,9 @@
       "dotnet": {
         "namespace": "Constructs",
         "packageId": "Constructs"
+      },
+      "go": {
+        "moduleName": "github.com/aws/constructs-go"
       }
     },
     "tsc": {
