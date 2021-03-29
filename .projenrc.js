@@ -48,9 +48,9 @@ const project = new JsiiProject({
 
   minNodeVersion: '10.17.0',
 
-  releaseBranches: ['master', '2.x'],
+  releaseWorkflow: false,
   compat: true,
-  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+  projenSecret: 'PROJEN_GITHUB_TOKEN',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
