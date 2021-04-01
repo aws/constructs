@@ -116,8 +116,8 @@ export class Node {
    * A tree-global unique alphanumeric identifier for this construct. Includes
    * all components of the tree.
    *
-   * @deprecated please avoid using this property and use `uid` instead. This
-   * algorithm uses MD5, which is not FIPS-complient and also excludes the
+   * @deprecated please avoid using this property and use `addr` to form unique names.
+   * This algorithm uses MD5, which is not FIPS-complient and also excludes the
    * identity of the root construct from the calculation.
    */
   public get uniqueId(): string {
