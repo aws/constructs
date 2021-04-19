@@ -700,13 +700,13 @@
     eslint-utils "^2.0.0"
 
 "@typescript-eslint/parser@^4.3.0":
-  version "4.19.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-4.19.0.tgz#4ae77513b39f164f1751f21f348d2e6cb2d11128"
-  integrity sha512-/uabZjo2ZZhm66rdAu21HA8nQebl3lAIDcybUoOxoI7VbZBYavLIwtOOmykKCJy+Xq6Vw6ugkiwn8Js7D6wieA==
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-4.20.0.tgz#8dd403c8b4258b99194972d9799e201b8d083bdd"
+  integrity sha512-m6vDtgL9EABdjMtKVw5rr6DdeMCH3OA1vFb0dAyuZSa3e5yw1YRzlwFnm9knma9Lz6b2GPvoNSa8vOXrqsaglA==
   dependencies:
-    "@typescript-eslint/scope-manager" "4.19.0"
-    "@typescript-eslint/types" "4.19.0"
-    "@typescript-eslint/typescript-estree" "4.19.0"
+    "@typescript-eslint/scope-manager" "4.20.0"
+    "@typescript-eslint/types" "4.20.0"
+    "@typescript-eslint/typescript-estree" "4.20.0"
     debug "^4.1.1"
 
 "@typescript-eslint/scope-manager@4.19.0":
@@ -4658,10 +4658,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.17.32:
-  version "0.17.32"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.17.32.tgz#8bead071ce404873a409fa6533dc97fbbbb6e42d"
-  integrity sha512-fAWOZIp2bKxek4XJ42PodT24wAFMaoCKvykebeRQpXodHYpX7wLf5aYWJVsw2rrvJhz5OC9RlPpyHoOdTTvkxg==
+projen@^0.17.47:
+  version "0.17.47"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.17.47.tgz#fdf062f2aa57bcd60acbecd74e895f09606d224e"
+  integrity sha512-kdfIITs6kmAncVWkQTcqPmplxQdQiAP14MsM87jtWbbBtJ/riEH/K7wiQzmoGtqLKIuGdapAipGu6MKGCLN+sQ==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.0"
