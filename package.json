@@ -62,11 +62,11 @@
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
-  "version": "0.0.0",
   "homepage": "https://github.com/aws/constructs",
   "publishConfig": {
     "tag": "next"
   },
+  "version": "0.0.0",
   "jest": {
     "testMatch": [
       "**/__tests__/**/*.ts?(x)",
