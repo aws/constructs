@@ -471,7 +471,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jsii/spec@^1.16.0", "@jsii/spec@^1.27.0", "@jsii/spec@^1.28.0":
+"@jsii/spec@^1.16.0", "@jsii/spec@^1.28.0":
   version "1.28.0"
   resolved "https://registry.yarnpkg.com/@jsii/spec/-/spec-1.28.0.tgz#47db1102fc0291dbffffb3adb7f8ee0671e15ef3"
   integrity sha512-5mcupuCCXyhZwNmX/RDBn3WUYtd0oPXEDa3E+qOSjT30vaO8u9ZQ+mxwl4qsecx3m51LhXKnR1C9U9t4VlAmqA==
@@ -3660,7 +3660,7 @@ jsii-pacmak@^1.27.0:
     xmlbuilder "^15.1.1"
     yargs "^16.2.0"
 
-jsii-reflect@^1.16.0, jsii-reflect@^1.27.0, jsii-reflect@^1.28.0:
+jsii-reflect@^1.16.0, jsii-reflect@^1.28.0:
   version "1.28.0"
   resolved "https://registry.yarnpkg.com/jsii-reflect/-/jsii-reflect-1.28.0.tgz#d03276499702115ff0582f82ede7bd40f1a4b6b9"
   integrity sha512-jFu9dUy5D0PrxVnaDilb50agbSr0wZRya6StwHyw8Wly3ruzS8uuSB1aWmEwN371m5ewDD4m9nPEQ9zMmKFvMQ==
@@ -4635,10 +4635,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.17.52:
-  version "0.17.52"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.17.52.tgz#ccde586500cd978ef446c66be0f1a721aaa4a2b6"
-  integrity sha512-JqMQdmPlbo5YIZG/yCsFJOvEW+9VjRcwEo79vbb1VqeuOhwo2A/RJLmcigpVYZbY+6ApExA13dyuH3dlwbPlUw==
+projen@^0.17.59:
+  version "0.17.59"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.17.59.tgz#d62d9ad4d9145b5ff16e8654883c185b039f5b97"
+  integrity sha512-wTr/WWoW88vLTFg67MzpM+SbPSp5ryIp1iFz++tzDQuKeqODHZ9zobHnhV0yCGU/zfTiQT1ET4qmZRq7ihCY3A==
   dependencies:
     "@iarna/toml" "^2.2.5"
     chalk "^4.1.0"
