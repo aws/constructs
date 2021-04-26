@@ -49,7 +49,6 @@ const project = new JsiiProject({
   minNodeVersion: '10.17.0',
 
   releaseEveryCommit: false,
-  releaseBranches: ['10.x'],
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
 });
