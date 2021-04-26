@@ -50,8 +50,6 @@
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
   },
-  "peerDependencies": {},
-  "dependencies": {},
   "bundledDependencies": [],
   "keywords": [
     "aws",
