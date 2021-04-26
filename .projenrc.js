@@ -47,7 +47,7 @@ const project = new JsiiProject({
   stability: 'stable',
   minNodeVersion: '10.17.0',
 
-  releaseBranches: [],
+  releaseWorkflow: false,
   compat: true,
 
   //----------------------------------------------------
