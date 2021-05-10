@@ -11,6 +11,8 @@
 .jsii
 .nyc_output
 .yarn-integrity
+/.changelog.tmp.md
+/.version.tmp.json
 /coverage
 /dist
 /lib
@@ -30,11 +32,12 @@ tsconfig.json
 yarn-debug.log*
 yarn-error.log*
 !/.eslintrc.json
+!/.gitattributes
 !/.github/pull_request_template.md
 !/.github/workflows/auto-approve.yml
-!/.github/workflows/auto-upgrade-dependencies.yml
 !/.github/workflows/build.yml
 !/.github/workflows/projenupgrade.yml
+!/.github/workflows/upgrade-dependencies.yml
 !/.mergify.yml
 !/.npmignore
 !/.projen/deps.json
@@ -48,4 +51,3 @@ yarn-error.log*
 !/test
 !/tsconfig.eslint.json
 !/tsconfig.jest.json
-!version.json

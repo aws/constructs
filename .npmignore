@@ -5,7 +5,6 @@
 /.mergify.yml
 /.projen
 /.projenrc.js
-/.versionrc.json
 /.vscode
 /coverage
 /src
@@ -16,6 +15,7 @@
 /tsconfig.json
 dist
 junit.xml
+tsconfig.tsbuildinfo
 !.jsii
 !/lib
 !/lib/**/*.d.ts
