@@ -142,7 +142,7 @@
       "name": "deps:upgrade",
       "steps": [
         {
-          "exec": "npm-check-updates --timeout 60000 --upgrade --reject 'projen'"
+          "exec": "npm-check-updates --timeout 120000 --upgrade --reject 'projen'"
         },
         {
           "exec": "yarn install && yarn upgrade --pattern \"!(projen)\""
