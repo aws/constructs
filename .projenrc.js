@@ -4,7 +4,13 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for composable configuration',
   repository: 'https://github.com/aws/constructs.git',
-  defaultReleaseBranch: 'master', // will move to "main" shortly
+
+  // release branches
+  defaultReleaseBranch: 'main',
+  majorVersion: 3,
+  releaseBranches: {
+    '10.x': { majorVersion: 10 },
+  },
 
   // author
   authorName: 'Amazon Web Services',
