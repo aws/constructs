@@ -2,6 +2,9 @@
 
 name: release-10.x
 on:
+  push:
+    branches:
+      - 10.x
   workflow_dispatch: {}
 jobs:
   release:
