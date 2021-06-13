@@ -56,6 +56,11 @@ const project = new JsiiProject({
 
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+  autoApproveOptions: {
+    allowedUsernames: ['aws-cdk-automation'],
+    secret: 'GITHUB_TOKEN',
+  },
+  autoApproveUpgrades: true,
 });
 
 // disable go sumdb so that go deps are resolved directly against github
