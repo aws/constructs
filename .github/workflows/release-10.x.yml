@@ -13,7 +13,6 @@ jobs:
       contents: write
     env:
       CI: "true"
-      RELEASE: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,27 +28,16 @@ jobs:
           node-version: 10.17.0
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
-      - name: Bump to next version
-        run: npx projen bump
-        env:
-          MAJOR: "10"
-      - name: build
-        run: npx projen build
-      - name: Backup version file
-        run: cp -f package.json package.json.bak.json
-      - name: Unbump
-        run: npx projen unbump
-      - name: Anti-tamper check
-        run: git diff --ignore-space-at-eol --exit-code
+      - name: release:10.x
+        run: npx projen release:10.x
       - name: Check for new commits
         id: git_remote
         run: echo ::set-output name=latest_commit::"$(git ls-remote origin -h ${{
           github.ref }} | cut -f1)"
       - name: Create release
         if: ${{ steps.git_remote.outputs.latest_commit == github.sha }}
-        run: gh release create v$(node -p "require('./package.json.bak.json').version")
-          -F .changelog.tmp.md -t v$(node -p
-          "require('./package.json.bak.json').version")
+        run: gh release create v$(cat dist/version.txt) -F dist/changelog.md -t v$(cat
+          dist/version.txt)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload artifact
@@ -61,7 +49,7 @@ jobs:
     container:
       image: jsii/superchain
   release_npm:
-    name: Release to NPM
+    name: Release to npm
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -75,9 +63,9 @@ jobs:
       - name: Release
         run: npx -p jsii-release@latest jsii-release-npm
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_DIST_TAG: latest
           NPM_REGISTRY: registry.npmjs.org
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     container:
       image: jsii/superchain
   release_maven:
@@ -103,7 +91,7 @@ jobs:
     container:
       image: jsii/superchain
   release_pypi:
-    name: Release to PyPi
+    name: Release to PyPI
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -122,7 +110,7 @@ jobs:
     container:
       image: jsii/superchain
   release_nuget:
-    name: Release to Nuget
+    name: Release to NuGet
     needs: release
     runs-on: ubuntu-latest
     permissions:
@@ -154,8 +142,8 @@ jobs:
       - name: Release
         run: npx -p jsii-release@latest jsii-release-golang
         env:
-          GITHUB_TOKEN: ${{ secrets.GO_GITHUB_TOKEN }}
           GIT_USER_NAME: AWS CDK Team
           GIT_USER_EMAIL: aws-cdk-dev@amazon.com
+          GITHUB_TOKEN: ${{ secrets.GO_GITHUB_TOKEN }}
     container:
       image: jsii/superchain
