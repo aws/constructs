@@ -1,6 +1,6 @@
-# Constructs Programming Model
+# Constructs
 
-> Software-defined state
+> Software-defined persistent state
 
 ![Release](https://github.com/aws/constructs/workflows/Release/badge.svg)
 [![npm version](https://badge.fury.io/js/constructs.svg)](https://badge.fury.io/js/constructs)
