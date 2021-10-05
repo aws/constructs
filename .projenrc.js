@@ -4,7 +4,13 @@ const project = new JsiiProject({
   name: 'constructs',
   description: 'A programming model for software-defined state',
   repository: 'https://github.com/aws/constructs.git',
-  defaultReleaseBranch: 'master', // will move to "main" shortly
+
+  // release branches
+  defaultReleaseBranch: 'main',
+  majorVersion: 3,
+  releaseBranches: {
+    '10.x': { majorVersion: 10 },
+  },
 
   // author
   authorName: 'Amazon Web Services',
@@ -26,7 +32,7 @@ const project = new JsiiProject({
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
-    mavenEndpoint: 'https://s01.oss.sonatype.org/',
+    mavenEndpoint: 'https://s01.oss.sonatype.org',
   },
 
   publishToPypi: {
@@ -48,7 +54,6 @@ const project = new JsiiProject({
   stability: 'stable',
   minNodeVersion: '12.7.0',
 
-  releaseEveryCommit: false,
   compat: true,
 
   //----------------------------------------------------
@@ -57,6 +62,11 @@ const project = new JsiiProject({
   npmDistTag: 'next',
 
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
+  autoApproveOptions: {
+    allowedUsernames: ['aws-cdk-automation'],
+    secret: 'GITHUB_TOKEN',
+  },
+  autoApproveUpgrades: true,
 });
 
 // disable go sumdb so that go deps are resolved directly against github

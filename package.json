@@ -28,7 +28,7 @@
     "publish:golang": "npx projen publish:golang",
     "docgen": "npx projen docgen",
     "release": "npx projen release",
-    "publish:git": "npx projen publish:git",
+    "release:10.x": "npx projen release:10.x",
     "upgrade": "npx projen upgrade",
     "projen": "npx projen"
   },
@@ -54,7 +54,7 @@
     "jsii-pacmak": "^1.36.0",
     "json-schema": "^0.3.0",
     "npm-check-updates": "^11",
-    "projen": "^0.29.8",
+    "projen": "^0.29.7",
     "standard-version": "^9",
     "ts-jest": "^26.5.6",
     "typescript": "^3.9.10"
