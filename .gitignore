@@ -38,7 +38,6 @@ junit.xml
 /dist/changelog.md
 /dist/version.txt
 !/.mergify.yml
-!/.github/workflows/upgrade.yml
 !/.github/pull_request_template.md
 !/test/
 !/src/
@@ -52,3 +51,5 @@ tsconfig.json
 !/API.md
 !/.github/workflows/release.yml
 !/.github/workflows/release-10.x.yml
+!/.github/workflows/upgrade-main.yml
+!/.github/workflows/upgrade-10.x.yml
