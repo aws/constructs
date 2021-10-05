@@ -26,6 +26,7 @@ const project = new JsiiProject({
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
+    mavenEndpoint: 'https://s01.oss.sonatype.org/',
   },
 
   publishToPypi: {
