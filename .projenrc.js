@@ -26,6 +26,7 @@ const project = new JsiiProject({
     javaPackage: 'software.constructs',
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
+    mavenEndpoint: 'https://s01.oss.sonatype.org/',
   },
 
   publishToPypi: {
@@ -45,7 +46,7 @@ const project = new JsiiProject({
   },
 
   stability: 'stable',
-  minNodeVersion: '10.17.0',
+  minNodeVersion: '12.7.0',
 
   releaseEveryCommit: false,
   compat: true,
