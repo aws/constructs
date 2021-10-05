@@ -7,22 +7,30 @@
   },
   "scripts": {
     "clobber": "npx projen clobber",
-    "bump": "npx projen bump",
-    "unbump": "npx projen unbump",
     "compile": "npx projen compile",
     "test:compile": "npx projen test:compile",
     "test": "npx projen test",
     "build": "npx projen build",
     "test:watch": "npx projen test:watch",
     "test:update": "npx projen test:update",
-    "projen:upgrade": "npx projen projen:upgrade",
+    "bump": "npx projen bump",
+    "unbump": "npx projen unbump",
+    "publish:github": "npx projen publish:github",
+    "default": "npx projen default",
     "watch": "npx projen watch",
     "package": "npx projen package",
     "eslint": "npx projen eslint",
     "compat": "npx projen compat",
+    "publish:npm": "npx projen publish:npm",
+    "publish:maven": "npx projen publish:maven",
+    "publish:pypi": "npx projen publish:pypi",
+    "publish:nuget": "npx projen publish:nuget",
+    "publish:golang": "npx projen publish:golang",
     "docgen": "npx projen docgen",
-    "projen": "npx projen",
-    "start": "npx projen start"
+    "release": "npx projen release",
+    "publish:git": "npx projen publish:git",
+    "upgrade": "npx projen upgrade",
+    "projen": "npx projen"
   },
   "author": {
     "name": "Amazon Web Services",
@@ -31,7 +39,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.7",
-    "@types/node": "^10.17.0",
+    "@types/node": "^12.7.0",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
     "eslint": "^6.8.0",
@@ -45,7 +53,8 @@
     "jsii-docgen": "^1.3.2",
     "jsii-pacmak": "^1.27.0",
     "json-schema": "^0.2.5",
-    "projen": "^0.17.66",
+    "npm-check-updates": "^11",
+    "projen": "^0.29.8",
     "standard-version": "^9",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
@@ -58,7 +67,7 @@
     "jsii"
   ],
   "engines": {
-    "node": ">= 10.17.0"
+    "node": ">= 12.7.0"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",
