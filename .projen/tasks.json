@@ -219,7 +219,7 @@
       "name": "publish:maven",
       "description": "Publish this package to Maven Central",
       "env": {
-        "MAVEN_ENDPOINT": "https://s01.oss.sonatype.org/"
+        "MAVEN_ENDPOINT": "https://s01.oss.sonatype.org"
       },
       "requiredEnv": [
         "MAVEN_GPG_PRIVATE_KEY",
@@ -286,9 +286,10 @@
     },
     "release": {
       "name": "release",
-      "description": "Prepare a release from \"master\" branch",
+      "description": "Prepare a release from \"main\" branch",
       "env": {
-        "RELEASE": "true"
+        "RELEASE": "true",
+        "MAJOR": "3"
       },
       "steps": [
         {
@@ -304,27 +305,32 @@
           "spawn": "unbump"
         },
         {
-          "spawn": "publish:git"
-        },
-        {
           "exec": "git diff --ignore-space-at-eol --exit-code"
         }
       ]
     },
-    "publish:git": {
-      "name": "publish:git",
-      "description": "Prepends the release changelog onto the project changelog, creates a release commit, and tags the release",
+    "release:10.x": {
+      "name": "release:10.x",
+      "description": "Prepare a release from \"10.x\" branch",
       "env": {
-        "CHANGELOG": "dist/changelog.md",
-        "RELEASE_TAG_FILE": "dist/releasetag.txt",
-        "PROJECT_CHANGELOG_FILE": ""
+        "RELEASE": "true",
+        "MAJOR": "10"
       },
       "steps": [
         {
-          "builtin": "release/tag-version"
+          "exec": "rm -fr dist"
         },
         {
-          "exec": "git push --follow-tags origin master"
+          "spawn": "bump"
+        },
+        {
+          "spawn": "build"
+        },
+        {
+          "spawn": "unbump"
+        },
+        {
+          "exec": "git diff --ignore-space-at-eol --exit-code"
         }
       ]
     },
