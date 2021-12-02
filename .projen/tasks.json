@@ -1,5 +1,45 @@
 {
   "tasks": {
+    "build": {
+      "name": "build",
+      "description": "Full release build",
+      "steps": [
+        {
+          "spawn": "default"
+        },
+        {
+          "spawn": "pre-compile"
+        },
+        {
+          "spawn": "compile"
+        },
+        {
+          "spawn": "post-compile"
+        },
+        {
+          "spawn": "test"
+        },
+        {
+          "spawn": "package"
+        }
+      ]
+    },
+    "bump": {
+      "name": "bump",
+      "description": "Bumps version based on latest git tag and generates a changelog entry",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt"
+      },
+      "steps": [
+        {
+          "builtin": "release/bump-version"
+        }
+      ],
+      "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -32,111 +72,75 @@
       ],
       "condition": "git diff --exit-code > /dev/null"
     },
+    "compat": {
+      "name": "compat",
+      "description": "Perform API compatibility check against latest version",
+      "steps": [
+        {
+          "exec": "jsii-diff npm:$(node -p \"require('./package.json').name\") -k --ignore-file .compatignore || (echo \"\nUNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .compatignore to skip.\n\" && exit 1)"
+        }
+      ]
+    },
     "compile": {
       "name": "compile",
       "description": "Only compile",
       "steps": [
         {
           "exec": "jsii --silence-warnings=reserved-word --no-fix-peer-dependencies"
+        }
+      ]
+    },
+    "default": {
+      "name": "default",
+      "description": "Synthesize project files",
+      "steps": [
+        {
+          "exec": "node .projenrc.js"
+        }
+      ]
+    },
+    "docgen": {
+      "name": "docgen",
+      "description": "Generate API.md from .jsii manifest",
+      "steps": [
+        {
+          "exec": "jsii-docgen"
+        }
+      ]
+    },
+    "eslint": {
+      "name": "eslint",
+      "description": "Runs eslint against the codebase",
+      "steps": [
+        {
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+        }
+      ]
+    },
+    "package": {
+      "name": "package",
+      "description": "Creates the distribution package",
+      "steps": [
+        {
+          "exec": "go env -w GOSUMDB=off"
         },
+        {
+          "exec": "jsii-pacmak"
+        }
+      ]
+    },
+    "post-compile": {
+      "name": "post-compile",
+      "description": "Runs after successful compilation",
+      "steps": [
         {
           "spawn": "docgen"
         }
       ]
     },
-    "test:compile": {
-      "name": "test:compile",
-      "description": "compiles the test code",
-      "steps": [
-        {
-          "exec": "tsc --noEmit --project tsconfig.jest.json"
-        }
-      ]
-    },
-    "test": {
-      "name": "test",
-      "description": "Run tests",
-      "steps": [
-        {
-          "exec": "rm -fr lib/"
-        },
-        {
-          "spawn": "test:compile"
-        },
-        {
-          "exec": "jest --passWithNoTests --all --updateSnapshot"
-        },
-        {
-          "spawn": "eslint"
-        }
-      ]
-    },
-    "build": {
-      "name": "build",
-      "description": "Full release build (test+compile)",
-      "steps": [
-        {
-          "exec": "npx projen"
-        },
-        {
-          "spawn": "test"
-        },
-        {
-          "spawn": "compile"
-        },
-        {
-          "spawn": "package"
-        }
-      ]
-    },
-    "test:watch": {
-      "name": "test:watch",
-      "description": "Run jest in watch mode",
-      "steps": [
-        {
-          "exec": "jest --watch"
-        }
-      ]
-    },
-    "test:update": {
-      "name": "test:update",
-      "description": "Update jest snapshots",
-      "steps": [
-        {
-          "exec": "jest --updateSnapshot"
-        }
-      ]
-    },
-    "bump": {
-      "name": "bump",
-      "description": "Bumps version based on latest git tag and generates a changelog entry",
-      "env": {
-        "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
-        "BUMPFILE": "dist/version.txt",
-        "RELEASETAG": "dist/releasetag.txt"
-      },
-      "steps": [
-        {
-          "builtin": "release/bump-version"
-        }
-      ],
-      "condition": "! git log --oneline -1 | grep -q \"chore(release):\""
-    },
-    "unbump": {
-      "name": "unbump",
-      "description": "Restores version to 0.0.0",
-      "env": {
-        "OUTFILE": "package.json",
-        "CHANGELOG": "dist/changelog.md",
-        "BUMPFILE": "dist/version.txt",
-        "RELEASETAG": "dist/releasetag.txt"
-      },
-      "steps": [
-        {
-          "builtin": "release/reset-version"
-        }
-      ]
+    "pre-compile": {
+      "name": "pre-compile",
+      "description": "Prepare the project for compilation"
     },
     "publish:github": {
       "name": "publish:github",
@@ -152,66 +156,19 @@
         }
       ]
     },
-    "default": {
-      "name": "default",
-      "steps": [
-        {
-          "exec": "node .projenrc.js"
-        }
-      ]
-    },
-    "watch": {
-      "name": "watch",
-      "description": "Watch & compile in the background",
-      "steps": [
-        {
-          "exec": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies"
-        }
-      ]
-    },
-    "package": {
-      "name": "package",
-      "description": "Create an npm tarball",
-      "steps": [
-        {
-          "exec": "go env -w GOSUMDB=off"
-        },
-        {
-          "exec": "jsii-pacmak"
-        }
-      ]
-    },
-    "eslint": {
-      "name": "eslint",
-      "description": "Runs eslint against the codebase",
-      "steps": [
-        {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
-        }
-      ]
-    },
-    "compat": {
-      "name": "compat",
-      "description": "Perform API compatibility check against latest version",
-      "steps": [
-        {
-          "exec": "jsii-diff npm:$(node -p \"require('./package.json').name\") -k --ignore-file .compatignore || (echo \"\nUNEXPECTED BREAKING CHANGES: add keys such as 'removed:constructs.Node.of' to .compatignore to skip.\n\" && exit 1)"
-        }
-      ]
-    },
-    "publish:npm": {
-      "name": "publish:npm",
-      "description": "Publish this package to npm",
+    "publish:golang": {
+      "name": "publish:golang",
+      "description": "Publish this package to GitHub",
       "env": {
-        "NPM_DIST_TAG": "next",
-        "NPM_REGISTRY": "registry.npmjs.org"
+        "GIT_USER_NAME": "AWS CDK Team",
+        "GIT_USER_EMAIL": "aws-cdk-dev@amazon.com"
       },
       "requiredEnv": [
-        "NPM_TOKEN"
+        "GITHUB_TOKEN"
       ],
       "steps": [
         {
-          "exec": "npx -p jsii-release@latest jsii-release-npm"
+          "exec": "npx -p jsii-release@latest jsii-release-golang"
         }
       ]
     },
@@ -234,16 +191,19 @@
         }
       ]
     },
-    "publish:pypi": {
-      "name": "publish:pypi",
-      "description": "Publish this package to PyPI",
+    "publish:npm": {
+      "name": "publish:npm",
+      "description": "Publish this package to npm",
+      "env": {
+        "NPM_DIST_TAG": "next",
+        "NPM_REGISTRY": "registry.npmjs.org"
+      },
       "requiredEnv": [
-        "TWINE_USERNAME",
-        "TWINE_PASSWORD"
+        "NPM_TOKEN"
       ],
       "steps": [
         {
-          "exec": "npx -p jsii-release@latest jsii-release-pypi"
+          "exec": "npx -p jsii-release@latest jsii-release-npm"
         }
       ]
     },
@@ -259,28 +219,16 @@
         }
       ]
     },
-    "publish:golang": {
-      "name": "publish:golang",
-      "description": "Publish this package to GitHub",
-      "env": {
-        "GIT_USER_NAME": "AWS CDK Team",
-        "GIT_USER_EMAIL": "aws-cdk-dev@amazon.com"
-      },
+    "publish:pypi": {
+      "name": "publish:pypi",
+      "description": "Publish this package to PyPI",
       "requiredEnv": [
-        "GITHUB_TOKEN"
+        "TWINE_USERNAME",
+        "TWINE_PASSWORD"
       ],
       "steps": [
         {
-          "exec": "npx -p jsii-release@latest jsii-release-golang"
-        }
-      ]
-    },
-    "docgen": {
-      "name": "docgen",
-      "description": "Generate API.md from .jsii manifest",
-      "steps": [
-        {
-          "exec": "jsii-docgen"
+          "exec": "npx -p jsii-release@latest jsii-release-pypi"
         }
       ]
     },
@@ -334,6 +282,51 @@
         }
       ]
     },
+    "test": {
+      "name": "test",
+      "description": "Run tests",
+      "steps": [
+        {
+          "exec": "jest --passWithNoTests --all --updateSnapshot"
+        },
+        {
+          "spawn": "eslint"
+        }
+      ]
+    },
+    "test:update": {
+      "name": "test:update",
+      "description": "Update jest snapshots",
+      "steps": [
+        {
+          "exec": "jest --updateSnapshot"
+        }
+      ]
+    },
+    "test:watch": {
+      "name": "test:watch",
+      "description": "Run jest in watch mode",
+      "steps": [
+        {
+          "exec": "jest --watch"
+        }
+      ]
+    },
+    "unbump": {
+      "name": "unbump",
+      "description": "Restores version to 0.0.0",
+      "env": {
+        "OUTFILE": "package.json",
+        "CHANGELOG": "dist/changelog.md",
+        "BUMPFILE": "dist/version.txt",
+        "RELEASETAG": "dist/releasetag.txt"
+      },
+      "steps": [
+        {
+          "builtin": "release/reset-version"
+        }
+      ]
+    },
     "upgrade": {
       "name": "upgrade",
       "description": "upgrade dependencies",
@@ -364,6 +357,15 @@
         },
         {
           "exec": "npx projen"
+        }
+      ]
+    },
+    "watch": {
+      "name": "watch",
+      "description": "Watch & compile in the background",
+      "steps": [
+        {
+          "exec": "jsii -w --silence-warnings=reserved-word --no-fix-peer-dependencies"
         }
       ]
     }
