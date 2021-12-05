@@ -1,6 +1,6 @@
-const { JsiiProject } = require('projen');
+const { cdk } = require('projen');
 
-const project = new JsiiProject({
+const project = new cdk.JsiiProject({
   name: 'constructs',
   description: 'A programming model for software-defined state',
   repository: 'https://github.com/aws/constructs.git',
@@ -54,6 +54,7 @@ const project = new JsiiProject({
 
   stability: 'stable',
   minNodeVersion: '12.7.0',
+  workflowNodeVersion: '12.22.0',
 
   compat: true,
 
