@@ -6,12 +6,12 @@ const project = new cdk.JsiiProject({
   repository: 'https://github.com/aws/constructs.git',
 
   // release branches
-  defaultReleaseBranch: 'main',
-  majorVersion: 3,
-  npmDistTag: 'latest-3',
+  defaultReleaseBranch: '10.x',
+  majorVersion: 10,
+  npmDistTag: 'latest',
 
   releaseBranches: {
-    '10.x': { majorVersion: 10 },
+    '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
   },
 
   // author
