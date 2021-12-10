@@ -9,7 +9,7 @@ const project = new cdk.JsiiProject({
   defaultReleaseBranch: 'main',
   majorVersion: 3,
   npmDistTag: 'latest-3',
-  
+
   releaseBranches: {
     '10.x': { majorVersion: 10 },
   },
