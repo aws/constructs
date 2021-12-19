@@ -52,6 +52,9 @@ jobs:
       contents: write
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -75,6 +78,9 @@ jobs:
       contents: read
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -86,8 +92,6 @@ jobs:
           NPM_DIST_TAG: latest-3
           NPM_REGISTRY: registry.npmjs.org
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-    container:
-      image: jsii/superchain:1-buster-slim-node14
   release_maven:
     name: Publish to Maven Central
     needs: release
@@ -96,6 +100,13 @@ jobs:
       contents: read
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -110,8 +121,6 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_STAGING_PROFILE_ID: ${{ secrets.CONSTRUCTS_MAVEN_STAGING_PROFILE_ID }}
-    container:
-      image: jsii/superchain:1-buster-slim-node14
   release_pypi:
     name: Publish to PyPI
     needs: release
@@ -120,6 +129,12 @@ jobs:
       contents: read
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -130,8 +145,6 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-    container:
-      image: jsii/superchain:1-buster-slim-node14
   release_nuget:
     name: Publish to NuGet Gallery
     needs: release
@@ -140,6 +153,12 @@ jobs:
       contents: read
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.x
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -149,16 +168,17 @@ jobs:
         run: npx -p jsii-release@latest jsii-release-nuget
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-    container:
-      image: jsii/superchain:1-buster-slim-node14
   release_golang:
-    name: Publish to GitHub
+    name: Publish to GitHub Go Module Repository
     needs: release
     runs-on: ubuntu-latest
     permissions:
       contents: read
     if: needs.release.outputs.latest_commit == github.sha
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -170,5 +190,3 @@ jobs:
           GIT_USER_NAME: AWS CDK Team
           GIT_USER_EMAIL: aws-cdk-dev@amazon.com
           GITHUB_TOKEN: ${{ secrets.GO_GITHUB_TOKEN }}
-    container:
-      image: jsii/superchain:1-buster-slim-node14
