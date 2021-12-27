@@ -20,6 +20,7 @@ jobs:
           ref: 3.x
       - name: Set git identity
         run: |-
+          git config --global init.defaultBranch main
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
       - name: Setup Node.js
@@ -34,6 +35,8 @@ jobs:
         id: build
         run: npx projen build && echo "::set-output name=conclusion::success" || echo
           "::set-output name=conclusion::failure"
+      - name: Verify language bindings
+        run: npx projen package-all
       - name: Create Patch
         run: |-
           git add .
@@ -60,6 +63,7 @@ jobs:
           ref: 3.x
       - name: Set git identity
         run: |-
+          git config --global init.defaultBranch main
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
       - name: Download patch
