@@ -42,7 +42,7 @@ export class Node {
   /**
    * The id of this construct within the current scope.
    *
-   * This is a a scope-unique id. To obtain an app-unique id for this construct, use `uniqueId`.
+   * This is a a scope-unique id. To obtain an app-unique id for this construct, use `addr`.
    */
   public readonly id: string;
 
