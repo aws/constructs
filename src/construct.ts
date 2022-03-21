@@ -3,6 +3,8 @@ import { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
 import { addressOf } from './private/uniqueid';
 
+const CONSTRUCT_SYM = Symbol.for('constructs.Construct');
+
 /**
  * Represents a construct.
  */
@@ -422,13 +424,26 @@ export class Node {
 export class Construct implements IConstruct {
   /**
    * Checks if `x` is a construct.
+   *
+   * Use this method instead of `instanceof` to properly detect `Construct`
+   * instances, even when the construct library is symlinked.
+   *
+   * Explanation: in JavaScript, multiple copies of the `constructs` library on
+   * disk are seen as independent, completely different libraries. As a
+   * consequence, the class `Construct` in each copy of the `constructs` library
+   * is seen as a different class, and an instance of one class will not test as
+   * `instanceof` the other class. `npm install` will not create installations
+   * like this, but users may manually symlink construct libraries together or
+   * use a monorepo tool: in those cases, multiple copies of the `constructs`
+   * library can be accidentally installed, and `instanceof` will behave
+   * unpredictably. It is safest to avoid using `instanceof`, and using
+   * this type-testing method instead.
+   *
    * @returns true if `x` is an object created from a class which extends `Construct`.
    * @param x Any object
-   *
-   * @deprecated use `x instanceof Construct` instead
    */
   public static isConstruct(x: any): x is Construct {
-    return x instanceof Construct;
+    return x && typeof x === 'object' && x[CONSTRUCT_SYM];
   }
 
   /**
@@ -536,3 +551,10 @@ export interface MetadataOptions {
    */
   readonly traceFromFunction?: any;
 }
+
+// Mark all instances of 'Construct'
+Object.defineProperty(Construct.prototype, CONSTRUCT_SYM, {
+  value: true,
+  enumerable: false,
+  writable: false,
+});
