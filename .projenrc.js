@@ -56,8 +56,7 @@ const project = new cdk.JsiiProject({
 
   stability: 'stable',
 
-  minNodeVersion: '12.7.0',
-  workflowNodeVersion: '12.22.0',
+  minNodeVersion: '14.17.0',
 
   compat: true,
   projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
