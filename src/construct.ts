@@ -98,7 +98,7 @@ export class Node {
    */
   public get addr(): string {
     if (!this._addr) {
-      this._addr = addressOf(this.scopes.map(c => Node.of(c).id));
+      this._addr = addressOf(this.scopes.map(c => c.node.id));
     }
 
     return this._addr;
