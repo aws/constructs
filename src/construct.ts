@@ -458,7 +458,6 @@ export class Construct implements IConstruct {
    * @param id The scoped construct ID. Must be unique amongst siblings. If
    * the ID includes a path separator (`/`), then it will be replaced by double
    * dash `--`.
-   * @param options Options
    */
   constructor(scope: Construct, id: string) {
     this.node = new Node(this, scope, id);
