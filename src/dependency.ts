@@ -4,7 +4,7 @@ import { IConstruct } from './construct';
  * Trait marker for classes that can be depended upon
  *
  * The presence of this interface indicates that an object has
- * an `Dependable` implementation.
+ * an `IDependable` implementation.
  *
  * This interface can be used to take an (ordering) dependency on a set of
  * constructs. An ordering dependency implies that the resources represented by
