@@ -506,21 +506,6 @@ export enum ConstructOrder {
   POSTORDER
 }
 
-/**
- * Implement this interface in order for the construct to be able to validate itself.
- */
-export interface IValidation {
-  /**
-   * Validate the current construct.
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * validation logic. It is called on all constructs before synthesis.
-   *
-   * @returns An array of validation error messages, or an empty array if there the construct is valid.
-   */
-  validate(): string[];
-}
-
 const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
 
 /**

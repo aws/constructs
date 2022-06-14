@@ -482,17 +482,11 @@ deployed.
 
 
 Implement this interface in order for the construct to be able to validate itself.
-
-Implement this interface in order for the construct to be able to validate itself.
 ### Methods
 
 
 #### validate() <a id="constructs-ivalidation-validate"></a>
 
-Validate the current construct.
-
-This method can be implemented by derived constructs in order to perform
-validation logic. It is called on all constructs before synthesis.
 Validate the current construct.
 
 This method can be implemented by derived constructs in order to perform
