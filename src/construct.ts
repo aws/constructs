@@ -98,7 +98,7 @@ export class Node {
    */
   public get addr(): string {
     if (!this._addr) {
-      this._addr = addressOf(this.scopes.map(c => Node.of(c).id));
+      this._addr = addressOf(this.scopes.map(c => c.node.id));
     }
 
     return this._addr;
@@ -458,7 +458,6 @@ export class Construct implements IConstruct {
    * @param id The scoped construct ID. Must be unique amongst siblings. If
    * the ID includes a path separator (`/`), then it will be replaced by double
    * dash `--`.
-   * @param options Options
    */
   constructor(scope: Construct, id: string) {
     this.node = new Node(this, scope, id);
@@ -505,21 +504,6 @@ export enum ConstructOrder {
    * Depth-first, post-order (leaf nodes first)
    */
   POSTORDER
-}
-
-/**
- * Implement this interface in order for the construct to be able to validate itself.
- */
-export interface IValidation {
-  /**
-   * Validate the current construct.
-   *
-   * This method can be implemented by derived constructs in order to perform
-   * validation logic. It is called on all constructs before synthesis.
-   *
-   * @returns An array of validation error messages, or an empty array if there the construct is valid.
-   */
-  validate(): string[];
 }
 
 const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
