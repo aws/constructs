@@ -69,4 +69,13 @@ const project = new cdk.JsiiProject({
 // disable go sumdb so that go deps are resolved directly against github
 project.tasks.tryFind('package').prependExec('go env -w GOSUMDB=off');
 
+// Also check that our dependency closure is installable using NPM, not just yarn
+// (Not just additional steps, make it separate job)
+project.buildWorkflow?.addPostBuildJobCommands(
+  'installable_with_npm',
+  ['npm --version && npm install'],
+  { checkoutRepo: true },
+);
+
+
 project.synth();
