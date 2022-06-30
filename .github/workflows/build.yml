@@ -201,3 +201,21 @@ jobs:
         run: cd .repo && npx projen package:go
       - name: Collect go Artifact
         run: mv .repo/dist dist
+  installable_with_npm:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    if: "! needs.build.outputs.self_mutation_happened"
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: dist
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - run: npm --version && npm install
