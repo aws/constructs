@@ -28,7 +28,6 @@
     "release:10.x": "npx projen release:10.x",
     "release:3.x": "npx projen release:3.x",
     "test": "npx projen test",
-    "test:update": "npx projen test:update",
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
@@ -57,7 +56,7 @@
     "jsii-pacmak": "^1.69.0",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^15",
-    "projen": "^0.62.25",
+    "projen": "^0.63.0",
     "standard-version": "^9",
     "ts-jest": "^27",
     "typescript": "^3.9.10"
