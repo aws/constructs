@@ -1,4 +1,4 @@
-import { Construct, ConstructOrder, DependencyGroup, Dependable, IConstruct } from '../src';
+import { Construct, ConstructOrder, DependencyGroup, Dependable, IConstruct, IChildHookHandler } from '../src';
 import { App as Root } from './util';
 
 // tslint:disable:variable-name
@@ -302,7 +302,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
 
   const stack = new TestStack();
 
-  const validateTree = (root: Construct) => {
+  const validateTree = (root: IConstruct) => {
     const errors: ValidationError[] = [];
     for (const child of root.node.children) {
       errors.push(...validateTree(child));
@@ -608,6 +608,199 @@ describe('hard deprecations', () => {
     });
   }
 });
+
+describe('childHooks', () => {
+  test('registered hook is invoked for new children', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+    let calls: IConstruct[] = [];
+    root.registerChildHook({
+      handle: (child) => {
+        calls.push(child);
+      },
+    });
+    new Construct(root, 'child2');
+    new Construct(root, 'child3');
+
+    expect(calls.map(c => c.node.path)).toEqual(['child2', 'child3']);
+  });
+
+  test('hooks only called for direct new children', () => {
+    const root = new Root();
+    const child1 = new Construct(root, 'child1');
+    const child2 = new Construct(root, 'child2');
+    const child2sub1 = new Construct(child2, 'child2sub1');
+    let calls: IConstruct[] = [];
+    child2.registerChildHook({
+      handle: (child) => {
+        calls.push(child);
+      },
+    });
+    new Construct(child1, 'sub1');
+    new Construct(child2sub1, 'sub');
+    new Construct(child2, 'sub2');
+    new Construct(root, 'child3');
+
+    expect(calls.map(c => c.node.path)).toEqual(['child2/sub2']);
+  });
+
+  test('hook not called after deregistration', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+    let calls: IConstruct[] = [];
+    const hookObj: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(child);
+      },
+    };
+    root.registerChildHook(hookObj);
+    new Construct(root, 'child2');
+    const res = root.deregisterChildHook(hookObj);
+    new Construct(root, 'child3');
+
+    expect(calls.map(c => c.node.path)).toEqual(['child2']);
+    expect(res).toBeTruthy();
+  });
+
+  test('deregistration only deregister specific passed hook', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+    let calls1: IConstruct[] = [];
+    const hookObj1: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls1.push(child);
+      },
+    };
+    let calls2: IConstruct[] = [];
+    const hookObj2: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls2.push(child);
+      },
+    };
+    let calls3: IConstruct[] = [];
+    const hookObj3: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls3.push(child);
+      },
+    };
+    const res1 = root.deregisterChildHook(hookObj2);
+    root.registerChildHook(hookObj1);
+    root.registerChildHook(hookObj2);
+    root.registerChildHook(hookObj3);
+    new Construct(root, 'child2');
+    const res2 = root.deregisterChildHook(hookObj2);
+    new Construct(root, 'child3');
+
+    expect(calls2.map(c => c.node.path)).toEqual(['child2']);
+    expect(calls1.map(c => c.node.path)).toEqual(['child2', 'child3']);
+    expect(calls3.map(c => c.node.path)).toEqual(['child2', 'child3']);
+    expect(res1).toBeFalsy();
+    expect(res2).toBeTruthy();
+  });
+
+  test('registered hooks are called in registration order', () => {
+    const root = new Root();
+    let calls: string[] = [];
+    const hookObj1: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook1-${child.node.path}`);
+      },
+    };
+    const hookObj2: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook2-${child.node.path}`);
+      },
+    };
+    const hookObj3: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook3-${child.node.path}`);
+      },
+    };
+    root.registerChildHook(hookObj1);
+    root.registerChildHook(hookObj3);
+    root.registerChildHook(hookObj2);
+    new Construct(root, 'child');
+
+    expect(calls).toEqual(
+      ['hook1-child', 'hook3-child', 'hook2-child'],
+    );
+  });
+
+  test('hook registered multiple times is called multiple times', () => {
+    const root = new Root();
+    let calls: string[] = [];
+    const hookObj1: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook1-${child.node.path}`);
+      },
+    };
+    const hookObj2: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook2-${child.node.path}`);
+      },
+    };
+    root.registerChildHook(hookObj1);
+    root.registerChildHook(hookObj2);
+    root.registerChildHook(hookObj1);
+    new Construct(root, 'child');
+
+    expect(calls).toEqual(
+      ['hook1-child', 'hook2-child', 'hook1-child'],
+    );
+  });
+
+  test('hook registered multiple times is dregistered at once', () => {
+    const root = new Root();
+    let calls: string[] = [];
+    const hookObj1: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook1-${child.node.path}`);
+      },
+    };
+    const hookObj2: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook2-${child.node.path}`);
+      },
+    };
+    root.registerChildHook(hookObj1);
+    root.registerChildHook(hookObj2);
+    root.registerChildHook(hookObj1);
+    new Construct(root, 'child1');
+    const res = root.deregisterChildHook(hookObj1);
+    new Construct(root, 'child2');
+
+    expect(calls).toEqual(
+      ['hook1-child1', 'hook2-child1', 'hook1-child1', 'hook2-child2'],
+    );
+    expect(res).toBeTruthy();
+  });
+
+  test('deregistration of non registered hook does nothing', () => {
+    const root = new Root();
+    let calls: string[] = [];
+    const hookObj1: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook1-${child.node.path}`);
+      },
+    };
+    const hookObj2: IChildHookHandler ={
+      handle: (child: IConstruct) => {
+        calls.push(`hook2-${child.node.path}`);
+      },
+    };
+    root.registerChildHook(hookObj1);
+    new Construct(root, 'child1');
+    const res = root.deregisterChildHook(hookObj2);
+    new Construct(root, 'child2');
+
+    expect(calls).toEqual(
+      ['hook1-child1', 'hook1-child2'],
+    );
+    expect(res).toBeFalsy();
+  });
+
+});
+
 
 function createTree(context?: any) {
   const root = new Root();

@@ -22,6 +22,7 @@ Name|Description
 
 Name|Description
 ----|-----------
+[IChildHookHandler](#constructs-ichildhookhandler)|Interface for hooks called after adding child to scope.
 [IConstruct](#constructs-iconstruct)|Represents a construct.
 [IDependable](#constructs-idependable)|Trait marker for classes that can be depended upon.
 [IValidation](#constructs-ivalidation)|Implement this interface in order for the construct to be able to validate itself.
@@ -66,6 +67,35 @@ Name | Type | Description
 **node** | <code>[Node](#constructs-node)</code> | The tree node.
 
 ### Methods
+
+
+#### deregisterChildHook(hook) <a id="constructs-construct-deregisterchildhook"></a>
+
+Deregister a previously registered hook.
+
+If hook was registered multiple times,
+all registrations are removed.
+
+```ts
+deregisterChildHook(hook: IChildHookHandler): boolean
+```
+
+* **hook** (<code>[IChildHookHandler](#constructs-ichildhookhandler)</code>)  : Callable function to be removed.
+
+__Returns__:
+* <code>boolean</code>
+
+#### registerChildHook(hook) <a id="constructs-construct-registerchildhook"></a>
+
+Register a hook for calling after child is added to this scope.
+
+```ts
+registerChildHook(hook: IChildHookHandler): void
+```
+
+* **hook** (<code>[IChildHookHandler](#constructs-ichildhookhandler)</code>)  : Callable function to be called.
+
+
 
 
 #### toString() <a id="constructs-construct-tostring"></a>
@@ -444,6 +474,28 @@ static of(construct: IConstruct): Node
 
 __Returns__:
 * <code>[Node](#constructs-node)</code>
+
+
+
+## interface IChildHookHandler  <a id="constructs-ichildhookhandler"></a>
+
+
+Interface for hooks called after adding child to scope.
+### Methods
+
+
+#### handle(child) <a id="constructs-ichildhookhandler-handle"></a>
+
+
+
+```ts
+handle(child: IConstruct): void
+```
+
+* **child** (<code>[IConstruct](#constructs-iconstruct)</code>)  *No description*
+
+
+
 
 
 

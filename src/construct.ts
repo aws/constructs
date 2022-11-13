@@ -16,6 +16,13 @@ export interface IConstruct extends IDependable {
 }
 
 /**
+ * Interface for hooks called after adding child to scope.
+ */
+export interface IChildHookHandler {
+  handle(child: IConstruct): void;
+}
+
+/**
  * Represents the construct node in the scope tree.
  */
 export class Node {
@@ -447,6 +454,11 @@ export class Construct implements IConstruct {
   }
 
   /**
+   * Internal list of child hooks to be called after child construct is initaliased.
+   */
+  private _childHooks?: IChildHookHandler[];
+
+  /**
    * The tree node.
    */
   public readonly node: Node;
@@ -466,6 +478,7 @@ export class Construct implements IConstruct {
     Dependable.implement(this, {
       dependencyRoots: [this],
     });
+    scope?.applyChildHooks(this);
   }
 
   /**
@@ -473,6 +486,46 @@ export class Construct implements IConstruct {
    */
   public toString() {
     return this.node.path || '<root>';
+  }
+
+  /**
+   * Register a hook for calling after child is added to this scope.
+   *
+   * @param hook: Callable function to be called.
+   */
+  public registerChildHook(hook: IChildHookHandler) {
+    if (this._childHooks === undefined) {
+      this._childHooks = [];
+    }
+    this._childHooks.push(hook);
+  }
+
+  /**
+   * Deregister a previously registered hook.
+   *
+   * If hook was registered multiple times,
+   * all registrations are removed.
+   *
+   * @param hook: Callable function to be removed.
+   * @returns Indicator if hook was found and removed.
+   */
+  public deregisterChildHook(hook: IChildHookHandler): boolean {
+    if (this._childHooks === undefined) {
+      return false;
+    }
+    const preRemoveLength = this._childHooks.length;
+    this._childHooks = this._childHooks.filter((item) => item !== hook);
+    return this._childHooks.length !== preRemoveLength;
+  }
+
+  /**
+   * Internal method to call hooks of scope after
+   * child construct initialization.
+   */
+  private applyChildHooks(child: IConstruct) {
+    for (const hook of this._childHooks ?? []) {
+      hook.handle(child);
+    }
   }
 }
 
