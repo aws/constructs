@@ -1,6 +1,6 @@
+import { App as Root } from './util';
 import { Construct, ConstructMetadata, IConstruct, Node, ConstructOrder, ValidationError } from '../src';
 import { IAspect } from '../src/aspect';
-import { App as Root } from './util';
 
 // tslint:disable:variable-name
 // tslint:disable:max-line-length

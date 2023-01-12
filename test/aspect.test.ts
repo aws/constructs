@@ -1,6 +1,6 @@
+import { App } from './util';
 import { IAspect } from '../src/aspect';
 import { Construct, Node, IConstruct } from '../src/construct';
-import { App } from './util';
 
 class MyConstruct extends Construct {
   public static IsMyConstruct(x: any): x is MyConstruct {
