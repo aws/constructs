@@ -217,13 +217,13 @@ export class Node {
    * Context is usually initialized at the root, but can be overridden at any point in the tree.
    *
    * @param key The context key
-   * @returns The context value or `undefined` if there is no context value for thie key.
+   * @returns The context value or `undefined` if there is no context value for this key.
    */
-  public tryGetContext(key: string): any {
+  public tryGetContext<ContextValue = any>(key: string): ContextValue | undefined {
     const value = this._context[key];
     if (value !== undefined) { return value; }
 
-    return this.scope && this.scope.node.tryGetContext(key);
+    return this.scope && this.scope.node.tryGetContext<ContextValue>(key);
   }
 
   /**
