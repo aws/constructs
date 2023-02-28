@@ -68,6 +68,9 @@ export class Node {
     }
 
     // add to parent scope
+    if (!scope.node) {
+      throw new Error('The provided scope does not have a node property. Please make sure you\'re running version 10+ of the constructs library with this project'); 
+    }
     scope?.node.addChild(host, this.id);
   }
 
