@@ -54,7 +54,7 @@ const project = new cdk.JsiiProject({
   },
 
   stability: 'stable',
-  minNodeVersion: '14.17.0',
+  minNodeVersion: '14.18.0',
 
   compat: true,
 
