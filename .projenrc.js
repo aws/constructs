@@ -65,6 +65,8 @@ const project = new cdk.JsiiProject({
     secret: 'GITHUB_TOKEN',
   },
   autoApproveUpgrades: true,
+
+  jsiiVersion: '5.0.x',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
