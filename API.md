@@ -344,6 +344,21 @@ findChild(id: string): IConstruct
 __Returns__:
 * <code>[IConstruct](#constructs-iconstruct)</code>
 
+#### getContext(key) <a id="constructs-node-getcontext"></a>
+
+Retrieves a value from tree context if present. Otherwise, would throw an error.
+
+Context is usually initialized at the root, but can be overridden at any point in the tree.
+
+```ts
+getContext(key: string): any
+```
+
+* **key** (<code>string</code>)  The context key.
+
+__Returns__:
+* <code>any</code>
+
 #### lock() <a id="constructs-node-lock"></a>
 
 Locks this construct from allowing more children to be added.
