@@ -212,12 +212,32 @@ export class Node {
   }
 
   /**
+   * Retrieves a value from tree context if present. Otherwise, would throw an error.
+   *
+   * Context is usually initialized at the root, but can be overridden at any point in the tree.
+   *
+   * @param key The context key
+   * @returns The context value or throws error if there is no context value for this key
+   */
+  public getContext(key: string): any {
+    const value = this._context[key];
+
+    if (value !== undefined) { return value; }
+
+    if (value === undefined && !this.scope?.node) {
+      throw new Error(`No context value present for ${key} key`);
+    }
+
+    return this.scope && this.scope.node.getContext(key);
+  }
+
+  /**
    * Retrieves a value from tree context.
    *
    * Context is usually initialized at the root, but can be overridden at any point in the tree.
    *
    * @param key The context key
-   * @returns The context value or `undefined` if there is no context value for thie key.
+   * @returns The context value or `undefined` if there is no context value for this key.
    */
   public tryGetContext(key: string): any {
     const value = this._context[key];

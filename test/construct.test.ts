@@ -118,7 +118,39 @@ test('construct.getChild(name) can be used to retrieve a child from a parent', (
   expect(() => root.node.findChild('NotFound')).toThrow(/No child with id: 'NotFound'/);
 });
 
-test('construct.getContext(key) can be used to read a value from context defined at the root level', () => {
+test('construct.getContext(key) can be used to read a value from context', () => {
+  // GIVEN
+  const context = {
+    ctx1: 12,
+    ctx2: 'hello',
+  };
+
+  // WHEN
+  const t = createTree(context);
+
+  // THEN
+  expect(t.child1_2.node.getContext('ctx1')).toBe(12);
+  expect(t.child1_1_1.node.getContext('ctx2')).toBe('hello');
+});
+
+test('construct.getContext(key) throws if context is not defined', () => {
+  // GIVEN
+  const context = {
+    ctx1: 12,
+  };
+
+  // WHEN
+  const t = createTree(context);
+  const key = 'ctx2';
+
+  // THEN
+  expect(t.child1_2.node.getContext('ctx1')).toBe(12);
+  expect(() => {
+    t.child1_1_1.node.getContext(key);
+  }).toThrowError(`No context value present for ${key} key`);
+});
+
+test('construct.tryGetContext(key) can be used to read a value from context defined at the root level', () => {
   const context = {
     ctx1: 12,
     ctx2: 'hello',
@@ -130,7 +162,7 @@ test('construct.getContext(key) can be used to read a value from context defined
 });
 
 // tslint:disable-next-line:max-line-length
-test('construct.setContext(k,v) sets context at some level and construct.getContext(key) will return the lowermost value defined in the stack', () => {
+test('construct.setContext(k,v) sets context at some level and construct.tryGetContext(key) will return the lowermost value defined in the stack', () => {
   const root = new Root();
   const highChild = new Construct(root, 'highChild');
   highChild.node.setContext('c1', 'root');
@@ -161,7 +193,6 @@ test('construct.setContext(k,v) sets context at some level and construct.getCont
   expect(child3.node.tryGetContext('c2')).toBe('child1');
   expect(child3.node.tryGetContext('c3')).toBe('child1');
   expect(child3.node.tryGetContext('c4')).toBe('child3');
-
 });
 
 test('construct.setContext(key, value) can only be called before adding any children', () => {
