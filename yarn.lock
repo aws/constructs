@@ -893,9 +893,9 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*":
-  version "18.15.13"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.13.tgz#f64277c341150c979e42b00e4ac289290c9df469"
-  integrity sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==
+  version "18.16.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.16.0.tgz#4668bc392bb6938637b47e98b1f2ed5426f33316"
+  integrity sha512-BsAaKhB+7X+H4GnSjGhJG9Qi8Tw+inU9nJDwmD5CgOmBLEI6ArdhikpLX7DjbjDRDTbqZzU2LSQNZg8WGPiSZQ==
 
 "@types/node@^14":
   version "14.18.42"
@@ -4341,9 +4341,9 @@ lru-cache@^7.4.4, lru-cache@^7.5.1, lru-cache@^7.7.1:
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
 
 lru-cache@^9.0.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-9.1.0.tgz#19efafa9d08d1c08eb8efd78876075f0b8b1b07b"
-  integrity sha512-qFXQEwchrZcMVen2uIDceR8Tii6kCJak5rzDStfEM0qA3YLMswaxIEZO0DhIbJ3aqaJiDjt+3crlplOb0tDtKQ==
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-9.1.1.tgz#c58a93de58630b688de39ad04ef02ef26f1902f1"
+  integrity sha512-65/Jky17UwSb0BuB9V+MyDpsOtXKmYwzhyl+cOa9XUiI4uV2Ouy/2voFP3+al0BjZbJgMBD8FojMpAf+Z+qn4A==
 
 make-dir@^3.0.0:
   version "3.1.0"
@@ -5176,10 +5176,10 @@ progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.71.21:
-  version "0.71.21"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.71.21.tgz#730a2e5cde370e17b21f83b642e083acf4edf159"
-  integrity sha512-tmVZT2iOix1p5e83dR0jzHUyR5BvUBkmJ9ys1ujJ6RTcuTIuofYr5bIdYDOgIeTfRolLg36gce0d4CEw91XjJg==
+projen@^0.71.22:
+  version "0.71.22"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.71.22.tgz#c9ec594275b3cf24e46fba7245b68740cd236b21"
+  integrity sha512-3+gZv/AaqE+2rO/4m1nMPEIyyyGf9BAmOweAzfsZXOlCvVYA/ZZa8Bqk9Db0ol6xJL80cQI+IuMyJ8KVLs+7cw==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
@@ -6237,9 +6237,9 @@ typedarray@^0.0.6:
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
 typescript@next:
-  version "5.1.0-dev.20230422"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.0-dev.20230422.tgz#cf3af40de0fdfbb76869e47b6438e0d12ba72efc"
-  integrity sha512-3pQCIFhapbpICodEvGKtTBNNnshj77dMDKYeqnjJSZXM2CZ4tWX0eAxDLdzrRG2tXHcqrTFXG3hFaYeYEOvVJw==
+  version "5.1.0-dev.20230423"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.0-dev.20230423.tgz#3967db4b02f14f7cdfab31373cefaf61b84532e4"
+  integrity sha512-WfMjpk8/hc0HGzFMGZcef08plCo/XirSMUlT6r6FfTLw0wIwrdcGDqHkYVaOV/F0EKirZNGpwYEJ30iIausB7g==
 
 typescript@~3.9.10:
   version "3.9.10"
