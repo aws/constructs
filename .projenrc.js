@@ -55,6 +55,7 @@ const project = new cdk.JsiiProject({
 
   stability: 'stable',
   minNodeVersion: '14.17.0',
+  workflowNodeVersion: '14.18.0',
 
   compat: true,
 
@@ -64,6 +65,8 @@ const project = new cdk.JsiiProject({
     secret: 'GITHUB_TOKEN',
   },
   autoApproveUpgrades: true,
+
+  jsiiVersion: '5.0.x',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
