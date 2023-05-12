@@ -701,6 +701,15 @@
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
 
+"@oozcitak/dom@1.15.10":
+  version "1.15.10"
+  resolved "https://registry.yarnpkg.com/@oozcitak/dom/-/dom-1.15.10.tgz#dca7289f2b292cff2a901ea4fbbcc0a1ab0b05c2"
+  integrity sha512-0JT29/LaxVgRcGKvHmSrUTEvZ8BXvZhGl2LASRUgHqDTC1M5g1pLmVv56IYNyt3bG2CUjDkc67wnyZC14pbQrQ==
+  dependencies:
+    "@oozcitak/infra" "1.0.8"
+    "@oozcitak/url" "1.0.4"
+    "@oozcitak/util" "8.3.8"
+
 "@oozcitak/dom@1.15.8":
   version "1.15.8"
   resolved "https://registry.yarnpkg.com/@oozcitak/dom/-/dom-1.15.8.tgz#0c0c7bb54cfdaadc07fd637913e706101721d15d"
@@ -914,10 +923,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.1.1.tgz#afc492e8dbe7f672dd3a13674823522b467a45ad"
   integrity sha512-uKBEevTNb+l6/aCQaKVnUModfEMjAl98lw2Si9P5y4hLu9tm6AlX2ZIoXZX6Wh9lJueYPrGPKk5WMCNHg/u6/A==
 
-"@types/node@^14":
-  version "14.18.46"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.46.tgz#ffc5a96cbe4fb5af9d16ac08e50229de30969487"
-  integrity sha512-n4yVT5FuY5NCcGHCosQSGvvCT74HhowymPN2OEcsHPw6U1NuxV9dvxWbrM2dnBukWjdMYzig1WfIkWdTTQJqng==
+"@types/node@^16":
+  version "16.18.29"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.29.tgz#4b5e19b078513fa5e828b98aede649525e5d1750"
+  integrity sha512-cal+XTYF4JBwG82kw3m9ktTOyUj7GXcO9i2o+t49y/OF+3asYfpHqTROF1UbV91e71g/UB5wNeL5hfqPthzp8Q==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -1558,6 +1567,14 @@ case@^1.6.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/case/-/case-1.6.3.tgz#0a4386e3e9825351ca2e6216c60467ff5f1ea1c9"
   integrity sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==
+
+cdklabs-projen-project-types@^0.1.95:
+  version "0.1.95"
+  resolved "https://registry.yarnpkg.com/cdklabs-projen-project-types/-/cdklabs-projen-project-types-0.1.95.tgz#061fb2d30b995d3cf4bbedd58de874d459854819"
+  integrity sha512-LIyoIf62av3ZWy0khtBd+6tSyHyRKZeJbNMDU1oO0hLbJpfaCMBVy6YY46xDZ2sCGjzzmnCuRoSsANEZPVE7Wg==
+  dependencies:
+    projen "^0.71.52"
+    yaml "^2.2.2"
 
 chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
@@ -4041,7 +4058,7 @@ js-yaml@3.14.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-js-yaml@^3.13.1:
+js-yaml@3.14.1, js-yaml@^3.13.1:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
   integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==
@@ -5308,6 +5325,25 @@ projen@^0.71.48:
     semver "^7.5.0"
     shx "^0.3.4"
     xmlbuilder2 "^2.4.1"
+    yaml "^2.2.2"
+    yargs "^17.7.2"
+
+projen@^0.71.52:
+  version "0.71.53"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.71.53.tgz#52af4ce31ac3945676fab83e1545bccfd22143d9"
+  integrity sha512-lmWaqAn/0YXQYsaTaH2hwEyiaEWf1ZnQJrc1Bo8cyOYqOvYLpzunIgjfEeyrzmCbRiwPbcW3CR4QNDkM6kDhOQ==
+  dependencies:
+    "@iarna/toml" "^2.2.5"
+    case "^1.6.3"
+    chalk "^4.1.2"
+    comment-json "4.2.2"
+    conventional-changelog-config-spec "^2.1.0"
+    fast-json-patch "^3.1.1"
+    glob "^8"
+    ini "^2.0.0"
+    semver "^7.5.0"
+    shx "^0.3.4"
+    xmlbuilder2 "^3.1.1"
     yaml "^2.2.2"
     yargs "^17.7.2"
 
@@ -6715,6 +6751,16 @@ xmlbuilder2@^2.4.1:
     "@oozcitak/util" "8.3.8"
     "@types/node" "*"
     js-yaml "3.14.0"
+
+xmlbuilder2@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder2/-/xmlbuilder2-3.1.1.tgz#b977ef8a6fb27a1ea7ffa7d850d2c007ff343bc0"
+  integrity sha512-WCSfbfZnQDdLQLiMdGUQpMxxckeQ4oZNMNhLVkcekTu7xhD4tuUDyAPoY8CwXvBYE6LwBHd6QW2WZXlOWr1vCw==
+  dependencies:
+    "@oozcitak/dom" "1.15.10"
+    "@oozcitak/infra" "1.0.8"
+    "@oozcitak/util" "8.3.8"
+    js-yaml "3.14.1"
 
 xmlbuilder@^15.1.1:
   version "15.1.1"

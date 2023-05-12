@@ -1,7 +1,8 @@
-const { cdk } = require('projen');
+const { CdklabsJsiiProject } = require('cdklabs-projen-project-types');
 
-const project = new cdk.JsiiProject({
+const project = new CdklabsJsiiProject({
   name: 'constructs',
+  private: false,
   description: 'A programming model for software-defined state',
   repository: 'https://github.com/aws/constructs.git',
 
@@ -12,11 +13,8 @@ const project = new cdk.JsiiProject({
   releaseBranches: {
     '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
   },
+  devDeps: ['cdklabs-projen-project-types'],
 
-  // author
-  authorName: 'Amazon Web Services',
-  authorUrl: 'https://aws.amazon.com',
-  authorOrganization: true,
   homepage: 'https://github.com/aws/constructs',
 
   copyrightPeriod: `2018-${new Date().getFullYear()}`,
@@ -54,8 +52,8 @@ const project = new cdk.JsiiProject({
   },
 
   stability: 'stable',
-  minNodeVersion: '14.17.0',
-  workflowNodeVersion: '14.18.0',
+  minNodeVersion: '16.14.0',
+  workflowNodeVersion: '16.x',
 
   compat: true,
 
