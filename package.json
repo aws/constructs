@@ -55,14 +55,14 @@
     "jsii-docgen": "^1.8.110",
     "jsii-pacmak": "^1.81.0",
     "npm-check-updates": "^16",
-    "projen": "^0.71.62",
+    "projen": "^0.71.64",
     "standard-version": "^9",
     "ts-jest": "^27",
     "typescript": "^3.9.10"
   },
   "resolutions": {
-    "@types/prettier": "2.6.0",
-    "@types/babel__traverse": "7.18.2"
+    "@types/babel__traverse": "7.18.2",
+    "@types/prettier": "2.6.0"
   },
   "keywords": [
     "aws",
