@@ -10,6 +10,8 @@
     ".github/workflows/release.yml",
     ".github/workflows/upgrade-10.x.yml",
     ".github/workflows/upgrade-3.x.yml",
+    ".github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml",
+    ".github/workflows/upgrade-cdklabs-projen-project-types-3.x.yml",
     ".gitignore",
     ".mergify.yml",
     ".npmrc",

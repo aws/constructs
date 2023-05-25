@@ -11,6 +11,8 @@
 /.github/workflows/release.yml linguist-generated
 /.github/workflows/upgrade-10.x.yml linguist-generated
 /.github/workflows/upgrade-3.x.yml linguist-generated
+/.github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml linguist-generated
+/.github/workflows/upgrade-cdklabs-projen-project-types-3.x.yml linguist-generated
 /.gitignore linguist-generated
 /.mergify.yml linguist-generated
 /.npmignore linguist-generated
