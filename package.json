@@ -31,12 +31,13 @@
     "test:watch": "npx projen test:watch",
     "unbump": "npx projen unbump",
     "upgrade": "npx projen upgrade",
+    "upgrade-cdklabs-projen-project-types": "npx projen upgrade-cdklabs-projen-project-types",
     "watch": "npx projen watch",
     "projen": "npx projen"
   },
   "author": {
     "name": "Amazon Web Services",
-    "url": "https://aws.amazon.com",
+    "email": "aws-cdk-dev@amazon.com",
     "organization": true
   },
   "devDependencies": {
@@ -44,6 +45,7 @@
     "@types/node": "^16",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
+    "cdklabs-projen-project-types": "^0.1.134",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.7",
     "eslint-import-resolver-typescript": "^2.7.1",

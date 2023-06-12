@@ -370,6 +370,30 @@
         }
       ]
     },
+    "upgrade-cdklabs-projen-project-types": {
+      "name": "upgrade-cdklabs-projen-project-types",
+      "description": "upgrade cdklabs-projen-project-types",
+      "env": {
+        "CI": "0"
+      },
+      "steps": [
+        {
+          "exec": "yarn upgrade npm-check-updates"
+        },
+        {
+          "exec": "npm-check-updates --filter=cdklabs-projen-project-types,projen --upgrade"
+        },
+        {
+          "exec": "yarn install --check-files"
+        },
+        {
+          "exec": "yarn upgrade cdklabs-projen-project-types projen"
+        },
+        {
+          "exec": "npx projen"
+        }
+      ]
+    },
     "watch": {
       "name": "watch",
       "description": "Watch & compile in the background",
