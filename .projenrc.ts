@@ -1,4 +1,4 @@
-import { CdklabsJsiiProject } from 'cdklabs-projen-project-types';
+import { CdklabsJsiiProject, OrgTenancy } from 'cdklabs-projen-project-types';
 
 const project = new CdklabsJsiiProject({
   name: 'constructs',
@@ -6,8 +6,6 @@ const project = new CdklabsJsiiProject({
   private: false,
   description: 'A programming model for software-defined state',
   repositoryUrl: 'https://github.com/aws/constructs.git',
-  author: 'Amazon Web Services',
-  authorAddress: 'aws-cdk-dev@amazon.com',
 
   // release branches
   defaultReleaseBranch: '10.x',
@@ -17,7 +15,11 @@ const project = new CdklabsJsiiProject({
     '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
   },
   devDeps: ['cdklabs-projen-project-types'],
+  tenancy: OrgTenancy.AWS,
 
+  // author
+  author: 'Amazon Web Services',
+  authorAddress: 'aws-cdk-dev@amazon.com',
   homepage: 'https://github.com/aws/constructs',
 
   copyrightPeriod: `2018-${new Date().getFullYear()}`,
