@@ -1,10 +1,13 @@
-const { CdklabsJsiiProject } = require('cdklabs-projen-project-types');
+import { CdklabsJsiiProject } from 'cdklabs-projen-project-types';
 
 const project = new CdklabsJsiiProject({
   name: 'constructs',
+  projenrcTs: true,
   private: false,
   description: 'A programming model for software-defined state',
-  repository: 'https://github.com/aws/constructs.git',
+  repositoryUrl: 'https://github.com/aws/constructs.git',
+  author: 'Amazon Web Services',
+  authorAddress: 'aws-cdk-dev@amazon.com',
 
   // release branches
   defaultReleaseBranch: '10.x',
@@ -57,7 +60,6 @@ const project = new CdklabsJsiiProject({
 
   compat: true,
 
-  projenUpgradeSecret: 'PROJEN_GITHUB_TOKEN',
   autoApproveOptions: {
     allowedUsernames: ['cdklabs-automation'],
     secret: 'GITHUB_TOKEN',
@@ -68,7 +70,7 @@ const project = new CdklabsJsiiProject({
 });
 
 // disable go sumdb so that go deps are resolved directly against github
-project.tasks.tryFind('package').prependExec('go env -w GOSUMDB=off');
+project.tasks.tryFind('package')?.prependExec('go env -w GOSUMDB=off');
 
 // Also check that our dependency closure is installable using NPM, not just yarn
 // (Not just additional steps, make it separate job)
