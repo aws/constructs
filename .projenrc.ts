@@ -1,4 +1,4 @@
-import { CdklabsJsiiProject, OrgTenancy } from 'cdklabs-projen-project-types';
+import { CdklabsJsiiProject } from 'cdklabs-projen-project-types';
 
 const project = new CdklabsJsiiProject({
   name: 'constructs',
@@ -16,7 +16,6 @@ const project = new CdklabsJsiiProject({
     '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
   },
   devDeps: ['cdklabs-projen-project-types'],
-  tenancy: OrgTenancy.CDKLABS,
 
   // author
   author: 'Amazon Web Services',
