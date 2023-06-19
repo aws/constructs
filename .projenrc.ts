@@ -16,7 +16,7 @@ const project = new CdklabsJsiiProject({
     '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
   },
   devDeps: ['cdklabs-projen-project-types'],
-  tenancy: OrgTenancy.AWS,
+  tenancy: OrgTenancy.CDKLABS,
 
   // author
   author: 'Amazon Web Services',
