@@ -81,5 +81,6 @@ project.buildWorkflow?.addPostBuildJobCommands(
   { checkoutRepo: true },
 );
 
+project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
 project.synth();
