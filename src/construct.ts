@@ -77,7 +77,12 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = this.scopes.filter(c => c.node.id).map(c => c.node.id);
+    const components = [];
+    for (const scope of this.scopes) {
+      if (scope.node.id) {
+        components.push(scope.node.id);
+      }
+    }
     return components.join(Node.PATH_SEP);
   }
 
@@ -417,21 +422,13 @@ export class Node {
       throw new Error(`Cannot add children to "${this.path}" during synthesis`);
     }
 
-    if (childName in this._children) {
+    if (this._children[childName]) {
       const name = this.id ?? '';
       const typeName = this.host.constructor.name;
       throw new Error(`There is already a Construct with name '${childName}' in ${typeName}${name.length > 0 ? ' [' + name + ']' : ''}`);
     }
 
-    if (!childName && this.id) {
-      throw new Error(`cannot add a nameless construct to the named scope: ${this.path}`);
-    }
-
     this._children[childName] = child;
-
-    if (Object.keys(this._children).length > 1 && Object.keys(this._children).filter(x => !x).length > 0) {
-      throw new Error('only a single construct is allowed in a scope if it has an empty name');
-    }
   }
 }
 
