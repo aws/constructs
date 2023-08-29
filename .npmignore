@@ -22,3 +22,5 @@ dist
 tsconfig.tsbuildinfo
 /.eslintrc.json
 !.jsii
+/scripts/
+.projenrc.ts
