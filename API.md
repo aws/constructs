@@ -344,6 +344,21 @@ findChild(id: string): IConstruct
 __Returns__:
 * <code>[IConstruct](#constructs-iconstruct)</code>
 
+#### getAllContext(defaults?) <a id="constructs-node-getallcontext"></a>
+
+Retrieves the all context of a node from tree context.
+
+Context is usually initialized at the root, but can be overridden at any point in the tree.
+
+```ts
+getAllContext(defaults?: json): any
+```
+
+* **defaults** (<code>json</code>)  Any keys to override the retrieved context.
+
+__Returns__:
+* <code>any</code>
+
 #### getContext(key) <a id="constructs-node-getcontext"></a>
 
 Retrieves a value from tree context if present. Otherwise, would throw an error.

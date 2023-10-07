@@ -44,7 +44,7 @@ export class Node {
   /**
    * The id of this construct within the current scope.
    *
-   * This is a a scope-unique id. To obtain an app-unique id for this construct, use `addr`.
+   * This is a scope-unique id. To obtain an app-unique id for this construct, use `addr`.
    */
   public readonly id: string;
 
@@ -234,6 +234,25 @@ export class Node {
     }
 
     return this.scope && this.scope.node.getContext(key);
+  }
+
+  /**
+   * Retrieves the all context of a node from tree context.
+   *
+   * Context is usually initialized at the root, but can be overridden at any point in the tree.
+   *
+   * @param defaults Any keys to override the retrieved context
+   * @returns The context object or an empty object if there is discovered context
+   */
+  public getAllContext(defaults?: object): any {
+    if (typeof defaults === 'undefined') {
+      defaults = {};
+    }
+
+    if (this.scope === undefined) { return defaults; }
+
+    const value = { ...this._context, ...defaults };
+    return this.scope && this.scope.node.getAllContext(value);
   }
 
   /**
