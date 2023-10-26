@@ -2,7 +2,7 @@
 
 > Software-defined persistent state
 
-![Release](https://github.com/aws/constructs/workflows/release.yml/badge.svg)
+[![Release](https://github.com/aws/constructs/actions/workflows/release.yml/badge.svg)](https://github.com/aws/constructs/actions/workflows/release.yml)
 [![npm version](https://badge.fury.io/js/constructs.svg)](https://badge.fury.io/js/constructs)
 [![PyPI version](https://badge.fury.io/py/constructs.svg)](https://badge.fury.io/py/constructs)
 [![NuGet version](https://badge.fury.io/nu/Constructs.svg)](https://badge.fury.io/nu/Constructs)
