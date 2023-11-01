@@ -400,19 +400,7 @@ export class Node {
    * construct.
    */
   public validate(): string[] {
-    const deprecated = ['validate', 'onValidate', 'synthesize', 'onSynthesize', 'prepare', 'onPrepare'];
-    for (const method of deprecated) {
-      if (typeof((this.host as any)[method]) === 'function') {
-        throw new Error(`the construct "${this.path}" has a "${method}()" method which is no longer supported. Use "construct.node.addValidation()" to add validations to a construct`);
-      }
-    }
-
-    const errors = new Array<string>();
-    for (const v of this._validations) {
-      errors.push(...v.validate());
-    }
-
-    return errors;
+    return this._validations.flatMap(v => v.validate());
   }
 
   /**
