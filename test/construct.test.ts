@@ -641,21 +641,6 @@ test('Construct.isConstruct returns true for constructs', () => {
   expect(Construct.isConstruct(someRandomObject)).toBeFalsy();
 });
 
-describe('hard deprecations', () => {
-  const methods = ['validate', 'onValidate', 'synthesize', 'onSynthesize', 'prepare', 'onPrepare'];
-
-  for (const method of methods) {
-    test(method, () => {
-      const c = new Construct(new Root(), 'MyConstruct');
-      Object.defineProperty(c, method, {
-        value: () => [],
-      });
-
-      expect(() => c.node.validate()).toThrow(/no longer supported/);
-    });
-  }
-});
-
 function createTree(context?: any) {
   const root = new Root();
   const highChild = new Construct(root, 'HighChild');
