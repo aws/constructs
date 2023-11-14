@@ -83,4 +83,7 @@ project.buildWorkflow?.addPostBuildJobCommands(
 
 project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
+// cdklabs-projen-project-types is overzealous about adding this dependency
+project.deps.removeDependency('constructs');
+
 project.synth();
