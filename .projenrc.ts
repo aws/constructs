@@ -82,5 +82,7 @@ project.buildWorkflow?.addPostBuildJobCommands(
   { checkoutRepo: true },
 );
 
+// cdklabs-projen-project-types is overzealous about adding this dependency
+project.deps.removeDependency('constructs');
 
 project.synth();
