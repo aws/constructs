@@ -67,7 +67,8 @@ const project = new CdklabsJsiiProject({
   },
   autoApproveUpgrades: true,
 
-  jsiiVersion: '5.0.x',
+  jsiiVersion: '~5.2.0',
+  typescriptVersion: '~5.2.0',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
@@ -85,5 +86,13 @@ project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
 // cdklabs-projen-project-types is overzealous about adding this dependency
 project.deps.removeDependency('constructs');
+
+// Fix Jest 29 warning about deprecated config in `globals`
+project.jest!.config.transform ??= {};
+project.jest!.config.transform['\\.ts$'] = [
+  'ts-jest',
+  project.jest?.config.globals['ts-jest'],
+];
+delete project.jest!.config.globals['ts-jest'];
 
 project.synth();
