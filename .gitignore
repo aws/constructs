@@ -31,7 +31,6 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
-!/.projenrc.js
 /test-reports/
 junit.xml
 /coverage/
@@ -57,3 +56,4 @@ tsconfig.json
 !/.github/workflows/upgrade-3.x.yml
 !/.github/workflows/upgrade-dev-deps-10.x.yml
 !/.github/workflows/upgrade-dev-deps-3.x.yml
+!/.projenrc.ts
