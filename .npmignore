@@ -24,3 +24,5 @@ tsconfig.tsbuildinfo
 !.jsii
 /scripts/
 .projenrc.ts
+/.gitattributes
+/.projenrc.ts
