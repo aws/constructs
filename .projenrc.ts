@@ -56,8 +56,8 @@ const project = new CdklabsJsiiProject({
   },
 
   stability: 'stable',
-  minNodeVersion: '16.14.0',
-  workflowNodeVersion: '16.x',
+  minNodeVersion: '18.12.0',
+  workflowNodeVersion: '18.x',
 
   compat: true,
 
