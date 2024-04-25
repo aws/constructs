@@ -1916,9 +1916,9 @@ downlevel-dts@^0.11.0:
     typescript next
 
 electron-to-chromium@^1.4.668:
-  version "1.4.747"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.747.tgz#e37fa5b7b7e4c22607c5f59b5cf78f947266e77d"
-  integrity sha512-+FnSWZIAvFHbsNVmUxhEqWiaOiPMcfum1GQzlWCg/wLigVtshOsjXHyEFfmt6cFK6+HkS3QOJBv6/3OPumbBfw==
+  version "1.4.748"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.748.tgz#aa7d4f2f3eac3a6a863cd1779bd4682b4bb68ed5"
+  integrity sha512-VWqjOlPZn70UZ8FTKUOkUvBLeTQ0xpty66qV0yJcAGY2/CthI4xyW9aEozRVtuwv3Kpf5xTesmJUcPwuJmgP4A==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -5158,9 +5158,9 @@ typedarray@^0.0.6:
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
 typescript@next:
-  version "5.5.0-dev.20240423"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.0-dev.20240423.tgz#eace2402fc7e4428b3b1e1a97d34518401dd35dc"
-  integrity sha512-4/ZRU+Mu0ckZV71Bb5ikMBYPAVD6zqGoNQ7ETFezcOIiv3dUxAwWVicdPKZLqokV7NRbtDLuSj+tyVZJN/jEzw==
+  version "5.5.0-dev.20240424"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.0-dev.20240424.tgz#42ea13292d0055946d2627b73db37b59b16f060b"
+  integrity sha512-gX3baGVamMRrQTd2nNBh+GC5/5Dhx08BnatGKOURQ8Dx29K/JjOToj+VrIFUKE76CzmT/pHQKz++l7NDTSBBOQ==
 
 typescript@~3.9.10:
   version "3.9.10"
