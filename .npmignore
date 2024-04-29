@@ -26,3 +26,4 @@ tsconfig.tsbuildinfo
 .projenrc.ts
 /.gitattributes
 /.projenrc.ts
+/projenrc
