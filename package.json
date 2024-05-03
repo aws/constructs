@@ -3,7 +3,7 @@
   "description": "A programming model for composable configuration",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aws/constructs.git"
+    "url": "https://github.com/cdklabs/constructs.git"
   },
   "scripts": {
     "build": "npx projen build",
@@ -46,7 +46,7 @@
     "@types/node": "^16 <= 16.18.78",
     "@typescript-eslint/eslint-plugin": "^6",
     "@typescript-eslint/parser": "^6",
-    "cdklabs-projen-project-types": "^0.1.195",
+    "cdklabs-projen-project-types": "^0.1.196",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.29.1",
