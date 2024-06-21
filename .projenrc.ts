@@ -24,12 +24,7 @@ const project = new CdklabsJsiiProject({
   copyrightPeriod: `2018-${new Date().getFullYear()}`,
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
 
-  keywords: [
-    'aws',
-    'constructs',
-    'cdk',
-    'jsii',
-  ],
+  keywords: ['aws', 'constructs', 'cdk', 'jsii'],
 
   publishToMaven: {
     javaPackage: 'software.constructs',
@@ -67,7 +62,8 @@ const project = new CdklabsJsiiProject({
   },
   autoApproveUpgrades: true,
 
-  jsiiVersion: '5.0.x',
+  jsiiVersion: '5.4.x',
+  typescriptVersion: '5.4.x',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
