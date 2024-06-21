@@ -24,12 +24,7 @@ const project = new CdklabsJsiiProject({
   copyrightPeriod: `2018-${new Date().getFullYear()}`,
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
 
-  keywords: [
-    'aws',
-    'constructs',
-    'cdk',
-    'jsii',
-  ],
+  keywords: ['aws', 'constructs', 'cdk', 'jsii'],
 
   publishToMaven: {
     javaPackage: 'software.constructs',
@@ -67,8 +62,8 @@ const project = new CdklabsJsiiProject({
   },
   autoApproveUpgrades: true,
 
-  jsiiVersion: '~5.2.0',
-  typescriptVersion: '~5.2.0',
+  jsiiVersion: '5.4.x',
+  typescriptVersion: '5.4.x',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
@@ -86,13 +81,5 @@ project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
 // cdklabs-projen-project-types is overzealous about adding this dependency
 project.deps.removeDependency('constructs');
-
-// Fix Jest 29 warning about deprecated config in `globals`
-project.jest!.config.transform ??= {};
-project.jest!.config.transform['\\.ts$'] = [
-  'ts-jest',
-  project.jest?.config.globals['ts-jest'],
-];
-delete project.jest!.config.globals['ts-jest'];
 
 project.synth();
