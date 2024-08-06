@@ -279,8 +279,9 @@ export class Node {
   }
 
   /**
-   * Adds a metadata entry to the CDK construct tree. View modification in Cloud Assembly manifest.json.
-   * Not written to Cloudformation template.
+   * Adds a metadata entry to this construct.
+   * Note that construct metadata is not the same as CloudFormation resource metadata and is never written to the CloudFormation template.
+   * The metadata entries are written to the Cloud Assembly Manifest if the treeMetadata property is specified in the props of the App that contains this Construct.
    *
    * @param type a string denoting the type of metadata
    * @param data the value of the metadata (can be a Token). If null/undefined, metadata will not be added.
