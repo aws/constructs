@@ -279,10 +279,8 @@ export class Node {
   }
 
   /**
-   * Adds a metadata entry to this construct.
-   * Entries are arbitrary values and will also include a stack trace to allow tracing back to
-   * the code location for when the entry was added. It can be used, for example, to include source
-   * mapping in CloudFormation templates to improve diagnostics.
+   * Adds a metadata entry to the CDK construct tree. View modification in Cloud Assembly manifest.json.
+   * Not written to Cloudformation template.
    *
    * @param type a string denoting the type of metadata
    * @param data the value of the metadata (can be a Token). If null/undefined, metadata will not be added.
