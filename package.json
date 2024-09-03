@@ -50,7 +50,7 @@
     "commit-and-tag-version": "^12",
     "eslint": "^8",
     "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.30.0",
     "jest": "^29",
     "jest-junit": "^15",
     "jsii": "5.4.x",
