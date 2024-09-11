@@ -454,7 +454,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 ##### `addDependency` <a name="addDependency" id="constructs.Node.addDependency"></a>
 
 ```typescript
-public addDependency(dependencies: IConstruct): void
+public addDependency(dependencies: ...IConstruct[]): void
 ```
 
 Add an ordering dependency on another Construct.
@@ -464,7 +464,7 @@ construct in this construct's scope.
 
 ###### `dependencies`<sup>Required</sup> <a name="dependencies" id="constructs.Node.addDependency.parameter.dependencies"></a>
 
-- *Type:* <a href="#constructs.IConstruct">IConstruct</a>
+- *Type:* ...<a href="#constructs.IConstruct">IConstruct</a>[]
 
 ---
 
