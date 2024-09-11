@@ -376,18 +376,18 @@ construct tree needs to be combined to be used as a single dependable.
 ```typescript
 import { DependencyGroup } from 'constructs'
 
-new DependencyGroup(deps: IDependable)
+new DependencyGroup(deps: ...IDependable[])
 ```
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#constructs.DependencyGroup.Initializer.parameter.deps">deps</a></code> | <code><a href="#constructs.IDependable">IDependable</a></code> | *No description.* |
+| <code><a href="#constructs.DependencyGroup.Initializer.parameter.deps">deps</a></code> | <code>...<a href="#constructs.IDependable">IDependable</a>[]</code> | *No description.* |
 
 ---
 
 ##### `deps`<sup>Required</sup> <a name="deps" id="constructs.DependencyGroup.Initializer.parameter.deps"></a>
 
-- *Type:* <a href="#constructs.IDependable">IDependable</a>
+- *Type:* ...<a href="#constructs.IDependable">IDependable</a>[]
 
 ---
 
@@ -402,14 +402,14 @@ new DependencyGroup(deps: IDependable)
 ##### `add` <a name="add" id="constructs.DependencyGroup.add"></a>
 
 ```typescript
-public add(scopes: IDependable): void
+public add(scopes: ...IDependable[]): void
 ```
 
 Add a construct to the dependency roots.
 
 ###### `scopes`<sup>Required</sup> <a name="scopes" id="constructs.DependencyGroup.add.parameter.scopes"></a>
 
-- *Type:* <a href="#constructs.IDependable">IDependable</a>
+- *Type:* ...<a href="#constructs.IDependable">IDependable</a>[]
 
 ---
 
@@ -477,7 +477,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 ##### `addDependency` <a name="addDependency" id="constructs.Node.addDependency"></a>
 
 ```typescript
-public addDependency(deps: IDependable): void
+public addDependency(deps: ...IDependable[]): void
 ```
 
 Add an ordering dependency on another construct.
@@ -486,7 +486,7 @@ An `IDependable`
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="constructs.Node.addDependency.parameter.deps"></a>
 
-- *Type:* <a href="#constructs.IDependable">IDependable</a>
+- *Type:* ...<a href="#constructs.IDependable">IDependable</a>[]
 
 ---
 
