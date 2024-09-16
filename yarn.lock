@@ -1437,9 +1437,9 @@ comment-json@4.2.2:
     repeat-string "^1.6.1"
 
 commit-and-tag-version@^12:
-  version "12.4.3"
-  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-12.4.3.tgz#e1d596b118156b8cd4ea333a5d3cbefe98322eb0"
-  integrity sha512-q+DaQ4QmvDjU3QBUfZmiH3CCL5Jf3saJ0I9dI1hL9equA4ZosoOkg3eya5q0qAc5T0eow+gF0DfKZskRbm4Shw==
+  version "12.4.4"
+  resolved "https://registry.yarnpkg.com/commit-and-tag-version/-/commit-and-tag-version-12.4.4.tgz#7c3db19f9f7a7b8039c1335df6dc78976b94967e"
+  integrity sha512-sK+69usdfluwRO6DtXs8wpRvyM9OAuV6y8kTgMj+ncRG3KrXeKjNcxFsWnnwH/KZU9k8ErKu5uQ1ptX6/pPk7A==
   dependencies:
     chalk "^2.4.2"
     conventional-changelog "4.0.0"
@@ -4997,9 +4997,9 @@ typescript@5.4.x, typescript@~5.4:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 typescript@next:
-  version "5.7.0-dev.20240914"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.0-dev.20240914.tgz#509164972bac727f30d92c1af1ba5455f02b983b"
-  integrity sha512-FFOqgbzyxpBRq2YcKTQTAuurIKiU5A0VoWwDDnSjHPDHDbs3eriLiMIj8BExs2Soz7Wr+HxMJkbAZ0RCgvoIZg==
+  version "5.7.0-dev.20240915"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.0-dev.20240915.tgz#aff28833009d26116378bea0ea68d36ae32d6a57"
+  integrity sha512-DpaEZn4KstKaVrFUxGv+zOrJVIFJJaf/lTPedsVRrnhrs/yysIhXlr40nHDNH1TznDWPit6UKYoKp/6/YPvlpQ==
 
 uglify-js@^3.1.4:
   version "3.19.3"
