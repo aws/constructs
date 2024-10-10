@@ -246,7 +246,7 @@ export class Node {
    */
   public getAllContext(defaults?: object): any {
     return this.scopes.reverse()
-        .reduce((a, s) => ({ ...(s.node._context), ...a }), { ...defaults });
+      .reduce((a, s) => ({ ...(s.node._context), ...a }), { ...defaults });
   }
 
   /**

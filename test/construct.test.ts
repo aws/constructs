@@ -160,7 +160,7 @@ test('construct.getAllContext can be used to read the full context of a root nod
   // WHEN
   const t = new Root();
   for (const [k, v] of Object.entries(context)) {
-      t.node.setContext(k, v);
+    t.node.setContext(k, v);
   }
 
   // THEN
