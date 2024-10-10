@@ -245,14 +245,8 @@ export class Node {
    * @returns The context object or an empty object if there is discovered context
    */
   public getAllContext(defaults?: object): any {
-    if (typeof defaults === 'undefined') {
-      defaults = {};
-    }
-
-    if (this.scope === undefined) { return defaults; }
-
-    const value = { ...this._context, ...defaults };
-    return this.scope && this.scope.node.getAllContext(value);
+    return this.scopes.reverse()
+      .reduce((a, s) => ({ ...(s.node._context), ...a }), { ...defaults });
   }
 
   /**

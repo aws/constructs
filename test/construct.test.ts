@@ -150,6 +150,23 @@ test('construct.getContext(key) throws if context is not defined', () => {
   }).toThrowError(`No context value present for ${key} key`);
 });
 
+test('construct.getAllContext can be used to read the full context of a root node', () => {
+  // GIVEN
+  const context = {
+    ctx1: 12,
+    ctx2: 'hello',
+  };
+
+  // WHEN
+  const t = new Root();
+  for (const [k, v] of Object.entries(context)) {
+    t.node.setContext(k, v);
+  }
+
+  // THEN
+  expect(t.node.getAllContext()).toStrictEqual(context);
+});
+
 test('construct.getAllContext can be used to read the full context of a node', () => {
   // GIVEN
   const context = {
