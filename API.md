@@ -123,6 +123,116 @@ The tree node.
 ---
 
 
+### RootConstruct <a name="RootConstruct" id="constructs.RootConstruct"></a>
+
+Creates a new root construct node.
+
+The root construct represents the top of the construct tree and is not contained within a parent scope itself.
+For root constructs, the id is optional.
+
+#### Initializers <a name="Initializers" id="constructs.RootConstruct.Initializer"></a>
+
+```typescript
+import { RootConstruct } from 'constructs'
+
+new RootConstruct(id?: string)
+```
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#constructs.RootConstruct.Initializer.parameter.id">id</a></code> | <code>string</code> | The scoped construct ID. |
+
+---
+
+##### `id`<sup>Optional</sup> <a name="id" id="constructs.RootConstruct.Initializer.parameter.id"></a>
+
+- *Type:* string
+
+The scoped construct ID.
+
+Must be unique amongst siblings. If
+the ID includes a path separator (`/`), then it will be replaced by double
+dash `--`.
+
+---
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#constructs.RootConstruct.toString">toString</a></code> | Returns a string representation of this construct. |
+
+---
+
+##### `toString` <a name="toString" id="constructs.RootConstruct.toString"></a>
+
+```typescript
+public toString(): string
+```
+
+Returns a string representation of this construct.
+
+#### Static Functions <a name="Static Functions" id="Static Functions"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#constructs.RootConstruct.isConstruct">isConstruct</a></code> | Checks if `x` is a construct. |
+
+---
+
+##### `isConstruct` <a name="isConstruct" id="constructs.RootConstruct.isConstruct"></a>
+
+```typescript
+import { RootConstruct } from 'constructs'
+
+RootConstruct.isConstruct(x: any)
+```
+
+Checks if `x` is a construct.
+
+Use this method instead of `instanceof` to properly detect `Construct`
+instances, even when the construct library is symlinked.
+
+Explanation: in JavaScript, multiple copies of the `constructs` library on
+disk are seen as independent, completely different libraries. As a
+consequence, the class `Construct` in each copy of the `constructs` library
+is seen as a different class, and an instance of one class will not test as
+`instanceof` the other class. `npm install` will not create installations
+like this, but users may manually symlink construct libraries together or
+use a monorepo tool: in those cases, multiple copies of the `constructs`
+library can be accidentally installed, and `instanceof` will behave
+unpredictably. It is safest to avoid using `instanceof`, and using
+this type-testing method instead.
+
+###### `x`<sup>Required</sup> <a name="x" id="constructs.RootConstruct.isConstruct.parameter.x"></a>
+
+- *Type:* any
+
+Any object.
+
+---
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#constructs.RootConstruct.property.node">node</a></code> | <code><a href="#constructs.Node">Node</a></code> | The tree node. |
+
+---
+
+##### `node`<sup>Required</sup> <a name="node" id="constructs.RootConstruct.property.node"></a>
+
+```typescript
+public readonly node: Node;
+```
+
+- *Type:* <a href="#constructs.Node">Node</a>
+
+The tree node.
+
+---
+
+
 ## Structs <a name="Structs" id="Structs"></a>
 
 ### MetadataEntry <a name="MetadataEntry" id="constructs.MetadataEntry"></a>
@@ -952,7 +1062,7 @@ Separator used to delimit construct path components.
 
 - *Extends:* <a href="#constructs.IDependable">IDependable</a>
 
-- *Implemented By:* <a href="#constructs.Construct">Construct</a>, cdklabs-projen-project-types.yarn.CdkLabsMonorepo, cdklabs-projen-project-types.yarn.Monorepo, cdklabs-projen-project-types.yarn.MonorepoRelease, cdklabs-projen-project-types.yarn.TypeScriptWorkspace, cdklabs-projen-project-types.yarn.WorkspaceRelease, cdklabs-projen-project-types.AutoMerge, cdklabs-projen-project-types.CdkConstructLibrary, cdklabs-projen-project-types.CdkJsiiProject, cdklabs-projen-project-types.CdkTypeScriptProject, cdklabs-projen-project-types.CdklabsConstructLibrary, cdklabs-projen-project-types.CdklabsJsiiProject, cdklabs-projen-project-types.CdklabsTypeScriptProject, cdklabs-projen-project-types.MergeQueue, cdklabs-projen-project-types.Rosetta, projen.awscdk.AutoDiscover, projen.awscdk.AwsCdkConstructLibrary, projen.awscdk.AwsCdkDeps, projen.awscdk.AwsCdkDepsJava, projen.awscdk.AwsCdkDepsJs, projen.awscdk.AwsCdkDepsPy, projen.awscdk.AwsCdkJavaApp, projen.awscdk.AwsCdkPythonApp, projen.awscdk.AwsCdkTypeScriptApp, projen.awscdk.CdkConfig, projen.awscdk.CdkTasks, projen.awscdk.ConstructLibraryAws, projen.awscdk.EdgeLambdaAutoDiscover, projen.awscdk.IntegrationTest, projen.awscdk.IntegrationTestAutoDiscover, projen.awscdk.LambdaAutoDiscover, projen.awscdk.LambdaExtension, projen.awscdk.LambdaExtensionAutoDiscover, projen.awscdk.LambdaFunction, projen.build.BuildWorkflow, projen.cdk.AutoDiscoverBase, projen.cdk.ConstructLibrary, projen.cdk.IntegrationTestAutoDiscoverBase, projen.cdk.IntegrationTestBase, projen.cdk.JsiiDocgen, projen.cdk.JsiiProject, projen.cdk8s.AutoDiscover, projen.cdk8s.Cdk8sDeps, projen.cdk8s.Cdk8sDepsPy, projen.cdk8s.Cdk8sPythonApp, projen.cdk8s.Cdk8sTypeScriptApp, projen.cdk8s.ConstructLibraryCdk8s, projen.cdk8s.IntegrationTest, projen.cdk8s.IntegrationTestAutoDiscover, projen.cdktf.ConstructLibraryCdktf, projen.circleci.Circleci, projen.github.AutoApprove, projen.github.AutoMerge, projen.github.Dependabot, projen.github.GitHub, projen.github.GitHubProject, projen.github.GithubWorkflow, projen.github.Mergify, projen.github.PullRequestBackport, projen.github.PullRequestLint, projen.github.PullRequestTemplate, projen.github.Stale, projen.github.TaskWorkflow, projen.github.TaskWorkflowJob, projen.gitlab.CiConfiguration, projen.gitlab.GitlabConfiguration, projen.gitlab.NestedConfiguration, projen.java.JavaProject, projen.java.Junit, projen.java.MavenCompile, projen.java.MavenPackaging, projen.java.MavenSample, projen.java.Pom, projen.java.Projenrc, projen.javascript.Bundler, projen.javascript.Eslint, projen.javascript.Jest, projen.javascript.LicenseChecker, projen.javascript.NodePackage, projen.javascript.NodeProject, projen.javascript.NpmConfig, projen.javascript.Prettier, projen.javascript.Projenrc, projen.javascript.TypescriptConfig, projen.javascript.UpgradeDependencies, projen.javascript.Yarnrc, projen.python.Pip, projen.python.Poetry, projen.python.PoetryPyproject, projen.python.Projenrc, projen.python.Pytest, projen.python.PytestSample, projen.python.PythonProject, projen.python.PythonSample, projen.python.RequirementsFile, projen.python.SetupPy, projen.python.Setuptools, projen.python.Venv, projen.release.Publisher, projen.release.Release, projen.typescript.Projenrc, projen.typescript.ProjenrcTs, projen.typescript.TypeScriptAppProject, projen.typescript.TypeScriptLibraryProject, projen.typescript.TypeScriptProject, projen.vscode.DevContainer, projen.vscode.VsCode, projen.vscode.VsCodeLaunchConfig, projen.vscode.VsCodeRecommendedExtensions, projen.vscode.VsCodeSettings, projen.web.NextComponent, projen.web.NextJsProject, projen.web.NextJsTypeScriptProject, projen.web.ReactComponent, projen.web.ReactProject, projen.web.ReactTypeDef, projen.web.ReactTypeScriptProject, projen.Component, projen.Dependencies, projen.DockerCompose, projen.FileBase, projen.GitAttributesFile, projen.Gitpod, projen.IgnoreFile, projen.IniFile, projen.JsonFile, projen.License, projen.Logger, projen.Makefile, projen.ObjectFile, projen.Project, projen.ProjectBuild, projen.ProjectTree, projen.Projenrc, projen.ProjenrcFile, projen.ProjenrcJson, projen.Renovatebot, projen.SampleDir, projen.SampleFile, projen.SampleReadme, projen.SourceCode, projen.Tasks, projen.TextFile, projen.TomlFile, projen.Version, projen.XmlFile, projen.YamlFile, <a href="#constructs.IConstruct">IConstruct</a>
+- *Implemented By:* <a href="#constructs.Construct">Construct</a>, <a href="#constructs.RootConstruct">RootConstruct</a>, cdklabs-projen-project-types.yarn.CdkLabsMonorepo, cdklabs-projen-project-types.yarn.Monorepo, cdklabs-projen-project-types.yarn.MonorepoRelease, cdklabs-projen-project-types.yarn.TypeScriptWorkspace, cdklabs-projen-project-types.yarn.WorkspaceRelease, cdklabs-projen-project-types.AutoMerge, cdklabs-projen-project-types.CdkConstructLibrary, cdklabs-projen-project-types.CdkJsiiProject, cdklabs-projen-project-types.CdkTypeScriptProject, cdklabs-projen-project-types.CdklabsConstructLibrary, cdklabs-projen-project-types.CdklabsJsiiProject, cdklabs-projen-project-types.CdklabsTypeScriptProject, cdklabs-projen-project-types.MergeQueue, cdklabs-projen-project-types.Rosetta, projen.awscdk.AutoDiscover, projen.awscdk.AwsCdkConstructLibrary, projen.awscdk.AwsCdkDeps, projen.awscdk.AwsCdkDepsJava, projen.awscdk.AwsCdkDepsJs, projen.awscdk.AwsCdkDepsPy, projen.awscdk.AwsCdkJavaApp, projen.awscdk.AwsCdkPythonApp, projen.awscdk.AwsCdkTypeScriptApp, projen.awscdk.CdkConfig, projen.awscdk.CdkTasks, projen.awscdk.ConstructLibraryAws, projen.awscdk.EdgeLambdaAutoDiscover, projen.awscdk.IntegrationTest, projen.awscdk.IntegrationTestAutoDiscover, projen.awscdk.LambdaAutoDiscover, projen.awscdk.LambdaExtension, projen.awscdk.LambdaExtensionAutoDiscover, projen.awscdk.LambdaFunction, projen.build.BuildWorkflow, projen.cdk.AutoDiscoverBase, projen.cdk.ConstructLibrary, projen.cdk.IntegrationTestAutoDiscoverBase, projen.cdk.IntegrationTestBase, projen.cdk.JsiiDocgen, projen.cdk.JsiiProject, projen.cdk8s.AutoDiscover, projen.cdk8s.Cdk8sDeps, projen.cdk8s.Cdk8sDepsPy, projen.cdk8s.Cdk8sPythonApp, projen.cdk8s.Cdk8sTypeScriptApp, projen.cdk8s.ConstructLibraryCdk8s, projen.cdk8s.IntegrationTest, projen.cdk8s.IntegrationTestAutoDiscover, projen.cdktf.ConstructLibraryCdktf, projen.circleci.Circleci, projen.github.AutoApprove, projen.github.AutoMerge, projen.github.Dependabot, projen.github.GitHub, projen.github.GitHubProject, projen.github.GithubWorkflow, projen.github.Mergify, projen.github.PullRequestBackport, projen.github.PullRequestLint, projen.github.PullRequestTemplate, projen.github.Stale, projen.github.TaskWorkflow, projen.github.TaskWorkflowJob, projen.gitlab.CiConfiguration, projen.gitlab.GitlabConfiguration, projen.gitlab.NestedConfiguration, projen.java.JavaProject, projen.java.Junit, projen.java.MavenCompile, projen.java.MavenPackaging, projen.java.MavenSample, projen.java.Pom, projen.java.Projenrc, projen.javascript.Bundler, projen.javascript.Eslint, projen.javascript.Jest, projen.javascript.LicenseChecker, projen.javascript.NodePackage, projen.javascript.NodeProject, projen.javascript.NpmConfig, projen.javascript.Prettier, projen.javascript.Projenrc, projen.javascript.TypescriptConfig, projen.javascript.UpgradeDependencies, projen.javascript.Yarnrc, projen.python.Pip, projen.python.Poetry, projen.python.PoetryPyproject, projen.python.Projenrc, projen.python.Pytest, projen.python.PytestSample, projen.python.PythonProject, projen.python.PythonSample, projen.python.RequirementsFile, projen.python.SetupPy, projen.python.Setuptools, projen.python.Venv, projen.release.Publisher, projen.release.Release, projen.typescript.Projenrc, projen.typescript.ProjenrcTs, projen.typescript.TypeScriptAppProject, projen.typescript.TypeScriptLibraryProject, projen.typescript.TypeScriptProject, projen.vscode.DevContainer, projen.vscode.VsCode, projen.vscode.VsCodeLaunchConfig, projen.vscode.VsCodeRecommendedExtensions, projen.vscode.VsCodeSettings, projen.web.NextComponent, projen.web.NextJsProject, projen.web.NextJsTypeScriptProject, projen.web.ReactComponent, projen.web.ReactProject, projen.web.ReactTypeDef, projen.web.ReactTypeScriptProject, projen.Component, projen.Dependencies, projen.DockerCompose, projen.FileBase, projen.GitAttributesFile, projen.Gitpod, projen.IgnoreFile, projen.IniFile, projen.JsonFile, projen.License, projen.Logger, projen.Makefile, projen.ObjectFile, projen.Project, projen.ProjectBuild, projen.ProjectTree, projen.Projenrc, projen.ProjenrcFile, projen.ProjenrcJson, projen.Renovatebot, projen.SampleDir, projen.SampleFile, projen.SampleReadme, projen.SourceCode, projen.Tasks, projen.TextFile, projen.TomlFile, projen.Version, projen.XmlFile, projen.YamlFile, <a href="#constructs.IConstruct">IConstruct</a>
 
 Represents a construct.
 
@@ -979,7 +1089,7 @@ The tree node.
 
 ### IDependable <a name="IDependable" id="constructs.IDependable"></a>
 
-- *Implemented By:* <a href="#constructs.Construct">Construct</a>, <a href="#constructs.DependencyGroup">DependencyGroup</a>, cdklabs-projen-project-types.yarn.CdkLabsMonorepo, cdklabs-projen-project-types.yarn.Monorepo, cdklabs-projen-project-types.yarn.MonorepoRelease, cdklabs-projen-project-types.yarn.TypeScriptWorkspace, cdklabs-projen-project-types.yarn.WorkspaceRelease, cdklabs-projen-project-types.AutoMerge, cdklabs-projen-project-types.CdkConstructLibrary, cdklabs-projen-project-types.CdkJsiiProject, cdklabs-projen-project-types.CdkTypeScriptProject, cdklabs-projen-project-types.CdklabsConstructLibrary, cdklabs-projen-project-types.CdklabsJsiiProject, cdklabs-projen-project-types.CdklabsTypeScriptProject, cdklabs-projen-project-types.MergeQueue, cdklabs-projen-project-types.Rosetta, projen.awscdk.AutoDiscover, projen.awscdk.AwsCdkConstructLibrary, projen.awscdk.AwsCdkDeps, projen.awscdk.AwsCdkDepsJava, projen.awscdk.AwsCdkDepsJs, projen.awscdk.AwsCdkDepsPy, projen.awscdk.AwsCdkJavaApp, projen.awscdk.AwsCdkPythonApp, projen.awscdk.AwsCdkTypeScriptApp, projen.awscdk.CdkConfig, projen.awscdk.CdkTasks, projen.awscdk.ConstructLibraryAws, projen.awscdk.EdgeLambdaAutoDiscover, projen.awscdk.IntegrationTest, projen.awscdk.IntegrationTestAutoDiscover, projen.awscdk.LambdaAutoDiscover, projen.awscdk.LambdaExtension, projen.awscdk.LambdaExtensionAutoDiscover, projen.awscdk.LambdaFunction, projen.build.BuildWorkflow, projen.cdk.AutoDiscoverBase, projen.cdk.ConstructLibrary, projen.cdk.IntegrationTestAutoDiscoverBase, projen.cdk.IntegrationTestBase, projen.cdk.JsiiDocgen, projen.cdk.JsiiProject, projen.cdk8s.AutoDiscover, projen.cdk8s.Cdk8sDeps, projen.cdk8s.Cdk8sDepsPy, projen.cdk8s.Cdk8sPythonApp, projen.cdk8s.Cdk8sTypeScriptApp, projen.cdk8s.ConstructLibraryCdk8s, projen.cdk8s.IntegrationTest, projen.cdk8s.IntegrationTestAutoDiscover, projen.cdktf.ConstructLibraryCdktf, projen.circleci.Circleci, projen.github.AutoApprove, projen.github.AutoMerge, projen.github.Dependabot, projen.github.GitHub, projen.github.GitHubProject, projen.github.GithubWorkflow, projen.github.Mergify, projen.github.PullRequestBackport, projen.github.PullRequestLint, projen.github.PullRequestTemplate, projen.github.Stale, projen.github.TaskWorkflow, projen.github.TaskWorkflowJob, projen.gitlab.CiConfiguration, projen.gitlab.GitlabConfiguration, projen.gitlab.NestedConfiguration, projen.java.JavaProject, projen.java.Junit, projen.java.MavenCompile, projen.java.MavenPackaging, projen.java.MavenSample, projen.java.Pom, projen.java.Projenrc, projen.javascript.Bundler, projen.javascript.Eslint, projen.javascript.Jest, projen.javascript.LicenseChecker, projen.javascript.NodePackage, projen.javascript.NodeProject, projen.javascript.NpmConfig, projen.javascript.Prettier, projen.javascript.Projenrc, projen.javascript.TypescriptConfig, projen.javascript.UpgradeDependencies, projen.javascript.Yarnrc, projen.python.Pip, projen.python.Poetry, projen.python.PoetryPyproject, projen.python.Projenrc, projen.python.Pytest, projen.python.PytestSample, projen.python.PythonProject, projen.python.PythonSample, projen.python.RequirementsFile, projen.python.SetupPy, projen.python.Setuptools, projen.python.Venv, projen.release.Publisher, projen.release.Release, projen.typescript.Projenrc, projen.typescript.ProjenrcTs, projen.typescript.TypeScriptAppProject, projen.typescript.TypeScriptLibraryProject, projen.typescript.TypeScriptProject, projen.vscode.DevContainer, projen.vscode.VsCode, projen.vscode.VsCodeLaunchConfig, projen.vscode.VsCodeRecommendedExtensions, projen.vscode.VsCodeSettings, projen.web.NextComponent, projen.web.NextJsProject, projen.web.NextJsTypeScriptProject, projen.web.ReactComponent, projen.web.ReactProject, projen.web.ReactTypeDef, projen.web.ReactTypeScriptProject, projen.Component, projen.Dependencies, projen.DockerCompose, projen.FileBase, projen.GitAttributesFile, projen.Gitpod, projen.IgnoreFile, projen.IniFile, projen.JsonFile, projen.License, projen.Logger, projen.Makefile, projen.ObjectFile, projen.Project, projen.ProjectBuild, projen.ProjectTree, projen.Projenrc, projen.ProjenrcFile, projen.ProjenrcJson, projen.Renovatebot, projen.SampleDir, projen.SampleFile, projen.SampleReadme, projen.SourceCode, projen.Tasks, projen.TextFile, projen.TomlFile, projen.Version, projen.XmlFile, projen.YamlFile, <a href="#constructs.IConstruct">IConstruct</a>, <a href="#constructs.IDependable">IDependable</a>
+- *Implemented By:* <a href="#constructs.Construct">Construct</a>, <a href="#constructs.DependencyGroup">DependencyGroup</a>, <a href="#constructs.RootConstruct">RootConstruct</a>, cdklabs-projen-project-types.yarn.CdkLabsMonorepo, cdklabs-projen-project-types.yarn.Monorepo, cdklabs-projen-project-types.yarn.MonorepoRelease, cdklabs-projen-project-types.yarn.TypeScriptWorkspace, cdklabs-projen-project-types.yarn.WorkspaceRelease, cdklabs-projen-project-types.AutoMerge, cdklabs-projen-project-types.CdkConstructLibrary, cdklabs-projen-project-types.CdkJsiiProject, cdklabs-projen-project-types.CdkTypeScriptProject, cdklabs-projen-project-types.CdklabsConstructLibrary, cdklabs-projen-project-types.CdklabsJsiiProject, cdklabs-projen-project-types.CdklabsTypeScriptProject, cdklabs-projen-project-types.MergeQueue, cdklabs-projen-project-types.Rosetta, projen.awscdk.AutoDiscover, projen.awscdk.AwsCdkConstructLibrary, projen.awscdk.AwsCdkDeps, projen.awscdk.AwsCdkDepsJava, projen.awscdk.AwsCdkDepsJs, projen.awscdk.AwsCdkDepsPy, projen.awscdk.AwsCdkJavaApp, projen.awscdk.AwsCdkPythonApp, projen.awscdk.AwsCdkTypeScriptApp, projen.awscdk.CdkConfig, projen.awscdk.CdkTasks, projen.awscdk.ConstructLibraryAws, projen.awscdk.EdgeLambdaAutoDiscover, projen.awscdk.IntegrationTest, projen.awscdk.IntegrationTestAutoDiscover, projen.awscdk.LambdaAutoDiscover, projen.awscdk.LambdaExtension, projen.awscdk.LambdaExtensionAutoDiscover, projen.awscdk.LambdaFunction, projen.build.BuildWorkflow, projen.cdk.AutoDiscoverBase, projen.cdk.ConstructLibrary, projen.cdk.IntegrationTestAutoDiscoverBase, projen.cdk.IntegrationTestBase, projen.cdk.JsiiDocgen, projen.cdk.JsiiProject, projen.cdk8s.AutoDiscover, projen.cdk8s.Cdk8sDeps, projen.cdk8s.Cdk8sDepsPy, projen.cdk8s.Cdk8sPythonApp, projen.cdk8s.Cdk8sTypeScriptApp, projen.cdk8s.ConstructLibraryCdk8s, projen.cdk8s.IntegrationTest, projen.cdk8s.IntegrationTestAutoDiscover, projen.cdktf.ConstructLibraryCdktf, projen.circleci.Circleci, projen.github.AutoApprove, projen.github.AutoMerge, projen.github.Dependabot, projen.github.GitHub, projen.github.GitHubProject, projen.github.GithubWorkflow, projen.github.Mergify, projen.github.PullRequestBackport, projen.github.PullRequestLint, projen.github.PullRequestTemplate, projen.github.Stale, projen.github.TaskWorkflow, projen.github.TaskWorkflowJob, projen.gitlab.CiConfiguration, projen.gitlab.GitlabConfiguration, projen.gitlab.NestedConfiguration, projen.java.JavaProject, projen.java.Junit, projen.java.MavenCompile, projen.java.MavenPackaging, projen.java.MavenSample, projen.java.Pom, projen.java.Projenrc, projen.javascript.Bundler, projen.javascript.Eslint, projen.javascript.Jest, projen.javascript.LicenseChecker, projen.javascript.NodePackage, projen.javascript.NodeProject, projen.javascript.NpmConfig, projen.javascript.Prettier, projen.javascript.Projenrc, projen.javascript.TypescriptConfig, projen.javascript.UpgradeDependencies, projen.javascript.Yarnrc, projen.python.Pip, projen.python.Poetry, projen.python.PoetryPyproject, projen.python.Projenrc, projen.python.Pytest, projen.python.PytestSample, projen.python.PythonProject, projen.python.PythonSample, projen.python.RequirementsFile, projen.python.SetupPy, projen.python.Setuptools, projen.python.Venv, projen.release.Publisher, projen.release.Release, projen.typescript.Projenrc, projen.typescript.ProjenrcTs, projen.typescript.TypeScriptAppProject, projen.typescript.TypeScriptLibraryProject, projen.typescript.TypeScriptProject, projen.vscode.DevContainer, projen.vscode.VsCode, projen.vscode.VsCodeLaunchConfig, projen.vscode.VsCodeRecommendedExtensions, projen.vscode.VsCodeSettings, projen.web.NextComponent, projen.web.NextJsProject, projen.web.NextJsTypeScriptProject, projen.web.ReactComponent, projen.web.ReactProject, projen.web.ReactTypeDef, projen.web.ReactTypeScriptProject, projen.Component, projen.Dependencies, projen.DockerCompose, projen.FileBase, projen.GitAttributesFile, projen.Gitpod, projen.IgnoreFile, projen.IniFile, projen.JsonFile, projen.License, projen.Logger, projen.Makefile, projen.ObjectFile, projen.Project, projen.ProjectBuild, projen.ProjectTree, projen.Projenrc, projen.ProjenrcFile, projen.ProjenrcJson, projen.Renovatebot, projen.SampleDir, projen.SampleFile, projen.SampleReadme, projen.SourceCode, projen.Tasks, projen.TextFile, projen.TomlFile, projen.Version, projen.XmlFile, projen.YamlFile, <a href="#constructs.IConstruct">IConstruct</a>, <a href="#constructs.IDependable">IDependable</a>
 
 Trait marker for classes that can be depended upon.
 
