@@ -466,18 +466,6 @@ export class Construct implements IConstruct {
   }
 
   /**
-   * Creates a new root construct node.
-   *
-   * @param id The scoped construct ID. Must be unique amongst siblings. If
-   * the ID includes a path separator (`/`), then it will be replaced by double
-   * dash `--`.
-   */
-  public static createRoot(id?: string): Construct {
-    return new Construct(undefined as any, id ?? '');
-  }
-
-
-  /**
    * The tree node.
    */
   public readonly node: Node;
