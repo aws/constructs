@@ -51,8 +51,7 @@ const project = new CdklabsJsiiProject({
   },
 
   stability: 'stable',
-  minNodeVersion: '18.12.0',
-
+  setNodeEngineVersion: false,
   compat: true,
 
   autoApproveOptions: {
