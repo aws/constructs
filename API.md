@@ -774,9 +774,9 @@ followed by 40 lowercase hexadecimal characters (0-9a-f).
 Addresses are calculated using a SHA-1 of the components of the construct
 path.
 
-To enable refactorings of construct trees, constructs with the ID `Default`
+To enable refactoring of construct trees, constructs with the ID `Default`
 will be excluded from the calculation. In those cases constructs in the
-same tree may have the same addreess.
+same tree may have the same address.
 
 ---
 
