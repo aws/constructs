@@ -95,9 +95,9 @@ export class Node {
    * Addresses are calculated using a SHA-1 of the components of the construct
    * path.
    *
-   * To enable refactorings of construct trees, constructs with the ID `Default`
+   * To enable refactoring of construct trees, constructs with the ID `Default`
    * will be excluded from the calculation. In those cases constructs in the
-   * same tree may have the same addreess.
+   * same tree may have the same address.
    *
    * @example c83a2846e506bcc5f10682b564084bca2d275709ee
    */
@@ -465,6 +465,18 @@ export class Construct implements IConstruct {
   public static isConstruct(x: any): x is Construct {
     return x && typeof x === 'object' && x[CONSTRUCT_SYM];
   }
+
+  /**
+   * Creates a new root construct node.
+   *
+   * @param id The scoped construct ID. Must be unique amongst siblings. If
+   * the ID includes a path separator (`/`), then it will be replaced by double
+   * dash `--`.
+   */
+  public static createRoot(id?: string): Construct {
+    return new Construct(undefined as any, id ?? '');
+  }
+
 
   /**
    * The tree node.
