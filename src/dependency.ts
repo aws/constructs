@@ -20,8 +20,6 @@ export interface IDependable {
  *
  * This class can be used when a set of constructs which are disjoint in the
  * construct tree needs to be combined to be used as a single dependable.
- *
- * @experimental
  */
 export class DependencyGroup implements IDependable {
   private readonly _deps = new Array<IDependable>();
@@ -70,8 +68,6 @@ const DEPENDABLE_SYMBOL = Symbol.for('@aws-cdk/core.DependableTrait');
  * Dependable.implement(construct, {
  *       dependencyRoots: [construct],
  * });
- *
- * @experimental
  */
 export abstract class Dependable {
   /**

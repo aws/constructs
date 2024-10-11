@@ -366,7 +366,6 @@ export class Node {
    * Remove the child with the given name, if present.
    *
    * @returns Whether a child with the given name was deleted.
-   * @experimental
    */
   public tryRemoveChild(childName: string): boolean {
     if (!(childName in this._children)) { return false; }
