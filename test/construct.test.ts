@@ -5,7 +5,7 @@ import { Construct, ConstructOrder, DependencyGroup, Dependable, IConstruct } fr
 // tslint:disable:max-line-length
 
 test('the "Root" construct is a special construct which can be used as the root of the tree', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const node = root.node;
   expect(node.id).toBe('');
   expect(node.scope).toBeUndefined();
@@ -13,7 +13,7 @@ test('the "Root" construct is a special construct which can be used as the root 
 });
 
 test('an empty string is a valid name for the root construct', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   expect(root.node.id).toEqual('');
 
   expect(() => new Construct(root, '')).toThrow(/Only root constructs/);
@@ -32,7 +32,7 @@ test('construct.name returns the name of the construct', () => {
 });
 
 test('construct id can use any character except the path separator', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   expect(() => new Construct(root, 'valid')).not.toThrow();
   expect(() => new Construct(root, 'ValiD')).not.toThrow();
   expect(() => new Construct(root, 'Va123lid')).not.toThrow();
@@ -48,7 +48,7 @@ test('construct id can use any character except the path separator', () => {
 });
 
 test('if construct id contains path seperators, they will be replaced by double-dash', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const c = new Construct(root, 'Boom/Boom/Bam');
   expect(c.node.id).toBe('Boom--Boom--Bam');
 });
@@ -59,7 +59,7 @@ test('if "undefined" is forcefully used as an "id", it will be treated as an emp
 });
 
 test('node.addr returns an opaque app-unique address for any construct', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
 
   const child1 = new Construct(root, 'This is the first child');
   const child2 = new Construct(child1, 'Second level');
@@ -76,7 +76,7 @@ test('node.addr returns an opaque app-unique address for any construct', () => {
 
 test('node.addr excludes "default" from the address calculation', () => {
   // GIVEN
-  const root = new Root();
+  const root = Construct.createRoot();
   const c1 = new Construct(root, 'c1');
 
   // WHEN:
@@ -97,7 +97,7 @@ test('node.addr excludes "default" from the address calculation', () => {
 });
 
 test('construct.getChildren() returns an array of all children', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const child = new Construct(root, 'Child1');
   new Construct(root, 'Child2');
   expect(child.node.children.length).toBe(0);
@@ -105,15 +105,15 @@ test('construct.getChildren() returns an array of all children', () => {
 });
 
 test('construct.findChild(name) can be used to retrieve a child from a parent', () => {
-  const root = new Root();
-  const child = new Construct(root, 'Contruct');
+  const root = Construct.createRoot();
+  const child = new Construct(root, 'Construct');
   expect(root.node.tryFindChild(child.node.id)).toBe(child);
   expect(root.node.tryFindChild('NotFound')).toBeUndefined();
 });
 
 test('construct.getChild(name) can be used to retrieve a child from a parent', () => {
-  const root = new Root();
-  const child = new Construct(root, 'Contruct');
+  const root = Construct.createRoot();
+  const child = new Construct(root, 'Construct');
   expect(root.node.findChild(child.node.id)).toBe(child);
   expect(() => root.node.findChild('NotFound')).toThrow(/No child with id: 'NotFound'/);
 });
@@ -158,7 +158,7 @@ test('construct.getAllContext can be used to read the full context of a root nod
   };
 
   // WHEN
-  const t = new Root();
+  const t = Construct.createRoot();
   for (const [k, v] of Object.entries(context)) {
     t.node.setContext(k, v);
   }
@@ -196,7 +196,7 @@ test('construct.tryGetContext(key) can be used to read a value from context defi
 
 // tslint:disable-next-line:max-line-length
 test('construct.setContext(k,v) sets context at some level and construct.tryGetContext(key) will return the lowermost value defined in the stack', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const highChild = new Construct(root, 'highChild');
   highChild.node.setContext('c1', 'root');
   highChild.node.setContext('c2', 'root');
@@ -229,7 +229,7 @@ test('construct.setContext(k,v) sets context at some level and construct.tryGetC
 });
 
 test('construct.setContext(key, value) can only be called before adding any children', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   new Construct(root, 'child1');
   expect(() => root.node.setContext('k', 'v')).toThrow(/Cannot set context after children have been added: child1/);
 });
@@ -265,7 +265,7 @@ test('construct can not be created with the name of a sibling', () => {
 });
 
 test('addMetadata(type, data) can be used to attach metadata to constructs', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const con = new Construct(root, 'MyConstruct');
   expect(con.node.metadata).toEqual([]);
 
@@ -285,7 +285,7 @@ test('addMetadata(type, data) can be used to attach metadata to constructs', () 
 });
 
 test('addMetadata() respects the "stackTrace" option', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const con = new Construct(root, 'Foo');
 
   con.node.addMetadata('foo', 'bar1', { stackTrace: true });
@@ -297,7 +297,7 @@ test('addMetadata() respects the "stackTrace" option', () => {
 });
 
 test('addMetadata(type, undefined/null) is ignored', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   const con = new Construct(root, 'Foo');
   const node = con.node;
   node.addMetadata('Null', null);
@@ -316,7 +316,7 @@ test('addMetadata(type, undefined/null) is ignored', () => {
 });
 
 test('multiple children of the same type, with explicit names are welcome', () => {
-  const root = new Root();
+  const root = Construct.createRoot();
   new MyBeautifulConstruct(root, 'mbc1');
   new MyBeautifulConstruct(root, 'mbc2');
   new MyBeautifulConstruct(root, 'mbc3');
@@ -392,7 +392,7 @@ test('node.addValidation() can be implemented to perform validation, node.valida
 
 test('node.validate() returns an empty array if the construct does not implement IValidation', () => {
   // GIVEN
-  const root = new Root();
+  const root = Construct.createRoot();
 
   // THEN
   expect(root.node.validate()).toStrictEqual([]);
@@ -400,7 +400,7 @@ test('node.validate() returns an empty array if the construct does not implement
 
 test('node.addValidation() can be used to add a validation function to a construct', () => {
   // GIVEN
-  const construct = new Root();
+  const construct = Construct.createRoot();
   construct.node.addValidation({ validate: () => ['error1', 'error2'] });
   construct.node.addValidation({ validate: () => ['error3'] });
 
@@ -409,7 +409,7 @@ test('node.addValidation() can be used to add a validation function to a constru
 
 test('construct.lock() protects against adding children anywhere under this construct (direct or indirect)', () => {
 
-  const root = new Root();
+  const root = Construct.createRoot();
 
   const c0a = new Construct(root, 'c0a');
   const c0b = new Construct(root, 'c0b');
@@ -461,7 +461,7 @@ test('"root" returns the root construct', () => {
 
 describe('defaultChild', () => {
   test('returns the child with id "Resource"', () => {
-    const root = new Root();
+    const root = Construct.createRoot();
     new Construct(root, 'child1');
     const defaultChild = new Construct(root, 'Resource');
     new Construct(root, 'child2');
@@ -469,7 +469,7 @@ describe('defaultChild', () => {
     expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('returns the child with id "Default"', () => {
-    const root = new Root();
+    const root = Construct.createRoot();
     new Construct(root, 'child1');
     const defaultChild = new Construct(root, 'Default');
     new Construct(root, 'child2');
@@ -477,7 +477,7 @@ describe('defaultChild', () => {
     expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('can override defaultChild', () => {
-    const root = new Root();
+    const root = Construct.createRoot();
     new Construct(root, 'Resource');
     const defaultChild = new Construct(root, 'OtherResource');
     root.node.defaultChild = defaultChild;
@@ -485,14 +485,14 @@ describe('defaultChild', () => {
     expect(root.node.defaultChild).toBe(defaultChild);
   });
   test('returns "undefined" if there is no default', () => {
-    const root = new Root();
+    const root = Construct.createRoot();
     new Construct(root, 'child1');
     new Construct(root, 'child2');
 
     expect(root.node.defaultChild).toBeUndefined();
   });
   test('fails if there are both "Resource" and "Default"', () => {
-    const root = new Root();
+    const root = Construct.createRoot();
     new Construct(root, 'child1');
     new Construct(root, 'Default');
     new Construct(root, 'child2');
@@ -507,7 +507,7 @@ describe('dependencies', () => {
 
   test('addDependency() defines a dependency between two scopes', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const consumer = new Construct(root, 'consumer');
     const producer1 = new Construct(root, 'producer1');
     const producer2 = new Construct(root, 'producer2');
@@ -522,7 +522,7 @@ describe('dependencies', () => {
 
   test('are deduplicated', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const consumer = new Construct(root, 'consumer');
     const producer = new Construct(root, 'producer');
 
@@ -539,7 +539,7 @@ describe('dependencies', () => {
 
   test('DependencyGroup can represent a group of disjoined producers', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const group = new DependencyGroup(new Construct(root, 'producer1'), new Construct(root, 'producer2'));
     const consumer = new Construct(root, 'consumer');
 
@@ -553,7 +553,7 @@ describe('dependencies', () => {
 
   test('Dependable.implement() can be used to implement IDependable on any object', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const producer = new Construct(root, 'producer');
     const consumer = new Construct(root, 'consumer');
 
@@ -575,7 +575,7 @@ describe('dependencies', () => {
 
   test('dependencyRoots are only resolved when node dependencies are evaluated', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const c1 = new Construct(root, 'c1');
     const c2 = new Construct(root, 'c2');
     const c3 = new Construct(root, 'c3');
@@ -594,7 +594,7 @@ describe('dependencies', () => {
 
   test('DependencyGroup can also include other IDependables', () => {
     // GIVEN
-    const root = new Root();
+    const root = Construct.createRoot();
     const c1 = new Construct(root, 'c1');
 
     // WHEN
@@ -614,7 +614,7 @@ describe('dependencies', () => {
 
 test('tryRemoveChild()', () => {
   // GIVEN
-  const root = new Root();
+  const root = Construct.createRoot();
   new Construct(root, 'child1');
   new Construct(root, 'child2');
 
@@ -629,7 +629,7 @@ test('tryRemoveChild()', () => {
 
 test('toString()', () => {
   // GIVEN
-  const root = new Root();
+  const root = Construct.createRoot();
   const child = new Construct(root, 'child');
   const grand = new Construct(child, 'grand');
 
@@ -641,7 +641,7 @@ test('toString()', () => {
 
 test('Construct.isConstruct returns true for constructs', () => {
   // GIVEN
-  const root = new Root();
+  const root = Construct.createRoot();
   class Subclass extends Construct {};
   const subclass = new Subclass(root, 'subclass');
   const someRandomObject = {};
@@ -659,7 +659,7 @@ test('Construct.isConstruct returns true for constructs', () => {
 });
 
 function createTree(context?: any) {
-  const root = new Root();
+  const root = Construct.createRoot();
   const highChild = new Construct(root, 'HighChild');
   if (context) {
     Object.keys(context).forEach(key => highChild.node.setContext(key, context[key]));
