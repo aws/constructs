@@ -61,6 +61,7 @@
     },
     {
       "name": "jsii-pacmak",
+      "version": "1.102.0",
       "type": "build"
     },
     {

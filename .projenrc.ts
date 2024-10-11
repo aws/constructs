@@ -81,4 +81,8 @@ project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 // cdklabs-projen-project-types is overzealous about adding this dependency
 project.deps.removeDependency('constructs');
 
+// temporary to
+// to resolve https://github.com/aws/jsii/issues/4658
+project.addDevDeps('jsii-pacmak@1.102.0');
+
 project.synth();

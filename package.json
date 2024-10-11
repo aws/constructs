@@ -56,7 +56,7 @@
     "jsii": "5.4.x",
     "jsii-diff": "^1.103.1",
     "jsii-docgen": "^10.5.0",
-    "jsii-pacmak": "^1.103.1",
+    "jsii-pacmak": "1.102.0",
     "jsii-rosetta": "5.4.x",
     "projen": "^0.87.4",
     "ts-jest": "^29",
