@@ -562,7 +562,6 @@ Object.defineProperty(Construct.prototype, CONSTRUCT_SYM, {
   writable: false,
 });
 
-
 /**
  * Creates a new root construct node.
  *
