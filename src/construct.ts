@@ -561,3 +561,22 @@ Object.defineProperty(Construct.prototype, CONSTRUCT_SYM, {
   enumerable: false,
   writable: false,
 });
+
+/**
+ * Creates a new root construct node.
+ *
+ * The root construct represents the top of the construct tree and is not contained within a parent scope itself.
+ * For root constructs, the id is optional.
+ */
+export class RootConstruct extends Construct {
+  /**
+   * Creates a new root construct node.
+   *
+   * @param id The scoped construct ID. Must be unique amongst siblings. If
+   * the ID includes a path separator (`/`), then it will be replaced by double
+   * dash `--`.
+   */
+  constructor(id?: string) {
+    super(undefined as any, id ?? '');
+  }
+}

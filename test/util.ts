@@ -1,7 +1,7 @@
-import { Construct } from '../src';
+import { RootConstruct } from '../src';
 
-export class App extends Construct {
+export class App extends RootConstruct {
   constructor() {
-    super(undefined as any, '');
+    super();
   }
 }
