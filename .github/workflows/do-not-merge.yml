@@ -1,0 +1,25 @@
+name: Fails when pr/do-not-merge label exists
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - edited
+      - opened
+      - synchronize
+      - reopened
+  merge_group:
+    branches:
+      - 10.x
+
+jobs:
+  # this job intends to always succeed on merge_group events
+  do-not-merge:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - if: |
+          github.event_name == 'pull_request' &&
+          contains(github.event.pull_request.labels.*.name, 'do-not-merge')
+        run: exit 1
