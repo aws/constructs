@@ -54,11 +54,7 @@ const project = new CdklabsJsiiProject({
   setNodeEngineVersion: false,
   compat: true,
 
-  githubOptions: {
-    mergify: false,
-    mergeQueue: true,
-  },
-
+  enablePRAutoMerge: true,
   autoApproveOptions: {
     allowedUsernames: ['cdklabs-automation'],
     secret: 'GITHUB_TOKEN',
