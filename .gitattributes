@@ -6,7 +6,7 @@
 /.gitattributes linguist-generated
 /.github/pull_request_template.md linguist-generated
 /.github/workflows/auto-approve.yml linguist-generated
-/.github/workflows/auto-queue.yml linguist-generated
+/.github/workflows/auto-merge.yml linguist-generated
 /.github/workflows/build.yml linguist-generated
 /.github/workflows/pull-request-lint.yml linguist-generated
 /.github/workflows/release-3.x.yml linguist-generated
@@ -18,7 +18,6 @@
 /.github/workflows/upgrade-dev-deps-10.x.yml linguist-generated
 /.github/workflows/upgrade-dev-deps-3.x.yml linguist-generated
 /.gitignore linguist-generated
-/.mergify.yml linguist-generated
 /.npmignore linguist-generated
 /.projen/** linguist-generated
 /.projen/deps.json linguist-generated
