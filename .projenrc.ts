@@ -61,6 +61,11 @@ const project = new CdklabsJsiiProject({
   minNodeVersion: '16.14.0',
   workflowNodeVersion: '18.x',
 
+  githubOptions: {
+    mergify: false,
+    mergeQueue: true,
+  },
+
   compat: true,
   autoApproveOptions: {
     allowedUsernames: ['cdklabs-automation'],
