@@ -49,7 +49,7 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
-!/.github/workflows/auto-merge.yml
+!/.github/workflows/auto-queue.yml
 !/.github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml
 !/.github/workflows/upgrade-cdklabs-projen-project-types-3.x.yml
 !/.github/workflows/upgrade-10.x.yml
