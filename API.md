@@ -864,7 +864,7 @@ the construct.
 | <code><a href="#constructs.Node.property.root">root</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a></code> | Returns the root of the construct tree. |
 | <code><a href="#constructs.Node.property.scopes">scopes</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a>[]</code> | All parent scopes of this construct. |
 | <code><a href="#constructs.Node.property.scope">scope</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a></code> | Returns the scope in which this construct is defined. |
-| <code><a href="#constructs.Node.property.defaultChild">defaultChild</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a></code> | Returns the child construct that has the id `Default` or `Resource"`. |
+| <code><a href="#constructs.Node.property.defaultChild">defaultChild</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a></code> | Returns the child construct that has the id `Default` or `Resource`. |
 
 ---
 
@@ -1021,7 +1021,7 @@ public readonly defaultChild: IConstruct;
 
 - *Type:* <a href="#constructs.IConstruct">IConstruct</a>
 
-Returns the child construct that has the id `Default` or `Resource"`.
+Returns the child construct that has the id `Default` or `Resource`.
 
 This is usually the construct that provides the bulk of the underlying functionality.
 Useful for modifications of the underlying construct that are not available at the higher levels.
