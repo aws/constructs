@@ -11,9 +11,6 @@ const project = new CdklabsJsiiProject({
   defaultReleaseBranch: '10.x',
   majorVersion: 10,
   npmDistTag: 'latest',
-  releaseBranches: {
-    '3.x': { majorVersion: 3, npmDistTag: 'latest-3' },
-  },
   devDeps: ['cdklabs-projen-project-types'],
 
   // author

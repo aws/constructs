@@ -279,31 +279,6 @@
         }
       ]
     },
-    "release:3.x": {
-      "name": "release:3.x",
-      "description": "Prepare a release from \"3.x\" branch",
-      "env": {
-        "RELEASE": "true",
-        "MAJOR": "3"
-      },
-      "steps": [
-        {
-          "exec": "rm -fr dist"
-        },
-        {
-          "spawn": "bump"
-        },
-        {
-          "spawn": "build"
-        },
-        {
-          "spawn": "unbump"
-        },
-        {
-          "exec": "git diff --ignore-space-at-eol --exit-code"
-        }
-      ]
-    },
     "test": {
       "name": "test",
       "description": "Run tests",
