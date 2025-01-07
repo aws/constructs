@@ -38,7 +38,6 @@ junit.xml
 /dist/changelog.md
 /dist/version.txt
 !/.github/workflows/release.yml
-!/.github/workflows/release-3.x.yml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.dev.json
@@ -51,9 +50,6 @@ tsconfig.json
 !/API.md
 !/.github/workflows/auto-queue.yml
 !/.github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml
-!/.github/workflows/upgrade-cdklabs-projen-project-types-3.x.yml
 !/.github/workflows/upgrade-10.x.yml
-!/.github/workflows/upgrade-3.x.yml
 !/.github/workflows/upgrade-dev-deps-10.x.yml
-!/.github/workflows/upgrade-dev-deps-3.x.yml
 !/.projenrc.ts

@@ -9,14 +9,10 @@
 /.github/workflows/auto-queue.yml linguist-generated
 /.github/workflows/build.yml linguist-generated
 /.github/workflows/pull-request-lint.yml linguist-generated
-/.github/workflows/release-3.x.yml linguist-generated
 /.github/workflows/release.yml linguist-generated
 /.github/workflows/upgrade-10.x.yml linguist-generated
-/.github/workflows/upgrade-3.x.yml linguist-generated
 /.github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml linguist-generated
-/.github/workflows/upgrade-cdklabs-projen-project-types-3.x.yml linguist-generated
 /.github/workflows/upgrade-dev-deps-10.x.yml linguist-generated
-/.github/workflows/upgrade-dev-deps-3.x.yml linguist-generated
 /.gitignore linguist-generated
 /.npmignore linguist-generated
 /.projen/** linguist-generated
