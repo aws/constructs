@@ -1,5 +1,13 @@
 # Constructs
 
+---
+
+![Deprecated](https://img.shields.io/badge/deprecated-critical.svg?style=for-the-badge)
+
+> This API may emit warnings. Backward compatibility is not guaranteed. Use Constructs 10.x which is compatible with CDK 2.x.
+
+---
+
 > Software-defined persistent state
 
 ![Release](https://github.com/aws/constructs/workflows/Release/badge.svg)
