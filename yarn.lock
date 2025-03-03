@@ -5239,9 +5239,9 @@ typescript@5.4.x, typescript@~5.4:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 typescript@next:
-  version "5.9.0-dev.20250301"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250301.tgz#8ac4ee0ea13360a6dfd354c25846d9733a833949"
-  integrity sha512-hu43cOKNLgGSav1vmh+HzFyeNusZjouT66gYXuQJXCSKUkNT/tav4KBZPh6yxKJLyMLayXkL1gGfuFR2ZNlTrA==
+  version "5.9.0-dev.20250302"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250302.tgz#0fdab18e55e8e7df8cb4c9d9cd60a2439a77c6a5"
+  integrity sha512-AAQAul2ZrHXxNSdkgHimsaSTMEL9BOmQmHcJfU53Aq5l3P5lT1Wxv/0B00da/E6qw3Kq2KBzhMRQxbaLgG/eCQ==
 
 uglify-js@^3.1.4:
   version "3.19.3"
