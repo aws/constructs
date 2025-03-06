@@ -1045,9 +1045,9 @@ acorn-walk@^8.1.1:
     acorn "^8.11.0"
 
 acorn@^8.11.0, acorn@^8.14.0, acorn@^8.4.1:
-  version "8.14.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.0.tgz#063e2c70cac5fb4f6467f0b11152e04c682795b0"
-  integrity sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==
+  version "8.14.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.1.tgz#721d5dc10f7d5b5609a891773d47731796935dfb"
+  integrity sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==
 
 add-stream@^1.0.0:
   version "1.0.0"
@@ -5239,9 +5239,9 @@ typescript@5.4.x, typescript@~5.4:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 typescript@next:
-  version "5.9.0-dev.20250304"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250304.tgz#25bd3b534459802af6bbb2b0faa2c0baaa17026f"
-  integrity sha512-81dFfRJ7TYCk/SRYomfoZMjMER5rA381MYrONgKzbDfy8Q3fWz9Ln7v9YMGOpPwDuf2KmTHuumvNgK5IVurVLQ==
+  version "5.9.0-dev.20250305"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250305.tgz#e5a7b96b0b48404d457f0e1b7ce6c3d4cfe9fc98"
+  integrity sha512-Pk7g7VNEo/UZ2R5GPQIEDNY4U/4OLsTBLO0WdZQhloBdQfKQDUibTEmRgDwtxFR0Jf6v1t2A2aL1sY4cROFDig==
 
 uglify-js@^3.1.4:
   version "3.19.3"
