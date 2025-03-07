@@ -1985,9 +1985,9 @@ ejs@^3.1.10:
     jake "^10.8.5"
 
 electron-to-chromium@^1.5.73:
-  version "1.5.112"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.112.tgz#8d3d95d4d5653836327890282c8eda5c6f26626d"
-  integrity sha512-oen93kVyqSb3l+ziUgzIOlWt/oOuy4zRmpwestMn4rhFWAoFJeFuCVte9F2fASjeZZo7l/Cif9TiyrdW4CwEMA==
+  version "1.5.113"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.113.tgz#1175b8ba4170541e44e9afa8b992e5bbfff0d150"
+  integrity sha512-wjT2O4hX+wdWPJ76gWSkMhcHAV2PTMX+QetUCPYEdCIe+cxmgzzSSiGRCKW8nuh4mwKZlpv0xvoW7OF2X+wmHg==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -5059,17 +5059,17 @@ tinyglobby@^0.2.12:
     fdir "^6.4.3"
     picomatch "^4.0.2"
 
-tldts-core@^6.1.82:
-  version "6.1.82"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-6.1.82.tgz#b93e0312378f67cfc15ea1da9bc1b699ec621ae9"
-  integrity sha512-Jabl32m21tt/d/PbDO88R43F8aY98Piiz6BVH9ShUlOAiiAELhEqwrAmBocjAqnCfoUeIsRU+h3IEzZd318F3w==
+tldts-core@^6.1.83:
+  version "6.1.83"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-6.1.83.tgz#8f31172cb5763cc1128d4e18ee5095aa2f990eb8"
+  integrity sha512-I2wb9OJc6rXyh9d4aInhSNWChNI+ra6qDnFEGEwe9OoA68lE4Temw29bOkf1Uvwt8VZS079t1BFZdXVBmmB4dw==
 
 tldts@^6.1.32:
-  version "6.1.82"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-6.1.82.tgz#1c06e884bcdbcccbaf73bd552e2f188ad670a4a9"
-  integrity sha512-KCTjNL9F7j8MzxgfTgjT+v21oYH38OidFty7dH00maWANAI2IsLw2AnThtTJi9HKALHZKQQWnNebYheadacD+g==
+  version "6.1.83"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-6.1.83.tgz#2ba9aa8db0cbcc2d75291f148f8acf9ac469429a"
+  integrity sha512-FHxxNJJ0WNsEBPHyC1oesQb3rRoxpuho/z2g3zIIAhw1WHJeQsUzK1jYK8TI1/iClaa4fS3Z2TCA9mtxXsENSg==
   dependencies:
-    tldts-core "^6.1.82"
+    tldts-core "^6.1.83"
 
 tmpl@1.0.5:
   version "1.0.5"
@@ -5239,9 +5239,9 @@ typescript@5.4.x, typescript@~5.4:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 typescript@next:
-  version "5.9.0-dev.20250305"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250305.tgz#e5a7b96b0b48404d457f0e1b7ce6c3d4cfe9fc98"
-  integrity sha512-Pk7g7VNEo/UZ2R5GPQIEDNY4U/4OLsTBLO0WdZQhloBdQfKQDUibTEmRgDwtxFR0Jf6v1t2A2aL1sY4cROFDig==
+  version "5.9.0-dev.20250306"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250306.tgz#5950f71a9d9aacd956dddff87eff245d4158c061"
+  integrity sha512-cIqgqwNAAF84trmIn8xY2da/YRacNNmD3+fQTtiImJWyu7k6zDDjCd++YdzHsfjw6LeVE1gBPoGT7UJJsXfqWQ==
 
 uglify-js@^3.1.4:
   version "3.19.3"
