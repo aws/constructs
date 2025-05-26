@@ -5181,9 +5181,9 @@ through@2, "through@>=2.2.7 <3":
   integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
 tinyglobby@^0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.13.tgz#a0e46515ce6cbcd65331537e57484af5a7b2ff7e"
-  integrity sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.14.tgz#5280b0cf3f972b050e74ae88406c0a6a58f4079d"
+  integrity sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==
   dependencies:
     fdir "^6.4.4"
     picomatch "^4.0.2"
@@ -5379,9 +5379,9 @@ typescript@5.4.x, typescript@~5.4:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 typescript@next:
-  version "5.9.0-dev.20250524"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250524.tgz#c691e6e27f81bb20ea670eaf1a928eb079e684c2"
-  integrity sha512-wEMcjkEkxcTfKH+wQ4zB1Ah+OL1/kAF7I2AYJws9O/A4pdookPvsibY6DApqn0bbCTJmY9mVDoilPOU4cSvp7w==
+  version "5.9.0-dev.20250525"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.9.0-dev.20250525.tgz#d4f271cc4b97db636f65a84f105d06ae0e300ddf"
+  integrity sha512-C5nvU5aYBSr/sPMlp+P50fu6VY8m+7EmVSlN+XKGLZnJLL0Lu7tfRSsg1clT5gVpXD14WhntVVEGYEJoJNdAGQ==
 
 uglify-js@^3.1.4:
   version "3.19.3"
