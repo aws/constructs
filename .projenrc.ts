@@ -28,7 +28,7 @@ const project = new CdklabsJsiiProject({
     mavenGroupId: 'software.constructs',
     mavenArtifactId: 'constructs',
     mavenStagingProfileId: 'CONSTRUCTS_MAVEN_STAGING_PROFILE_ID',
-    mavenEndpoint: 'https://s01.oss.sonatype.org',
+    mavenServerId: 'central-ossrh',
   },
 
   publishToPypi: {
