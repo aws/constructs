@@ -522,7 +522,7 @@ export enum ConstructOrder {
   /**
    * Depth-first, post-order (leaf nodes first)
    */
-  POSTORDER
+  POSTORDER,
 }
 
 const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
