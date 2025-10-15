@@ -127,7 +127,8 @@
     }
   },
   "types": "lib/index.d.ts",
-  "stability": "stable",
+  "stability": "deprecated",
+  "deprecated": true,
   "jsii": {
     "outdir": "dist",
     "targets": {

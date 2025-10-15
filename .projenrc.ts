@@ -56,7 +56,7 @@ const project = new CdklabsJsiiProject({
     gitUserEmail: 'aws-cdk-dev@amazon.com',
   },
 
-  stability: 'stable',
+  stability: 'deprecated',
 
   minNodeVersion: '16.14.0',
   workflowNodeVersion: '18.x',
