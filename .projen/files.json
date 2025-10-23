@@ -8,6 +8,7 @@
     ".github/workflows/build.yml",
     ".github/workflows/pull-request-lint.yml",
     ".github/workflows/release.yml",
+    ".github/workflows/retry-automerge.yml",
     ".github/workflows/upgrade-10.x.yml",
     ".github/workflows/upgrade-cdklabs-projen-project-types-10.x.yml",
     ".github/workflows/upgrade-dev-deps-10.x.yml",
