@@ -129,7 +129,7 @@ To release a new version, run `yarn bump` which will:"
 Then, execute:
 
 ```shell
-git push --follow-tags origin master
+git push --follow-tags origin main
 ```
 
 Once the commit is pushed to master, the [release
