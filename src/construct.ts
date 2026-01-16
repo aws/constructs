@@ -49,12 +49,12 @@ export class Node {
   public readonly id: string;
 
   private _locked = false; // if this is "true", addChild will fail
-  private readonly _children: { [id: string]: IConstruct } = { };
-  private readonly _context: { [key: string]: any } = { };
-  private readonly _metadata = new Array<MetadataEntry>();
-  private readonly _dependencies = new Set<IDependable>();
+  private _children: { [id: string]: IConstruct } | undefined;
+  private _context: { [key: string]: any } | undefined;
+  private _metadata: Array<MetadataEntry> | undefined;
+  private _dependencies: Set<IDependable> | undefined;
   private _defaultChild: IConstruct | undefined;
-  private readonly _validations = new Array<IValidation>();
+  private _validations: Array<IValidation> | undefined;
   private _addr?: string; // cache
 
   public constructor(private readonly host: Construct, scope: IConstruct, id: string) {
@@ -116,7 +116,7 @@ export class Node {
    * @returns the child if found, or undefined
    */
   public tryFindChild(id: string): IConstruct | undefined {
-    return this._children[sanitizeId(id)];
+    return this._children?.[sanitizeId(id)];
   }
 
   /**
@@ -175,7 +175,7 @@ export class Node {
    * All direct children of this construct.
    */
   public get children() {
-    return Object.values(this._children);
+    return Object.values(this._children ?? {});
   }
 
   /**
@@ -213,6 +213,9 @@ export class Node {
       const names = this.children.map(c => c.node.id);
       throw new Error('Cannot set context after children have been added: ' + names.join(','));
     }
+    if (!this._context) {
+      this._context = {};
+    }
     this._context[key] = value;
   }
 
@@ -225,7 +228,7 @@ export class Node {
    * @returns The context value or throws error if there is no context value for this key
    */
   public getContext(key: string): any {
-    const value = this._context[key];
+    const value = this._context?.[key];
 
     if (value !== undefined) { return value; }
 
@@ -258,7 +261,7 @@ export class Node {
    * @returns The context value or `undefined` if there is no context value for this key.
    */
   public tryGetContext(key: string): any {
-    const value = this._context[key];
+    const value = this._context?.[key];
     if (value !== undefined) { return value; }
 
     return this.scope && this.scope.node.tryGetContext(key);
@@ -269,7 +272,7 @@ export class Node {
    * This can be used, for example, to implement support for deprecation notices, source mapping, etc.
    */
   public get metadata() {
-    return [...this._metadata];
+    return [...this._metadata ?? []];
   }
 
   /**
@@ -291,6 +294,9 @@ export class Node {
 
     const shouldTrace = options.stackTrace ?? false;
     const trace = shouldTrace ? captureStackTrace(options.traceFromFunction ?? this.addMetadata) : undefined;
+    if (!this._metadata) {
+      this._metadata = [];
+    }
     this._metadata.push({ type, data, trace });
   }
 
@@ -343,6 +349,9 @@ export class Node {
    * An `IDependable`
    */
   public addDependency(...deps: IDependable[]) {
+    if (!this._dependencies) {
+      this._dependencies = new Set();
+    }
     for (const d of deps) {
       this._dependencies.add(d);
     }
@@ -353,12 +362,13 @@ export class Node {
    */
   public get dependencies(): IConstruct[] {
     const result = new Array<IConstruct>();
-    for (const dep of this._dependencies) {
-      for (const root of Dependable.of(dep).dependencyRoots) {
-        result.push(root);
+    if (this._dependencies) {
+      for (const dep of this._dependencies) {
+        for (const root of Dependable.of(dep).dependencyRoots) {
+          result.push(root);
+        }
       }
     }
-
     return result;
   }
 
@@ -368,7 +378,7 @@ export class Node {
    * @returns Whether a child with the given name was deleted.
    */
   public tryRemoveChild(childName: string): boolean {
-    if (!(childName in this._children)) { return false; }
+    if (!this._children || !(childName in this._children)) { return false; }
     delete this._children[childName];
     return true;
   }
@@ -382,6 +392,9 @@ export class Node {
    * @param validation The validation object
    */
   public addValidation(validation: IValidation) {
+    if (!this._validations) {
+      this._validations = [];
+    }
     this._validations.push(validation);
   }
 
@@ -395,7 +408,7 @@ export class Node {
    * construct.
    */
   public validate(): string[] {
-    return this._validations.flatMap(v => v.validate());
+    return (this._validations ?? []).flatMap(v => v.validate());
   }
 
   /**
@@ -422,6 +435,10 @@ export class Node {
       }
 
       throw new Error(`Cannot add children to "${this.path}" during synthesis`);
+    }
+
+    if (!this._children) {
+      this._children = {};
     }
 
     if (this._children[childName]) {
