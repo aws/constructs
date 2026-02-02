@@ -78,4 +78,10 @@ project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 // cdklabs-projen-project-types is overzealous about adding this dependency
 project.deps.removeDependency('constructs');
 
+// modern type imports/exports
+project.eslint?.addRules({
+  '@typescript-eslint/consistent-type-exports': 'error',
+  '@typescript-eslint/consistent-type-imports': 'error',
+});
+
 project.synth();

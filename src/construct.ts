@@ -1,5 +1,6 @@
-import { Dependable, IDependable } from './dependency';
-import { MetadataEntry } from './metadata';
+import type { IDependable } from './dependency';
+import { Dependable } from './dependency';
+import type { MetadataEntry } from './metadata';
 import { captureStackTrace } from './private/stack-trace';
 import { addressOf } from './private/uniqueid';
 

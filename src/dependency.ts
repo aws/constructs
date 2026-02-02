@@ -1,4 +1,4 @@
-import { IConstruct } from './construct';
+import type { IConstruct } from './construct';
 
 /**
  * Trait marker for classes that can be depended upon

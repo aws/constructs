@@ -1,3 +1,3 @@
 export * from './construct';
-export * from './metadata';
+export type * from './metadata';
 export * from './dependency';

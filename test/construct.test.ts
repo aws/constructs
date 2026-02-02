@@ -1,5 +1,6 @@
 import { App as Root } from './util';
-import { Construct, ConstructOrder, DependencyGroup, Dependable, IConstruct } from '../src';
+import type { IConstruct } from '../src';
+import { Construct, ConstructOrder, DependencyGroup, Dependable } from '../src';
 
 // tslint:disable:variable-name
 // tslint:disable:max-line-length
