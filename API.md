@@ -51,6 +51,7 @@ dash `--`.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#constructs.Construct.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#constructs.Construct.with">with</a></code> | Applies one or more mixins to this construct. |
 
 ---
 
@@ -61,6 +62,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="constructs.Construct.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="constructs.Construct.with.parameter.mixins"></a>
+
+- *Type:* ...<a href="#constructs.IMixin">IMixin</a>[]
+
+The mixins to apply.
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -161,6 +183,7 @@ dash `--`.
 | **Name** | **Description** |
 | --- | --- |
 | <code><a href="#constructs.RootConstruct.toString">toString</a></code> | Returns a string representation of this construct. |
+| <code><a href="#constructs.RootConstruct.with">with</a></code> | Applies one or more mixins to this construct. |
 
 ---
 
@@ -171,6 +194,27 @@ public toString(): string
 ```
 
 Returns a string representation of this construct.
+
+##### `with` <a name="with" id="constructs.RootConstruct.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="constructs.RootConstruct.with.parameter.mixins"></a>
+
+- *Type:* ...<a href="#constructs.IMixin">IMixin</a>[]
+
+The mixins to apply.
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
@@ -1066,6 +1110,32 @@ Separator used to delimit construct path components.
 
 Represents a construct.
 
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#constructs.IConstruct.with">with</a></code> | Applies one or more mixins to this construct. |
+
+---
+
+##### `with` <a name="with" id="constructs.IConstruct.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="constructs.IConstruct.with.parameter.mixins"></a>
+
+- *Type:* ...<a href="#constructs.IMixin">IMixin</a>[]
+
+The mixins to apply.
+
+---
 
 #### Properties <a name="Properties" id="Properties"></a>
 
@@ -1101,6 +1171,50 @@ constructs. An ordering dependency implies that the resources represented by
 those constructs are deployed before the resources depending ON them are
 deployed.
 
+
+
+### IMixin <a name="IMixin" id="constructs.IMixin"></a>
+
+- *Implemented By:* <a href="#constructs.IMixin">IMixin</a>
+
+A mixin is a reusable piece of functionality that can be applied to constructs to add behavior, properties, or modify existing functionality without inheritance.
+
+#### Methods <a name="Methods" id="Methods"></a>
+
+| **Name** | **Description** |
+| --- | --- |
+| <code><a href="#constructs.IMixin.applyTo">applyTo</a></code> | Applies the mixin functionality to the target construct. |
+| <code><a href="#constructs.IMixin.supports">supports</a></code> | Determines whether this mixin can be applied to the given construct. |
+
+---
+
+##### `applyTo` <a name="applyTo" id="constructs.IMixin.applyTo"></a>
+
+```typescript
+public applyTo(construct: IConstruct): void
+```
+
+Applies the mixin functionality to the target construct.
+
+###### `construct`<sup>Required</sup> <a name="construct" id="constructs.IMixin.applyTo.parameter.construct"></a>
+
+- *Type:* <a href="#constructs.IConstruct">IConstruct</a>
+
+---
+
+##### `supports` <a name="supports" id="constructs.IMixin.supports"></a>
+
+```typescript
+public supports(construct: IConstruct): boolean
+```
+
+Determines whether this mixin can be applied to the given construct.
+
+###### `construct`<sup>Required</sup> <a name="construct" id="constructs.IMixin.supports.parameter.construct"></a>
+
+- *Type:* <a href="#constructs.IConstruct">IConstruct</a>
+
+---
 
 
 ### IValidation <a name="IValidation" id="constructs.IValidation"></a>
