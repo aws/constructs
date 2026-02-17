@@ -1,6 +1,7 @@
 import type { IDependable } from './dependency';
 import { Dependable } from './dependency';
 import type { MetadataEntry } from './metadata';
+import type { IMixin } from './mixin';
 import { captureStackTrace } from './private/stack-trace';
 import { addressOf } from './private/uniqueid';
 
@@ -14,6 +15,17 @@ export interface IConstruct extends IDependable {
    * The tree node.
    */
   readonly node: Node;
+
+  /**
+   * Applies one or more mixins to this construct.
+   *
+   * Mixins are applied in order. The list of constructs is captured at the
+   * start of the call, so constructs added by a mixin will not be visited.
+   *
+   * @param mixins The mixins to apply
+   * @returns This construct for chaining
+   */
+  with(...mixins: IMixin[]): IConstruct;
 }
 
 /**
@@ -504,6 +516,29 @@ export class Construct implements IConstruct {
       dependencyRoots: [this],
     });
   }
+
+  /**
+   * Applies one or more mixins to this construct.
+   *
+   * Mixins are applied in order. The list of constructs is captured at the
+   * start of the call, so constructs added by a mixin will not be visited.
+   * Use multiple `with()` calls if subsequent mixins should apply to added
+   * constructs.
+   *
+   * @param mixins The mixins to apply
+   * @returns This construct for chaining
+   */
+  public with(...mixins: IMixin[]): IConstruct {
+    const allConstructs = this.node.findAll();
+    for (const mixin of mixins) {
+      for (const construct of allConstructs) {
+        if (mixin.supports(construct)) {
+          mixin.applyTo(construct);
+        }
+      }
+    }
+    return this;
+  };
 
   /**
    * Returns a string representation of this construct.

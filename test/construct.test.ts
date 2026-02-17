@@ -688,3 +688,160 @@ interface ValidationError {
   readonly source: IConstruct;
   readonly message: string;
 }
+
+describe('with() mixin support', () => {
+  test('returns the construct for chaining', () => {
+    const root = new Root();
+    const result = root.with();
+    expect(result).toBe(root);
+  });
+
+  test('applies a single mixin to the construct', () => {
+    const root = new Root();
+    const applied: IConstruct[] = [];
+    const mixin = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied.push(c),
+    };
+
+    root.with(mixin);
+
+    expect(applied).toContain(root);
+  });
+
+  test('applies multiple mixins to the construct', () => {
+    const root = new Root();
+    const applied1: IConstruct[] = [];
+    const applied2: IConstruct[] = [];
+    const mixin1 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied1.push(c),
+    };
+    const mixin2 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied2.push(c),
+    };
+
+    root.with(mixin1, mixin2);
+
+    expect(applied1).toContain(root);
+    expect(applied2).toContain(root);
+  });
+
+  test('applies mixin to all children in the tree', () => {
+    const root = new Root();
+    const child1 = new Construct(root, 'child1');
+    new Construct(root, 'child2');
+    new Construct(child1, 'grandchild');
+
+    const applied: string[] = [];
+    const mixin = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied.push(c.node.id || 'root'),
+    };
+
+    root.with(mixin);
+
+    expect(applied).toEqual(['root', 'child1', 'grandchild', 'child2']);
+  });
+
+  test('only applies mixin to constructs that pass supports() check', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+    new Construct(root, 'child2');
+
+    const applied: string[] = [];
+    const mixin = {
+      supports: (c: IConstruct) => c.node.id === 'child1',
+      applyTo: (c: IConstruct) => applied.push(c.node.id),
+    };
+
+    root.with(mixin);
+
+    expect(applied).toEqual(['child1']);
+  });
+
+  test('does not apply mixin when supports() returns false for all', () => {
+    const root = new Root();
+    new Construct(root, 'child1');
+
+    const applied: IConstruct[] = [];
+    const mixin = {
+      supports: () => false,
+      applyTo: (c: IConstruct) => applied.push(c),
+    };
+
+    root.with(mixin);
+
+    expect(applied).toHaveLength(0);
+  });
+
+  test('supports chaining multiple with() calls', () => {
+    const root = new Root();
+    const applied1: IConstruct[] = [];
+    const applied2: IConstruct[] = [];
+    const mixin1 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied1.push(c),
+    };
+    const mixin2 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied2.push(c),
+    };
+
+    root.with(mixin1).with(mixin2);
+
+    expect(applied1).toContain(root);
+    expect(applied2).toContain(root);
+  });
+
+  test('mixin can modify construct metadata', () => {
+    const root = new Root();
+    const mixin = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => c.node.addMetadata('mixin-applied', true),
+    };
+
+    root.with(mixin);
+
+    expect(root.node.metadata).toEqual([{ type: 'mixin-applied', data: true, trace: undefined }]);
+  });
+
+  test('applies mixins in order, completing each mixin before the next', () => {
+    const root = new Root();
+    new Construct(root, 'child');
+
+    const order: string[] = [];
+    const mixin1 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => order.push(`m1:${c.node.id || 'root'}`),
+    };
+    const mixin2 = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => order.push(`m2:${c.node.id || 'root'}`),
+    };
+
+    root.with(mixin1, mixin2);
+
+    expect(order).toEqual(['m1:root', 'm1:child', 'm2:root', 'm2:child']);
+  });
+
+  test('does not apply mixins to constructs added by other mixins', () => {
+    const root = new Root();
+
+    const applied: string[] = [];
+    const addingMixin = {
+      supports: (c: IConstruct) => c.node.id === '',
+      applyTo: (c: IConstruct) => new Construct(c, 'added-by-mixin'),
+    };
+    const trackingMixin = {
+      supports: () => true,
+      applyTo: (c: IConstruct) => applied.push(c.node.id || 'root'),
+    };
+
+    root.with(addingMixin, trackingMixin);
+
+    expect(applied).toEqual(['root']);
+    expect(root.node.findChild('added-by-mixin')).toBeDefined();
+  });
+});
