@@ -625,6 +625,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 | <code><a href="#constructs.Node.tryGetContext">tryGetContext</a></code> | Retrieves a value from tree context. |
 | <code><a href="#constructs.Node.tryRemoveChild">tryRemoveChild</a></code> | Remove the child with the given name, if present. |
 | <code><a href="#constructs.Node.validate">validate</a></code> | Validates this construct. |
+| <code><a href="#constructs.Node.with">with</a></code> | Applies one or more mixins to this construct. |
 
 ---
 
@@ -867,6 +868,27 @@ Validates this construct.
 
 Invokes the `validate()` method on all validations added through
 `addValidation()`.
+
+##### `with` <a name="with" id="constructs.Node.with"></a>
+
+```typescript
+public with(mixins: ...IMixin[]): IConstruct
+```
+
+Applies one or more mixins to this construct.
+
+Mixins are applied in order. The list of constructs is captured at the
+start of the call, so constructs added by a mixin will not be visited.
+Use multiple `with()` calls if subsequent mixins should apply to added
+constructs.
+
+###### `mixins`<sup>Required</sup> <a name="mixins" id="constructs.Node.with.parameter.mixins"></a>
+
+- *Type:* ...<a href="#constructs.IMixin">IMixin</a>[]
+
+The mixins to apply.
+
+---
 
 #### Static Functions <a name="Static Functions" id="Static Functions"></a>
 
