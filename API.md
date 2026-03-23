@@ -357,6 +357,7 @@ const metadataOptions: MetadataOptions = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#constructs.MetadataOptions.property.stackTrace">stackTrace</a></code> | <code>boolean</code> | Include stack trace with metadata entry. |
+| <code><a href="#constructs.MetadataOptions.property.stackTraceOverride">stackTraceOverride</a></code> | <code>string[]</code> | The actual stack trace to be added to the metadata. |
 | <code><a href="#constructs.MetadataOptions.property.traceFromFunction">traceFromFunction</a></code> | <code>any</code> | A JavaScript function to begin tracing from. |
 
 ---
@@ -371,6 +372,21 @@ public readonly stackTrace: boolean;
 - *Default:* false
 
 Include stack trace with metadata entry.
+
+---
+
+##### `stackTraceOverride`<sup>Optional</sup> <a name="stackTraceOverride" id="constructs.MetadataOptions.property.stackTraceOverride"></a>
+
+```typescript
+public readonly stackTraceOverride: string[];
+```
+
+- *Type:* string[]
+
+The actual stack trace to be added to the metadata.
+
+If this
+parameter is passed, the stackTrace parameter is ignored.
 
 ---
 

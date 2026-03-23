@@ -297,6 +297,22 @@ test('addMetadata() respects the "stackTrace" option', () => {
   expect(con.node.metadata[1]?.trace).toBeUndefined();
 });
 
+test('addMetadata() respects the "stackTraceOverride" option', () => {
+  const root = new Root();
+  const con = new Construct(root, 'Foo');
+  const customTrace = ['custom/path/file.ts:10', 'custom/path/other.ts:20'];
+
+  con.node.addMetadata('foo', 'bar1', { stackTraceOverride: customTrace });
+  con.node.addMetadata('foo', 'bar2', { stackTrace: true, stackTraceOverride: customTrace });
+  con.node.addMetadata('foo', 'bar3', { stackTraceOverride: [] });
+  con.node.addMetadata('foo', 'bar4', { stackTrace: true });
+
+  expect(con.node.metadata[0].trace).toEqual(customTrace);
+  expect(con.node.metadata[1].trace).toEqual(customTrace);
+  expect(con.node.metadata[2].trace).toBeUndefined();
+  expect(con.node.metadata[3].trace?.length).toBeGreaterThan(0);
+});
+
 test('addMetadata(type, undefined/null) is ignored', () => {
   const root = new Root();
   const con = new Construct(root, 'Foo');

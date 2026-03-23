@@ -305,12 +305,19 @@ export class Node {
       return;
     }
 
-    const shouldTrace = options.stackTrace ?? false;
-    const trace = shouldTrace ? captureStackTrace(options.traceFromFunction ?? this.addMetadata) : undefined;
+    const node = this;
+    function getTrace() {
+      if (options.stackTraceOverride && options.stackTraceOverride.length > 0) {
+        return options.stackTraceOverride;
+      }
+      const shouldTrace = options.stackTrace ?? false;
+      return shouldTrace ? captureStackTrace(options.traceFromFunction ?? node.addMetadata) : undefined;
+    }
+
     if (!this._metadata) {
       this._metadata = [];
     }
-    this._metadata.push({ type, data, trace });
+    this._metadata.push({ type, data, trace: getTrace() });
   }
 
   /**
@@ -621,6 +628,12 @@ export interface MetadataOptions {
    * @default addMetadata()
    */
   readonly traceFromFunction?: any;
+
+  /**
+   * The actual stack trace to be added to the metadata. If this
+   * parameter is passed, the stackTrace parameter is ignored.
+   */
+  readonly stackTraceOverride?: string[];
 }
 
 // Mark all instances of 'Construct'
