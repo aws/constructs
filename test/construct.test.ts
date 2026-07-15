@@ -521,7 +521,6 @@ describe('defaultChild', () => {
 });
 
 describe('dependencies', () => {
-
   test('addDependency() defines a dependency between two scopes', () => {
     // GIVEN
     const root = new Root();
@@ -552,6 +551,21 @@ describe('dependencies', () => {
 
     // THEN
     expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual(['producer']);
+  });
+
+  test('can be removed', () => {
+    // GIVEN
+    const root = new Root();
+    const consumer = new Construct(root, 'consumer');
+    const producer = new Construct(root, 'producer');
+
+
+    // WHEN
+    consumer.node.addDependency(producer);
+    consumer.node.removeDependency(producer);
+
+    // THEN
+    expect(consumer.node.dependencies.map(x => x.node.path)).toStrictEqual([]);
   });
 
   test('DependencyGroup can represent a group of disjoined producers', () => {

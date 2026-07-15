@@ -58,6 +58,12 @@ const project = new CdklabsJsiiProject({
   },
   autoApproveUpgrades: true,
 
+  tsconfig: {
+    compilerOptions: {
+      types: ['jest', 'node'],
+    },
+  },
+
   jsiiVersion: '5.9.x',
   typescriptVersion: '5.9.x',
 });
