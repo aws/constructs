@@ -628,7 +628,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 
 | **Name** | **Description** |
 | --- | --- |
-| <code><a href="#constructs.Node.addDependency">addDependency</a></code> | Add an ordering dependency on another construct. |
+| <code><a href="#constructs.Node.addDependency">addDependency</a></code> | Add an ordering dependency on a Dependable (a construct or set of constructs). |
 | <code><a href="#constructs.Node.addMetadata">addMetadata</a></code> | Adds a metadata entry to this construct. |
 | <code><a href="#constructs.Node.addValidation">addValidation</a></code> | Adds a validation to this construct. |
 | <code><a href="#constructs.Node.findAll">findAll</a></code> | Return this construct and all of its children in the given order. |
@@ -636,6 +636,7 @@ new Node(host: Construct, scope: IConstruct, id: string)
 | <code><a href="#constructs.Node.getAllContext">getAllContext</a></code> | Retrieves the all context of a node from tree context. |
 | <code><a href="#constructs.Node.getContext">getContext</a></code> | Retrieves a value from tree context if present. Otherwise, would throw an error. |
 | <code><a href="#constructs.Node.lock">lock</a></code> | Locks this construct from allowing more children to be added. |
+| <code><a href="#constructs.Node.removeDependency">removeDependency</a></code> | Remove an ordering dependency on a Dependenable (a construct or set of constructs). |
 | <code><a href="#constructs.Node.setContext">setContext</a></code> | This can be used to set contextual values. |
 | <code><a href="#constructs.Node.tryFindChild">tryFindChild</a></code> | Return a direct child by id, or undefined. |
 | <code><a href="#constructs.Node.tryGetContext">tryGetContext</a></code> | Retrieves a value from tree context. |
@@ -651,9 +652,21 @@ new Node(host: Construct, scope: IConstruct, id: string)
 public addDependency(deps: ...IDependable[]): void
 ```
 
-Add an ordering dependency on another construct.
+Add an ordering dependency on a Dependable (a construct or set of constructs).
 
-An `IDependable`
+It is up to the target document language to decide what an ordering
+relationship means and how it should be rendered; for example, in the AWS
+CDK for CloudFormation it means a dependency from every resource in scope
+of the current construct to every resource in scope of the target set
+of constructs, that get realized as either stack dependencies or
+`DependsOn` relationships in the synthesized template.
+
+`IDependable` is a marker interface that indicates that a class has used
+`Dependable.implement()` to implement the `IDependable` interface. It
+can be used to make the target object represent more than one set of
+constructs at a time. For example, a `DependencyGroup` uses this
+interface to represent an explicit list of 0 or more constructs that should
+be involved in the dependency relationship.
 
 ###### `deps`<sup>Required</sup> <a name="deps" id="constructs.Node.addDependency.parameter.deps"></a>
 
@@ -799,6 +812,23 @@ Locks this construct from allowing more children to be added.
 After this
 call, no more children can be added to this construct or to any children.
 
+##### `removeDependency` <a name="removeDependency" id="constructs.Node.removeDependency"></a>
+
+```typescript
+public removeDependency(deps: ...IDependable[]): void
+```
+
+Remove an ordering dependency on a Dependenable (a construct or set of constructs).
+
+This removes any dependency added using `node.addDependency()`. It must
+use the exact same object that was involved in the `addDependency()` call.
+
+###### `deps`<sup>Required</sup> <a name="deps" id="constructs.Node.removeDependency.parameter.deps"></a>
+
+- *Type:* ...<a href="#constructs.IDependable">IDependable</a>[]
+
+---
+
 ##### `setContext` <a name="setContext" id="constructs.Node.setContext"></a>
 
 ```typescript
@@ -938,7 +968,7 @@ the construct.
 | --- | --- | --- |
 | <code><a href="#constructs.Node.property.addr">addr</a></code> | <code>string</code> | Returns an opaque tree-unique address for this construct. |
 | <code><a href="#constructs.Node.property.children">children</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a>[]</code> | All direct children of this construct. |
-| <code><a href="#constructs.Node.property.dependencies">dependencies</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a>[]</code> | Return all dependencies registered on this node (non-recursive). |
+| <code><a href="#constructs.Node.property.dependencies">dependencies</a></code> | <code><a href="#constructs.IConstruct">IConstruct</a>[]</code> | Constructs that this construct depends on directly. |
 | <code><a href="#constructs.Node.property.id">id</a></code> | <code>string</code> | The id of this construct within the current scope. |
 | <code><a href="#constructs.Node.property.locked">locked</a></code> | <code>boolean</code> | Returns true if this construct or the scopes in which it is defined are locked. |
 | <code><a href="#constructs.Node.property.metadata">metadata</a></code> | <code><a href="#constructs.MetadataEntry">MetadataEntry</a>[]</code> | An immutable array of metadata objects associated with this construct. |
@@ -999,7 +1029,10 @@ public readonly dependencies: IConstruct[];
 
 - *Type:* <a href="#constructs.IConstruct">IConstruct</a>[]
 
-Return all dependencies registered on this node (non-recursive).
+Constructs that this construct depends on directly.
+
+This expands the sets of `Dependables` to the set of `Constructs` that they
+represent.
 
 ---
 
