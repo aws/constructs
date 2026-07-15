@@ -364,9 +364,21 @@ export class Node {
   }
 
   /**
-   * Add an ordering dependency on another construct.
+   * Add an ordering dependency on a Dependable (a construct or set of constructs)
    *
-   * An `IDependable`
+   * It is up to the target document language to decide what an ordering
+   * relationship means and how it should be rendered; for example, in the AWS
+   * CDK for CloudFormation it means a dependency from every resource in scope
+   * of the current construct to every resource in scope of the target set
+   * of constructs, that get realized as either stack dependencies or
+   * `DependsOn` relationships in the synthesized template.
+   *
+   * `IDependable` is a marker interface that indicates that a class has used
+   * `Dependable.implement()` to implement the `IDependable` interface. It
+   * can be used to make the target object represent more than one set of
+   * constructs at a time. For example, a `DependencyGroup` uses this
+   * interface to represent an explicit list of 0 or more constructs that should
+   * be involved in the dependency relationship.
    */
   public addDependency(...deps: IDependable[]) {
     if (!this._dependencies) {
@@ -378,7 +390,25 @@ export class Node {
   }
 
   /**
-   * Return all dependencies registered on this node (non-recursive).
+   * Remove an ordering dependency on a Dependenable (a construct or set of constructs)
+   *
+   * This removes any dependency added using `node.addDependency()`. It must
+   * use the exact same object that was involved in the `addDependency()` call.
+   */
+  public removeDependency(...deps: IDependable[]) {
+    if (!this._dependencies) {
+      this._dependencies = new Set();
+    }
+    for (const d of deps) {
+      this._dependencies.delete(d);
+    }
+  }
+
+  /**
+   * Constructs that this construct depends on directly
+   *
+   * This expands the sets of `Dependables` to the set of `Constructs` that they
+   * represent.
    */
   public get dependencies(): IConstruct[] {
     const result = new Array<IConstruct>();
