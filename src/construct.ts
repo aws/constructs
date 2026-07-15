@@ -69,6 +69,7 @@ export class Node {
   private _defaultChild: IConstruct | undefined;
   private _validations: Array<IValidation> | undefined;
   private _addr?: string; // cache
+  private _path?: string; // cache
 
   public constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
@@ -90,13 +91,16 @@ export class Node {
    * Components are separated by '/'.
    */
   public get path(): string {
-    const components = [];
-    for (const scope of this.scopes) {
-      if (scope.node.id) {
-        components.push(scope.node.id);
+    if (this._path === undefined) {
+      const components = [];
+      for (const scope of this.scopes) {
+        if (scope.node.id) {
+          components.push(scope.node.id);
+        }
       }
+      this._path = components.join(Node.PATH_SEP);
     }
-    return components.join(Node.PATH_SEP);
+    return this._path;
   }
 
   /**
