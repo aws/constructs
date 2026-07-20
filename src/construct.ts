@@ -61,6 +61,13 @@ export class Node {
    */
   public readonly id: string;
 
+  /**
+   * The full, absolute path of this construct in the tree.
+   *
+   * Components are separated by '/'.
+   */
+  public readonly path: string;
+
   private _locked = false; // if this is "true", addChild will fail
   private _children: { [id: string]: IConstruct } | undefined;
   private _context: { [key: string]: any } | undefined;
@@ -69,6 +76,8 @@ export class Node {
   private _defaultChild: IConstruct | undefined;
   private _validations: Array<IValidation> | undefined;
   private _addr?: string; // cache
+  private _scopes: readonly IConstruct[];
+
 
   public constructor(private readonly host: Construct, scope: IConstruct, id: string) {
     id = id ?? ''; // if undefined, convert to empty string
@@ -80,23 +89,27 @@ export class Node {
       throw new Error('Only root constructs may have an empty ID');
     }
 
-    // add to parent scope
-    scope?.node.addChild(host, this.id);
+    if (scope) {
+      scope.node.addChild(host, this.id);
+      this.path = scope.node.path ? `${scope.node.path}${Node.PATH_SEP}${this.id}` : this.id;
+      this._scopes = [...scope.node._scopes, this.host];
+    } else {
+      this.path = this.id;
+      this._scopes = [this.host];
+    }
   }
 
   /**
-   * The full, absolute path of this construct in the tree.
+   * All parent scopes of this construct.
    *
-   * Components are separated by '/'.
+   * @returns a list of parent scopes. The last element in the list will always
+   * be the current construct and the first element will be the root of the
+   * tree.
    */
-  public get path(): string {
-    const components = [];
-    for (const scope of this.scopes) {
-      if (scope.node.id) {
-        components.push(scope.node.id);
-      }
-    }
-    return components.join(Node.PATH_SEP);
+  public get scopes(): IConstruct[] {
+    // Needs to return a copy to make sure callers can't accidentally mutate
+    // internal state. jsii doesn't support ReadonlyArray.
+    return [...this._scopes];
   }
 
   /**
@@ -116,7 +129,7 @@ export class Node {
    */
   public get addr(): string {
     if (!this._addr) {
-      this._addr = addressOf(this.scopes.map(c => c.node.id));
+      this._addr = addressOf(this._scopes.map(c => c.node.id));
     }
 
     return this._addr;
@@ -261,8 +274,11 @@ export class Node {
    * @returns The context object or an empty object if there is discovered context
    */
   public getAllContext(defaults?: object): any {
-    return this.scopes.reverse()
-      .reduce((a, s) => ({ ...(s.node._context), ...a }), { ...defaults });
+    const ret = { ...defaults };
+    for (const scope of this._scopes) {
+      Object.assign(ret, scope.node._context);
+    }
+    return ret;
   }
 
   /**
@@ -321,30 +337,11 @@ export class Node {
   }
 
   /**
-   * All parent scopes of this construct.
-   *
-   * @returns a list of parent scopes. The last element in the list will always
-   * be the current construct and the first element will be the root of the
-   * tree.
-   */
-  public get scopes(): IConstruct[] {
-    const ret = new Array<IConstruct>();
-
-    let curr: IConstruct | undefined = this.host;
-    while (curr) {
-      ret.unshift(curr);
-      curr = curr.node.scope;
-    }
-
-    return ret;
-  }
-
-  /**
    * Returns the root of the construct tree.
    * @returns The root of the construct tree.
    */
   public get root() {
-    return this.scopes[0];
+    return this._scopes[0];
   }
 
   /**
