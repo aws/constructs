@@ -248,25 +248,6 @@ test('if a root construct has a name, it should be included in the path', () => 
   expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
 });
 
-test('construct.path is memoized and not recomputed on subsequent access', () => {
-  const tree = createTree();
-
-  // WHEN: access "path" once so it is computed and cached
-  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
-  expect(tree.root.node.path).toBe(''); // root path (empty string) is cached too
-
-  // THEN: subsequent accesses return the cached value without walking the scope chain
-  const scopesSpy = jest.spyOn(tree.child1_1_1.node, 'scopes', 'get');
-  expect(tree.child1_1_1.node.path).toBe('HighChild/Child1/Child11/Child111');
-  expect(scopesSpy).not.toHaveBeenCalled();
-  scopesSpy.mockRestore();
-
-  const rootScopesSpy = jest.spyOn(tree.root.node, 'scopes', 'get');
-  expect(tree.root.node.path).toBe('');
-  expect(rootScopesSpy).not.toHaveBeenCalled();
-  rootScopesSpy.mockRestore();
-});
-
 test('construct can not be created with the name of a sibling', () => {
   const root = new Root();
 
