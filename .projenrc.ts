@@ -1,4 +1,5 @@
 import { CdklabsJsiiProject } from 'cdklabs-projen-project-types';
+import { javascript, typescript } from 'projen';
 
 const project = new CdklabsJsiiProject({
   name: 'constructs',
@@ -7,21 +8,38 @@ const project = new CdklabsJsiiProject({
   description: 'A programming model for software-defined state',
   repositoryUrl: 'https://github.com/aws/constructs.git',
 
-  // release branches
-  defaultReleaseBranch: '10.x',
-  majorVersion: 10,
-  npmDistTag: 'latest',
-  devDeps: ['cdklabs-projen-project-types'],
-
   // author
   author: 'Amazon Web Services',
   authorAddress: 'aws-cdk-dev@amazon.com',
   homepage: 'https://github.com/aws/constructs',
-
   copyrightPeriod: `2018-${new Date().getFullYear()}`,
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
-
   keywords: ['aws', 'constructs', 'cdk', 'jsii'],
+
+  // repo
+  packageManager: javascript.NodePackageManager.YARN_BERRY,
+  yarnBerryOptions: {
+    yarnRcOptions: {
+      // projen peer-depends on a released `constructs`; Yarn Berry would satisfy
+      // that with this workspace itself (0.0.0, uncompiled). Declared here, not
+      // in package.json, because jsii-pacmak rejects a self-named dependency.
+      enableTransparentWorkspaces: false,
+      packageExtensions: {
+        'constructs@*': {
+          dependencies: {
+            constructs: '^10.5.0',
+          },
+        },
+      },
+    },
+  },
+  runner: typescript.TypeScriptRunner.tsx(),
+  devDeps: ['cdklabs-projen-project-types'],
+
+  // release branches
+  defaultReleaseBranch: '10.x',
+  majorVersion: 10,
+  npmDistTag: 'latest',
 
   publishToMaven: {
     javaPackage: 'software.constructs',
@@ -64,8 +82,8 @@ const project = new CdklabsJsiiProject({
     },
   },
 
-  jsiiVersion: '5.9.x',
-  typescriptVersion: '5.9.x',
+  jsiiVersion: '6.0.x',
+  typescriptVersion: '6.0.x',
 });
 
 // disable go sumdb so that go deps are resolved directly against github
@@ -81,7 +99,8 @@ project.buildWorkflow?.addPostBuildJobCommands(
 
 project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
-// cdklabs-projen-project-types is overzealous about adding this dependency
+// cdklabs-projen-project-types adds this, but a package listing its own name
+// breaks jsii-pacmak. It's declared via packageExtensions above instead.
 project.deps.removeDependency('constructs');
 
 // modern type imports/exports
