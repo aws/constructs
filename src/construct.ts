@@ -2,8 +2,8 @@ import type { IDependable } from './dependency';
 import { Dependable } from './dependency';
 import type { MetadataEntry } from './metadata';
 import type { IMixin } from './mixin';
+import { ADDR_SEP, addressOf } from './private/node-addr';
 import { captureStackTrace } from './private/stack-trace';
-import { addressOf } from './private/uniqueid';
 
 const CONSTRUCT_SYM = Symbol.for('constructs.Construct');
 
@@ -57,7 +57,8 @@ export class Node {
   /**
    * The id of this construct within the current scope.
    *
-   * This is a scope-unique id. To obtain an app-unique id for this construct, use `addr`.
+   * This is a scope-unique id. To obtain an id that reflects the full location
+   * of this construct in the tree, use `path` or `addr`.
    */
   public readonly id: string;
 
@@ -113,17 +114,29 @@ export class Node {
   }
 
   /**
-   * Returns an opaque tree-unique address for this construct.
+   * An opaque, deterministic address for this construct, derived from its path.
    *
-   * Addresses are 42 characters hexadecimal strings. They begin with "c8"
-   * followed by 40 lowercase hexadecimal characters (0-9a-f).
-   *
-   * Addresses are calculated using a SHA-1 of the components of the construct
-   * path.
+   * The address is a 42 character string: the prefix "c8" followed by 40
+   * lowercase hexadecimal characters (0-9a-f). It is a SHA-1 over the ids of
+   * the constructs on the path from the root of the tree down to this
+   * construct.
    *
    * To enable refactoring of construct trees, constructs with the ID `Default`
-   * will be excluded from the calculation. In those cases constructs in the
-   * same tree may have the same address.
+   * are excluded from the calculation. Within a tree, `a/Default/b` and `a/b`
+   * have the same address.
+   *
+   * This means the address is *not* guaranteed to identify a construct uniquely:
+   *
+   * - Any construct whose path is made up of the same ids has the same address.
+   *   Two trees that are shaped alike therefore hand out the same addresses.
+   * - As described above, a construct under a `Default` scope has the same
+   *   address as its counterpart outside of that scope.
+   * - The digest is of fixed width, so even distinct paths can in principle hash
+   *   to the same address. SHA-1 in particular is no longer collision resistant.
+   *
+   * Use an address to derive stable, deterministic names from the location of a
+   * construct in the tree. Do not use it as the identity of a construct:
+   * instead, compare construct instances or use the `path`.
    *
    * @example c83a2846e506bcc5f10682b564084bca2d275709ee
    */
@@ -562,8 +575,8 @@ export class Construct implements IConstruct {
    *
    * @param scope The scope in which to define this construct
    * @param id The scoped construct ID. Must be unique amongst siblings. If
-   * the ID includes a path separator (`/`), then it will be replaced by double
-   * dash `--`.
+   * the ID includes a path separator (`/`) or a newline, then it will be
+   * replaced by double dash `--`.
    */
   constructor(scope: Construct, id: string) {
     this.node = new Node(this, scope, id);
@@ -627,14 +640,15 @@ export enum ConstructOrder {
   POSTORDER,
 }
 
-const PATH_SEP_REGEX = new RegExp(`${Node.PATH_SEP}`, 'g');
+const SEP_REGEX = new RegExp(`[${Node.PATH_SEP}${ADDR_SEP}]`, 'g');
 
 /**
  * Return a sanitized version of an arbitrary string, so it can be used as an ID
  */
 function sanitizeId(id: string) {
-  // Escape path seps as double dashes
-  return id.replace(PATH_SEP_REGEX, '--');
+  // Escape the separators used by `path` and by `addr` as double dashes, so a
+  // single id never looks like multiple path components in either of them.
+  return id.replace(SEP_REGEX, '--');
 }
 
 /**
@@ -681,8 +695,8 @@ export class RootConstruct extends Construct {
    * Creates a new root construct node.
    *
    * @param id The scoped construct ID. Must be unique amongst siblings. If
-   * the ID includes a path separator (`/`), then it will be replaced by double
-   * dash `--`.
+   * the ID includes a path separator (`/`) or a newline, then it will be
+   * replaced by double dash `--`.
    */
   constructor(id?: string) {
     super(undefined as any, id ?? '');
