@@ -54,12 +54,19 @@ test('if construct id contains path seperators, they will be replaced by double-
   expect(c.node.id).toBe('Boom--Boom--Bam');
 });
 
+test('if construct id contains the separator used by addresses, it will be replaced by double-dash', () => {
+  const root = new Root();
+  const c = new Construct(root, 'Boom\nBoom\nBam');
+  expect(c.node.id).toBe('Boom--Boom--Bam');
+  expect(c.node.path).toBe('Boom--Boom--Bam');
+});
+
 test('if "undefined" is forcefully used as an "id", it will be treated as an empty string', () => {
   const c = new Construct(undefined as any, undefined as any);
   expect(c.node.id).toBe('');
 });
 
-test('node.addr returns an opaque app-unique address for any construct', () => {
+test('node.addr returns an opaque address for any construct', () => {
   const root = new Root();
 
   const child1 = new Construct(root, 'This is the first child');
@@ -95,6 +102,44 @@ test('node.addr excludes "default" from the address calculation', () => {
   expect(addrA).toEqual(addr);
   expect(addrB).toEqual('c8fa72abd28f794f6bacb100b26beb761d004572f5');
   expect(addrB).not.toEqual(addr);
+});
+
+test('node.addr differs between an id that contains the address separator and the ids it resembles', () => {
+  // GIVEN
+  const root = new Root();
+
+  // WHEN: a single id that carries the address separator, next to the two ids
+  // it resembles
+  const single = new Construct(root, 'a\nb');
+  const nested = new Construct(new Construct(root, 'a'), 'b');
+
+  // THEN
+  expect(single.node.path).toBe('a--b');
+  expect(nested.node.path).toBe('a/b');
+  expect(single.node.addr).not.toEqual(nested.node.addr);
+});
+
+test('node.addr differs no matter where in the path the address separator appears', () => {
+  // GIVEN
+  const root = new Root();
+
+  // WHEN: both paths consist of the components "a", "b" and "c", split up
+  // differently
+  const left = new Construct(new Construct(root, 'a'), 'b\nc');
+  const right = new Construct(new Construct(root, 'a\nb'), 'c');
+
+  // THEN
+  expect(left.node.path).toBe('a/b--c');
+  expect(right.node.path).toBe('a--b/c');
+  expect(left.node.addr).not.toEqual(right.node.addr);
+});
+
+test('node.addr is deterministic: equally shaped trees hand out equal addresses', () => {
+  const c1 = new Construct(new Root(), 'a');
+  const c2 = new Construct(new Root(), 'a');
+
+  expect(c1).not.toBe(c2);
+  expect(c1.node.addr).toEqual(c2.node.addr);
 });
 
 test('construct.getChildren() returns an array of all children', () => {
