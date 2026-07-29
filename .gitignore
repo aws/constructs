@@ -4,6 +4,7 @@
 !/.projen/deps.json
 !/.projen/files.json
 !/.github/workflows/pull-request-lint.yml
+!/.github/workflows/dependency-review.yml
 !/.github/workflows/auto-approve.yml
 !/package.json
 !/LICENSE
@@ -40,13 +41,14 @@ junit.xml
 !/.github/workflows/release.yml
 !/.github/pull_request_template.md
 !/test/
-!/tsconfig.dev.json
+!/tsconfig.json
+!/test/tsconfig.json
 !/src/
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/tsconfig.json
 .jsii
-tsconfig.json
 !/API.md
 !/.github/workflows/retry-automerge.yml
 !/.github/workflows/auto-queue.yml
