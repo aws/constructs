@@ -1,4 +1,8 @@
 {
+  "manifestVersion": 3,
+  "env": {
+    "PATH": "$(yarn exec node --print process.env.PATH)"
+  },
   "tasks": {
     "build": {
       "name": "build",
@@ -33,15 +37,36 @@
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
-        "BUMP_PACKAGE": "commit-and-tag-version@^12",
-        "RELEASABLE_COMMITS": "git log --no-merges --oneline $LATEST_TAG..HEAD -E --grep \"^(feat|fix){1}(\\([^()[:space:]]+\\))?(!)?:[[:blank:]]+.+\""
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
-          "builtin": "release/bump-version"
+          "builtin": "release/resolve-latest-tag",
+          "outputEnv": "LATEST_TAG"
+        },
+        {
+          "spawn": "bump:releasable-commits",
+          "outputEnv": "RELEASABLE_COMMITS",
+          "condition": "git rev-parse --verify --quiet \"refs/tags/$LATEST_TAG\""
+        },
+        {
+          "builtin": "release/suggest-version-bump",
+          "outputEnv": "SUGGESTED_BUMP"
+        },
+        {
+          "builtin": "release/apply-version-bump"
         }
       ],
-      "condition": "git log --oneline -1 | grep -qv \"chore(release):\""
+      "condition": "git log --oneline -1 | grep -v \"chore(release):\" > /dev/null"
+    },
+    "bump:releasable-commits": {
+      "name": "bump:releasable-commits",
+      "description": "Print the releasable commits since the latest release",
+      "steps": [
+        {
+          "exec": "git log --no-merges --oneline $LATEST_TAG..HEAD -E --grep '^(feat|fix){1}(\\([^()[:space:]]+\\))?(!)?:[[:blank:]]+.+'"
+        }
+      ]
     },
     "clobber": {
       "name": "clobber",
@@ -90,6 +115,9 @@
       "steps": [
         {
           "exec": "jsii --silence-warnings=reserved-word"
+        },
+        {
+          "spawn": "compat"
         }
       ]
     },
@@ -98,7 +126,21 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
+          "execArgs": [
+            "tsc",
+            "--noEmit",
+            "-p",
+            "projenrc/tsconfig.json"
+          ],
+          "name": "typecheck"
+        },
+        {
+          "execArgs": [
+            "tsx",
+            "--tsconfig",
+            "projenrc/tsconfig.json",
+            ".projenrc.ts"
+          ]
         }
       ]
     },
@@ -107,7 +149,11 @@
       "description": "Generate API.md from .jsii manifest",
       "steps": [
         {
-          "exec": "jsii-docgen -o API.md"
+          "execArgs": [
+            "jsii-docgen",
+            "-o",
+            "API.md"
+          ]
         }
       ]
     },
@@ -142,7 +188,7 @@
       "description": "Install project dependencies and update lockfile (non-frozen)",
       "steps": [
         {
-          "exec": "yarn install --check-files"
+          "exec": "yarn install --no-immutable"
         }
       ]
     },
@@ -151,7 +197,7 @@
       "description": "Install project dependencies using frozen lockfile",
       "steps": [
         {
-          "exec": "yarn install --check-files --frozen-lockfile"
+          "exec": "yarn install --immutable"
         }
       ]
     },
@@ -198,7 +244,12 @@
       "description": "Create dotnet language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target dotnet"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--target",
+            "dotnet"
+          ]
         }
       ]
     },
@@ -207,7 +258,12 @@
       "description": "Create go language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target go"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--target",
+            "go"
+          ]
         }
       ]
     },
@@ -216,7 +272,12 @@
       "description": "Create java language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target java"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--target",
+            "java"
+          ]
         }
       ]
     },
@@ -225,7 +286,12 @@
       "description": "Create js language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target js"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--target",
+            "js"
+          ]
         }
       ]
     },
@@ -234,7 +300,12 @@
       "description": "Create python language bindings",
       "steps": [
         {
-          "exec": "jsii-pacmak -v --target python"
+          "execArgs": [
+            "jsii-pacmak",
+            "-v",
+            "--target",
+            "python"
+          ]
         }
       ]
     },
@@ -311,8 +382,7 @@
         "BUMPFILE": "dist/version.txt",
         "RELEASETAG": "dist/releasetag.txt",
         "RELEASE_TAG_PREFIX": "",
-        "BUMP_PACKAGE": "commit-and-tag-version@^12",
-        "RELEASABLE_COMMITS": "git log --no-merges --oneline $LATEST_TAG..HEAD -E --grep \"^(feat|fix){1}(\\([^()[:space:]]+\\))?(!)?:[[:blank:]]+.+\""
+        "BUMP_PACKAGE": "commit-and-tag-version@^12"
       },
       "steps": [
         {
@@ -324,11 +394,16 @@
       "name": "upgrade",
       "description": "upgrade dependencies",
       "env": {
-        "CI": "0"
+        "CI": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "false",
+        "YARN_NPM_MINIMAL_AGE_GATE": "4320"
       },
       "steps": [
         {
-          "exec": "echo No dependencies to upgrade."
+          "execArgs": [
+            "echo",
+            "No dependencies to upgrade."
+          ]
         }
       ]
     },
@@ -336,20 +411,37 @@
       "name": "upgrade-cdklabs-projen-project-types",
       "description": "upgrade cdklabs-projen-project-types",
       "env": {
-        "CI": "0"
+        "CI": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=latest --peer --no-deprecated --dep=dev,peer,prod,optional --filter=cdklabs-projen-project-types,projen"
+          "execArgs": [
+            "yarn",
+            "dlx",
+            "npm-check-updates@20",
+            "--upgrade",
+            "--target=latest",
+            "--peer",
+            "--no-deprecated",
+            "--dep=dev,prod,peer,optional",
+            "--filter=cdklabs-projen-project-types,projen"
+          ]
         },
         {
-          "exec": "yarn install --check-files"
+          "exec": "yarn install --no-immutable"
         },
         {
-          "exec": "yarn upgrade cdklabs-projen-project-types projen"
+          "execArgs": [
+            "yarn",
+            "up",
+            "-R",
+            "cdklabs-projen-project-types",
+            "projen"
+          ]
         },
         {
-          "exec": "npx projen"
+          "exec": "yarn projen"
         },
         {
           "spawn": "post-upgrade"
@@ -360,20 +452,56 @@
       "name": "upgrade-dev-deps",
       "description": "upgrade dev dependencies",
       "env": {
-        "CI": "0"
+        "CI": "0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "false",
+        "YARN_NPM_MINIMAL_AGE_GATE": "4320"
       },
       "steps": [
         {
-          "exec": "npx npm-check-updates@16 --upgrade --target=minor --peer --no-deprecated --dep=dev --filter=@types/jest,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,ts-jest,ts-node"
+          "execArgs": [
+            "yarn",
+            "dlx",
+            "npm-check-updates@20",
+            "--upgrade",
+            "--target=minor",
+            "--cooldown=3",
+            "--peer",
+            "--no-deprecated",
+            "--dep=dev",
+            "--filter=@types/jest,eslint-import-resolver-typescript,eslint-plugin-import,jest,jsii-diff,jsii-pacmak,ts-jest,tsx"
+          ]
         },
         {
-          "exec": "yarn install --check-files"
+          "exec": "yarn install --no-immutable"
         },
         {
-          "exec": "yarn upgrade @stylistic/eslint-plugin @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser commit-and-tag-version eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii-diff jsii-docgen jsii-pacmak jsii-rosetta jsii ts-jest ts-node typescript"
+          "execArgs": [
+            "yarn",
+            "up",
+            "-R",
+            "@stylistic/eslint-plugin",
+            "@types/jest",
+            "@types/node",
+            "@typescript-eslint/eslint-plugin",
+            "@typescript-eslint/parser",
+            "commit-and-tag-version",
+            "eslint-import-resolver-typescript",
+            "eslint-plugin-import",
+            "eslint",
+            "jest",
+            "jest-junit",
+            "jsii-diff",
+            "jsii-docgen",
+            "jsii-pacmak",
+            "jsii-rosetta",
+            "jsii",
+            "ts-jest",
+            "tsx",
+            "typescript"
+          ]
         },
         {
-          "exec": "npx projen"
+          "exec": "yarn projen"
         },
         {
           "spawn": "post-upgrade"
@@ -390,8 +518,5 @@
       ]
     }
   },
-  "env": {
-    "PATH": "$(npx -c \"node --print process.env.PATH\")"
-  },
-  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"npx projen\"."
+  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"yarn projen\"."
 }
