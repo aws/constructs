@@ -109,4 +109,15 @@ project.eslint?.addRules({
   '@typescript-eslint/consistent-type-imports': 'error',
 });
 
+// restrict consumers to the package's public API (lib/index.js); this
+// prevents deep imports like `constructs/lib/private/...` from resolving.
+project.package.addField('exports', {
+  '.': {
+    types: './lib/index.d.ts',
+    default: './lib/index.js',
+  },
+  './package.json': './package.json',
+  './.jsii': './.jsii',
+});
+
 project.synth();
