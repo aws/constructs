@@ -155,7 +155,11 @@
       }
     },
     "tsconfig": "tsconfig.json",
-    "validateTsconfig": "strict"
+    "validateTsconfig": "strict",
+    "tsc": {
+      "outDir": "lib",
+      "rootDir": "src"
+    }
   },
   "exports": {
     ".": {
