@@ -109,6 +109,13 @@ project.eslint?.addRules({
   '@typescript-eslint/consistent-type-imports': 'error',
 });
 
+// Restore `jsii.tsc.outDir`/`rootDir` alongside `jsii.tsconfig`
+// See https://github.com/aws/constructs/issues/2879
+project.tryFindObjectFile('package.json')?.addOverride('jsii.tsc', {
+  outDir: 'lib',
+  rootDir: 'src',
+});
+
 // restrict consumers to the package's public API (lib/index.js); this
 // prevents deep imports like `constructs/lib/private/...` from resolving.
 project.package.addField('exports', {
