@@ -1737,10 +1737,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xmldom/xmldom@npm:^0.9.10":
-  version: 0.9.10
-  resolution: "@xmldom/xmldom@npm:0.9.10"
-  checksum: 10c0/38a9c9b95450d7fccebc61371c8e0b90ceaae992886484108333d29ccbd2640e3555b6af012f15ce1beb5067aeb40486659b6183fad38af179e82d28028bfc5d
+"@xmldom/xmldom@npm:^0.9.11":
+  version: 0.9.11
+  resolution: "@xmldom/xmldom@npm:0.9.11"
+  checksum: 10c0/f29dd4a35b525224cb1bdc8728041fdab218c3a2f5572452c764781490d64a6755f34a1792212abe7ca319a18b157de5dcf9734f067560b968e6ba2b66d58f0f
   languageName: node
   linkType: hard
 
@@ -5157,12 +5157,12 @@ __metadata:
   linkType: hard
 
 "jsii-rosetta@npm:6.0.x":
-  version: 6.0.10
-  resolution: "jsii-rosetta@npm:6.0.10"
+  version: 6.0.11
+  resolution: "jsii-rosetta@npm:6.0.11"
   dependencies:
     "@jsii/check-node": "npm:^1.139.0"
     "@jsii/spec": "npm:^1.139.0"
-    "@xmldom/xmldom": "npm:^0.9.10"
+    "@xmldom/xmldom": "npm:^0.9.11"
     chalk: "npm:^4"
     commonmark: "npm:^0.31.2"
     fast-glob: "npm:^3.3.3"
@@ -5175,7 +5175,7 @@ __metadata:
     yargs: "npm:^17.7.3"
   bin:
     jsii-rosetta: bin/jsii-rosetta
-  checksum: 10c0/39db36d0b45f24cacea14b83af6e04311929367bdc96c8ef17b25d5e7eda60e2abff945d3531cc5f7bb9eef28d52ffbf3ab222b73cfde861a5007e2baf27119b
+  checksum: 10c0/ba5ef5346cf91761329942c01e14664b475cea81196165e1e4f1ad072a1da1bbb2b7afc5ab179c7f22c22fe446eacdd09e1e571e16585995322b6bd431190dc5
   languageName: node
   linkType: hard
 
