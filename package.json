@@ -61,7 +61,7 @@
     "jsii-rosetta": "6.0.x",
     "projen": "^0.101.22",
     "ts-jest": "^29",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "6.0.x"
   },
   "keywords": [
