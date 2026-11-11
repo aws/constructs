@@ -17,14 +17,14 @@ jobs:
       CI: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Enable corepack
         run: corepack enable
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
@@ -41,7 +41,7 @@ jobs:
         working-directory: ./
       - name: Upload patch
         if: steps.self_mutation.outputs.self_mutation_happened
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: repo.patch
           path: repo.patch
@@ -57,7 +57,7 @@ jobs:
         continue-on-error: true
       - name: Upload artifact
         id: upload_artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: build-artifact
           path: dist
@@ -71,14 +71,14 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           token: ${{ secrets.PROJEN_GITHUB_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Download patch
         id: download_patch
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           name: repo.patch
           path: ${{ runner.temp }}
@@ -105,13 +105,13 @@ jobs:
       contents: read
     if: ${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -124,9 +124,9 @@ jobs:
         run: corepack enable
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -151,17 +151,17 @@ jobs:
       contents: read
     if: ${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6.0.0
         with:
           distribution: corretto
           java-version: "11"
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -174,9 +174,9 @@ jobs:
         run: corepack enable
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -201,16 +201,16 @@ jobs:
       contents: read
     if: ${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: 3.x
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -223,9 +223,9 @@ jobs:
         run: corepack enable
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -250,17 +250,17 @@ jobs:
       contents: read
     if: ${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v6.0.0
         with:
           dotnet-version: 6.x
           cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -273,9 +273,9 @@ jobs:
         run: corepack enable
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -300,17 +300,17 @@ jobs:
       contents: read
     if: ${{ !needs.build.outputs.self_mutation_happened }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
           package-manager-cache: false
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7.0.0
         with:
           go-version: ^1.18.0
           cache: false
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -323,9 +323,9 @@ jobs:
         run: corepack enable
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: .repo
       - name: Install Dependencies
@@ -352,7 +352,7 @@ jobs:
     steps:
       - name: Download build artifacts
         id: download_build_artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
           path: dist
@@ -362,9 +362,9 @@ jobs:
         continue-on-error: true
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - id: auto_896aefee
         run: npm --version && npm install
