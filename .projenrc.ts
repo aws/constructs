@@ -97,6 +97,21 @@ project.buildWorkflow?.addPostBuildJobCommands(
   { checkoutRepo: true },
 );
 
+// Do not auto-queue pull requests from forks; maintainers enable auto-merge on those manually after review.
+const autoQueueWorkflow = project.github?.tryFindWorkflow('auto-queue');
+if (!autoQueueWorkflow) {
+  throw new Error('Expected an "auto-queue" workflow to add the fork condition to');
+}
+const autoQueueJob = autoQueueWorkflow.getJob('enableAutoQueue');
+if (!autoQueueJob) {
+  throw new Error('Expected an "enableAutoQueue" job in the "auto-queue" workflow');
+}
+const sameRepoCondition = 'github.event.pull_request.head.repo.full_name == github.repository';
+autoQueueWorkflow.updateJob('enableAutoQueue', {
+  ...autoQueueJob,
+  if: autoQueueJob.if ? `(${autoQueueJob.if}) && (${sameRepoCondition})` : sameRepoCondition,
+});
+
 project.npmignore?.exclude('/scripts/', '.projenrc.ts');
 
 // cdklabs-projen-project-types adds this, but a package listing its own name
