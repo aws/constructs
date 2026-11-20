@@ -70,6 +70,9 @@ const project = new CdklabsJsiiProject({
   compat: true,
 
   enablePRAutoMerge: true,
+  ghAutoMergeOptions: {
+    targetBranches: ['10.x'],
+  },
   autoApproveOptions: {
     allowedUsernames: ['cdklabs-automation'],
     secret: 'GITHUB_TOKEN',

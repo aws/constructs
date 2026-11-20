@@ -433,6 +433,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dsherret/path@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "@dsherret/path@npm:0.3.4"
+  checksum: 10c0/3900927536e733c7d7c626f0923f1c58814f407e2824f27f22b80e04ca4f48e3a4194f168dbff8e60478522194db380debb961a4eef1ad347d3feb331dd569d6
+  languageName: node
+  linkType: hard
+
+"@dsherret/shell@npm:^0.7.2":
+  version: 0.7.3
+  resolution: "@dsherret/shell@npm:0.7.3"
+  dependencies:
+    "@dsherret/path": "npm:^0.3.4"
+    "@dsherret/which": "npm:^0.8.0"
+    console-static-text: "npm:^0.3.5"
+  checksum: 10c0/16b59d438817ea8285e98480d6f5518a2024cbb0fb878c421fafdc7b3fef8277deeadb13376cf01bef7af6d0ec12d773e3fcdfcff220b5560eb6e73629f331d4
+  languageName: node
+  linkType: hard
+
+"@dsherret/which@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@dsherret/which@npm:0.8.0"
+  checksum: 10c0/0b5dc6668c5ca7987a80d714d5f698a0ef941eca1111cf885cbc20e7f72c71faeb48f09e5cb2e418f3e4395a5c49f1c33af0b20b5b6f484bc1a4c03d4f9849d6
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:1.10.0":
   version: 1.10.0
   resolution: "@emnapi/core@npm:1.10.0"
@@ -2257,15 +2282,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cdklabs-projen-project-types@npm:^0.6.8":
-  version: 0.6.8
-  resolution: "cdklabs-projen-project-types@npm:0.6.8"
+"cdklabs-projen-project-types@npm:^0.6.23":
+  version: 0.6.23
+  resolution: "cdklabs-projen-project-types@npm:0.6.23"
   dependencies:
-    yaml: "npm:^2.9.0"
+    yaml: "npm:^2.9.1"
   peerDependencies:
     constructs: ^10.0.0
-    projen: ">=0.101.15 <1.0.0"
-  checksum: 10c0/7f7c774a9ed9736f0f4dd8414839f53c506dcb96e9e7d20ae34044addc88df7de12d690a357d02aacdb55024d90324ecab333402bbea743e83160bf55be40531
+    projen: ">=0.104.12 <1.0.0"
+  checksum: 10c0/59365f60cb21d2d50adfbda711a50ccec9fc84abd90e7720605efa40ed561acbe9b02e8779e5598b32db7707e663fed2e11a3e68b7338b4787b7820197c9e23e
   languageName: node
   linkType: hard
 
@@ -2443,6 +2468,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"console-static-text@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "console-static-text@npm:0.3.5"
+  checksum: 10c0/0d9851f92af578302689eb978f86dc4a6e1d2aa87fdf9598bdaca2f011c117891162d66db27f7782efee0b81684cd39d588f05f2d494772c2437690ceb4eeb4b
+  languageName: node
+  linkType: hard
+
 "constructs@npm:^10.5.0":
   version: 10.7.2
   resolution: "constructs@npm:10.7.2"
@@ -2459,7 +2491,7 @@ __metadata:
     "@types/node": "npm:^18"
     "@typescript-eslint/eslint-plugin": "npm:^8"
     "@typescript-eslint/parser": "npm:^8"
-    cdklabs-projen-project-types: "npm:^0.6.8"
+    cdklabs-projen-project-types: "npm:^0.6.23"
     commit-and-tag-version: "npm:^13"
     eslint: "npm:^9"
     eslint-import-resolver-typescript: "npm:^3.10.1"
@@ -2471,7 +2503,7 @@ __metadata:
     jsii-docgen: "npm:^10.5.0"
     jsii-pacmak: "npm:^1.142.0"
     jsii-rosetta: "npm:6.0.x"
-    projen: "npm:>=0.101.22"
+    projen: "npm:>=0.105.6"
     ts-jest: "npm:^29"
     tsx: "npm:^4.23.15"
     typescript: "npm:6.0.x"
@@ -2650,12 +2682,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dax@npm:^0.49.0":
-  version: 0.49.0
-  resolution: "dax@npm:0.49.0"
+"dax@npm:^0.50.2":
+  version: 0.50.2
+  resolution: "dax@npm:0.50.2"
   dependencies:
+    "@dsherret/path": "npm:^0.3.4"
+    "@dsherret/shell": "npm:^0.7.2"
     undici-types: "npm:^5.26"
-  checksum: 10c0/23edf671dbedd21f5dec53f1d5f728b89db6ab6fce676fe86b7c9939f05404315671860797fecc522510f6121f6f579b22acf00a17842b055b76073ea7d7fcc7
+  checksum: 10c0/31f306dc89cb779404e2761a294e5d66e456f931c05e07b0324d4586e83ccd7f6a48249af90ccd79f87f7dd46103bfaa5c6b7799f5e06342bdf17d39dfd69de0
   languageName: node
   linkType: hard
 
@@ -5666,9 +5700,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"projen@npm:>=0.101.22":
-  version: 0.104.27
-  resolution: "projen@npm:0.104.27"
+"projen@npm:>=0.105.6":
+  version: 0.105.6
+  resolution: "projen@npm:0.105.6"
   dependencies:
     "@iarna/toml": "npm:^2.2.5"
     case: "npm:^1.6.3"
@@ -5676,13 +5710,13 @@ __metadata:
     comment-json: "npm:4.2.2"
     constructs: "npm:^10.5.0"
     conventional-changelog-config-spec: "npm:^2.1.0"
-    dax: "npm:^0.49.0"
+    dax: "npm:^0.50.2"
     fast-glob: "npm:^3.3.3"
     fast-json-patch: "npm:^3.1.1"
     ini: "npm:^2.0.0"
     parse-conflict-json: "npm:^4.0.0"
-    properties-file: "npm:^5.0.6"
-    semver: "npm:^7.8.5"
+    properties-file: "npm:^5.0.7"
+    semver: "npm:^7.8.6"
     xmlbuilder2: "npm:^4.0.3"
     yaml: "npm:^2.2.2"
     yargs: "npm:^17.7.3"
@@ -5690,7 +5724,7 @@ __metadata:
     constructs: ^10.5.0
   bin:
     projen: bin/projen
-  checksum: 10c0/cbb1bab9f91a8620ab437ee0566e28c7b8cf71f50f220e76ad5bdbc94001cc276fec5618d05357efa70b7ca3832cf868aab7cd36b658a860ac30bb24b805cc68
+  checksum: 10c0/c90f9aff9c2d9042806fbe46448b07059074772ba57bae898d10572ebf46e3cf9f41925ccc9ea38d3cc61c302656a85fa1ebf9f93f5ffc6432ba9d7238496dab
   languageName: node
   linkType: hard
 
@@ -5704,7 +5738,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"properties-file@npm:^5.0.6":
+"properties-file@npm:^5.0.7":
   version: 5.0.7
   resolution: "properties-file@npm:5.0.7"
   checksum: 10c0/79bc27f2ece5331755a3d18172864354817e65f35ae1a913563573f88a0ca2f99231fc147f19a258377d18ae7f84b817f5991639ed6bdf57df0fd56649f2bd88
@@ -6956,6 +6990,15 @@ __metadata:
   bin:
     yaml: bin.mjs
   checksum: 10c0/f340718df45e97a9551b9bf9dac61c80050bc464513b710debfb5067c380c8472e3b67809cffacb4ab5ffb5e66ef9310816c88b05f371cec60abfedd8c88e0a2
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "yaml@npm:2.9.1"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/9d06676ef02b89559a8b10a71882bd2cdae81e8393dc8dbc871615c3259475d9609ad973d19cb3c9e71e72d6206e3d1e7aa241c7e55f3d16fd2e77db305827d6
   languageName: node
   linkType: hard
 
