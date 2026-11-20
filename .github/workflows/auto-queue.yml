@@ -9,7 +9,7 @@ on:
       - ready_for_review
       - edited
     branches:
-      - main
+      - 10.x
 jobs:
   enableAutoQueue:
     name: "Set AutoQueue on PR #${{ github.event.number }}"
