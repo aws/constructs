@@ -4,7 +4,7 @@
 
 ### Construct <a name="Construct" id="constructs.Construct"></a>
 
-- *Implements:* <a href="#constructs.IConstruct">IConstruct</a>
+- *Implements:* <a href="#constructs.IConstruct">IConstruct</a>, <a href="#constructs.IDependable">IDependable</a>
 
 Represents the building block of the construct graph.
 
@@ -146,6 +146,8 @@ The tree node.
 
 
 ### RootConstruct <a name="RootConstruct" id="constructs.RootConstruct"></a>
+
+- *Implements:* <a href="#constructs.IConstruct">IConstruct</a>, <a href="#constructs.IDependable">IDependable</a>
 
 Creates a new root construct node.
 
